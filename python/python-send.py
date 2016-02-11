@@ -9,8 +9,8 @@ ardSerial = serial.Serial('/dev/ttyACM' + arduinoNum, 9600)
 
 ardSerial.write("<" + commandCode + ">");
 
-time.sleep(1.5)
+time.sleep(1)
 
 while ardSerial.inWaiting():
-     myData = ardSerial.readline()
-     print myData
+  myData = ardSerial.readline()
+  print myData
