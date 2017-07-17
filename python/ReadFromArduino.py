@@ -1,15 +1,18 @@
 import serial
-
-# Write the data read from the Arduino to the file
-f=open('sensor_data','w')
-
+import json
+with open('sensor_data.txt','w') as f:
+	json.dump(json_object,f)
+ 
 ser = serial.Serial('/dev/ttyACM0',9600)
+
+# A dictionary to store the data
+data={}
 
 while 1:
 	# Keep reading
 	if(ser.inWaiting()>0):
-		data = ser.readline()	
-		f.write(data)
-	else:
-		f.close()
+		ser.readline()	
+		ParseAsJson()
 
+		
+json_object json.load(data_dictionary)
