@@ -3,37 +3,31 @@ html
   head
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
-    link(rel='stylesheet', href='/bootstrap/css/amelia.bootstrap.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css')
   body
-    .navbar.navbar-default.navbar-fixed-top
-      .container
-        .navbar-header
-          a.navbar-brand(href='/') Rogers Community Garden 
-            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
-              span.icon.bar
-              span.icon.bar
-              span.icon.bar
-        #navbar-main.navbar-collapse.collapse
+    .container
+      nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
+        button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarNavDropdown', aria-controls='navbarNavDropdown', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        a.navbar-brand(href='/') RCG
+        #navbarNavDropdown.collapse.navbar-collapse
           ul.nav.navbar-nav
-            li
-              a(href='/control/') Control 
-          ul.nav.navbar-nav
-            li
-              a(href='/reporting/') Reporting
-          ul.nav.navbar-nav
-            li
-              a(href='/logs/') Logs
-          ul.nav.navbar-nav
-            li
-              a(href='/settings/') Settings
-
-  .container
-    block content
-    footer
-      .row
-        .col-xs-12
-          small RCG Aquaponics
-
-    script(src='/javascripts/jquery-1.11.1.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
+            li.dropdown
+              a#controlDrop.nav-link.dropdown-toggle(href='/control') Control
+              ul.dropdown-menu(aria-labelledby='controlDrop')
+                li
+                  a.dropdown-item(href='/control') Control
+                li
+                  a.dropdown-item(href='/control/single') Single 
+                li
+                  a.dropdown-item(href='/control/process') Process
+    .container
+      block content
+    .container
+      footer
+        .row
+          .col-xs-12
+            small RCG Aquaponics
+      script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
