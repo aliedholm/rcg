@@ -9,7 +9,7 @@ html
     .navbar.navbar-default.navbar-fixed-top
       .container
         .navbar-header
-          a.navbar-brand(href='/') Loc8r
+          a.navbar-brand(href='/') Rogers Community Garden 
             button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
               span.icon.bar
               span.icon.bar
@@ -17,7 +17,17 @@ html
         #navbar-main.navbar-collapse.collapse
           ul.nav.navbar-nav
             li
-              a(href='/about/') About
+              a(href='/control/') Control 
+          ul.nav.navbar-nav
+            li
+              a(href='/reporting/') Reporting
+          ul.nav.navbar-nav
+            li
+              a(href='/logs/') Logs
+          ul.nav.navbar-nav
+            li
+              a(href='/settings/') Settings
+
   .container
     block content
     footer
