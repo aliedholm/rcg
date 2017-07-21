@@ -27,5 +27,7 @@ router.get('/control/process', ctrlControl.process);
 
 /* Settings Pages */
 router.get('/settings', ctrlSettings.settings);
+router.get('/settings/reporting', ctrlSettings.reportingSettings);
+router.get('/settings/control', ctrlSettings.controlSettings);
 
 module.exports = router;

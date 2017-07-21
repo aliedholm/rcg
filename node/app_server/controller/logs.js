@@ -5,9 +5,9 @@ module.exports.logs = function(req, res) {
 };
 
 module.exports.systemLogs = function(req, res) {
-  res.render('index', { title: 'System Logs' });
+  res.render('systemLogs', { title: 'System Logs' });
 };
 
 module.exports.userLogs = function(req, res) {
-  res.render('index', { title: 'User Logs' });
+  res.render('userLogs', { title: 'User Logs' });
 };

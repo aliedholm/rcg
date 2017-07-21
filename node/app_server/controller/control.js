@@ -4,9 +4,9 @@ module.exports.control = function(req, res) {
 };
 
 module.exports.single = function(req, res) {
-  res.render('index', { title: 'Single Component Control' });
+  res.render('single', { title: 'Single Component Control' });
 };
 
 module.exports.process = function(req, res) {
-  res.render('index', { title: 'Process Control' });
+  res.render('process', { title: 'Process Control' });
 };

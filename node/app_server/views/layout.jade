@@ -11,17 +11,40 @@ html
         button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarNavDropdown', aria-controls='navbarNavDropdown', aria-expanded='false', aria-label='Toggle navigation')
           span.navbar-toggler-icon
         a.navbar-brand(href='/') RCG
-        #navbarNavDropdown.collapse.navbar-collapse
-          ul.nav.navbar-nav
-            li.dropdown
-              a#controlDrop.nav-link.dropdown-toggle(href='/control') Control
-              ul.dropdown-menu(aria-labelledby='controlDrop')
-                li
-                  a.dropdown-item(href='/control') Control
-                li
-                  a.dropdown-item(href='/control/single') Single 
-                li
-                  a.dropdown-item(href='/control/process') Process
+        .dropdown
+          button#reportingDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Reporting
+            span.caret
+          ul.dropdown-menu(aria-labelledby='reportingDrop')
+            li
+              a(href='/reporting/fish') Fish Tanks
+            li
+              a(href='/reporting/biofilter') Biofilters
+            li
+              a(href='/reporting/reservoir') Plant Reservoirs
+        .dropdown
+          button#controlDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Control
+            span.caret
+          ul.dropdown-menu(aria-labelledby='controlDrop')
+            li
+              a(href='/control/single') Single Component
+            li
+              a(href='/control/process') Process Control
+        .dropdown
+          button#logsDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Logs
+            span.caret
+          ul.dropdown-menu(aria-labelledby='logsDrop')
+            li
+              a(href='/logs/system') System Logs
+            li
+              a(href='/logs/user') User Logs
+        .dropdown
+          button#settingsDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Settings
+            span.caret
+          ul.dropdown-menu(aria-labelledby='settingsDrop')
+            li
+              a(href='/settings/control') Control Settings
+            li
+              a(href='/settings/reporting') Reporting Settings
     .container
       block content
     .container
@@ -29,5 +52,5 @@ html
         .row
           .col-xs-12
             small RCG Aquaponics
-      script(src='https://code.jquery.com/jquery-3.2.1.min.js')
-      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
+    script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
