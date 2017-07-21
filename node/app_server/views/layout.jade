@@ -15,35 +15,35 @@ html
           button#reportingDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Reporting
             span.caret
           ul.dropdown-menu(aria-labelledby='reportingDrop')
-            li
+            li.dropItem
               a(href='/reporting/fish') Fish Tanks
-            li
+            li.dropItem
               a(href='/reporting/biofilter') Biofilters
-            li
+            li.dropItem
               a(href='/reporting/reservoir') Plant Reservoirs
         .dropdown
           button#controlDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Control
             span.caret
           ul.dropdown-menu(aria-labelledby='controlDrop')
-            li
+            li.dropItem
               a(href='/control/single') Single Component
-            li
+            li.dropItem
               a(href='/control/process') Process Control
         .dropdown
           button#logsDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Logs
             span.caret
           ul.dropdown-menu(aria-labelledby='logsDrop')
-            li
+            li.dropItem
               a(href='/logs/system') System Logs
-            li
+            li.dropItem
               a(href='/logs/user') User Logs
         .dropdown
           button#settingsDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Settings
             span.caret
           ul.dropdown-menu(aria-labelledby='settingsDrop')
-            li
+            li.dropItem
               a(href='/settings/control') Control Settings
-            li
+            li.dropItem
               a(href='/settings/reporting') Reporting Settings
     .container
       block content
