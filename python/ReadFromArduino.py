@@ -1,7 +1,10 @@
 import serial
 import json
-with open('sensor_data.txt','w') as f:
-	json.dump(json_object,f)
+
+import sys
+sys.path.append("~/Github/rcg/python/")
+from ParseAsJson import ParseAsJson
+
  
 ser = serial.Serial('/dev/ttyACM0',9600)
 
@@ -11,8 +14,8 @@ data={}
 while 1:
 	# Keep reading
 	if(ser.inWaiting()>0):
-		ser.readline()	
-		ParseAsJson()
+		reading = ser.readline()	
+		result_dict=ParseAsJson(reading)
 
 		
 json_object json.load(data_dictionary)
