@@ -1,10 +1,15 @@
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient()
+def setup_connection():
+	client = MongoClient()
 
-db = client.test_database
+	db = client.test_database
 
-collection = db.test_collection
+	collection = db.Fish_Tank_Collection
+
+	return client,db,collection
+
+def pi_to_database(result_dict):
 
 

@@ -5,17 +5,20 @@ import sys
 sys.path.append("~/Github/rcg/python/")
 from ParseAsJson import ParseAsJson
 
- 
-ser = serial.Serial('/dev/ttyACM0',9600)
+def ReadFromArduino(port):
+	client
+	ser = serial.Serial(port,9600)
 
-# A dictionary to store the data
-data={}
-
-while 1:
-	# Keep reading
-	if(ser.inWaiting()>0):
-		reading = ser.readline()	
-		result_dict=ParseAsJson(reading)
-
+	# A dictionary to store the data
+	data=[]
+	count = 0
+	while(count>0)
+	while (count<10):
+		# Keep reading
+		if(ser.inWaiting()>0):
+			reading = ser.readline()	
+			result_dict=ParseAsJson(reading)
+			data.append(result_dict)
+	
 		
-json_object json.load(data_dictionary)
+	
