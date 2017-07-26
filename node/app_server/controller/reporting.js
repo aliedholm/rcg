@@ -1,6 +1,12 @@
 /* GET 'reporting' pages */
 module.exports.reporting = function(req, res) {
-  res.render('reporting', { title: 'Aquaponics Data' });
+  res.render('reporting', { 
+    title: 'Aquaponics Data',
+    pageHeader: {
+      title: 'Aquaponics Data',
+      strapline: 'Set of data for the project'
+    }
+  });  
 };
 
 module.exports.fish = function(req, res) {
