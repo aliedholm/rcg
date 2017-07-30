@@ -1,3 +1,9 @@
+""" Help connect to the Mongodb Database
+Return:
+	client(Mongodb Client): The client 
+	db(Mongodb Database): The database
+"""
+
 import pymongo
 from pymongo import MongoClient
 
@@ -6,10 +12,7 @@ def setup_connection():
 
 	db = client.test_database
 
-	collection = db.Fish_Tank_Collection
+	return client,db
 
-	return client,db,collection
-
-def pi_to_database(result_dict):
 
 

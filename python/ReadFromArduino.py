@@ -1,24 +1,30 @@
 import serial
 import json
-
+""" Keep reading from one Arduino, parse the read and send data to database
+Args:
+	db(mongodb database): The database we use for all data
+	port(str): The port where Arduino is connected to the pi
+"""
 import sys
 sys.path.append("~/Github/rcg/python/")
+
 from ParseAsJson import ParseAsJson
+from datetime import datetime
 
-def ReadFromArduino(port):
-	client
+def ReadFromArduino(db,port):
+
 	ser = serial.Serial(port,9600)
-
-	# A dictionary to store the data
-	data=[]
-	count = 0
-	while(count>0)
-	while (count<10):
+	
+	while True:
 		# Keep reading
 		if(ser.inWaiting()>0):
-			reading = ser.readline()	
-			result_dict=ParseAsJson(reading)
-			data.append(result_dict)
+			reading = ser.readline()
+			timestamp = str(datetime.now())	
+			
+			result_dict,tank_type=ParseAsJson(timestamp,reading)
+			db[tank_type].insert_one(result_dict)
+
+			
 	
 		
 	

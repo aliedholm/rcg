@@ -1,9 +1,9 @@
 # A method for parsing the data read from Arduino
-# The input string format should be "Tanktype Tank# Sensor Value"
-# The output dictionary format should be "{'Tank Type': Tanktype, 'Tank Number'
-: Tank#, 'Sensor': Sensor, 'Value': value }"
+# The input string format should be "Tanktype Tank# Sensor Value" with the time
+# The output dictionary format should be "{sensor: { Tank Number:{'Time': time
+# stamp, 'Value': value }}}" And also return the tank type searately
 
-def ParseAsJson(arduino_str):
+def ParseAsJson(timestamp,arduino_str):
 
 	value_list = arduino_str.split(' ')
 	
@@ -15,9 +15,11 @@ def ParseAsJson(arduino_str):
 	except ValueError:
 		value=int(value_list[3])
 
-	result_dict={"Tank Type": tank_type, "Tank Number": tank_num, "Sensor": sensor, "Value": value}
+	result_dict={}
+	result_dict[sensor]={}
+	result_dict[sensor][str(tank_num)]={ "Time": timestamp, "Value": value}
 	
 	
-	return result_dict
+	return result_dict,tank_type
 	
 
