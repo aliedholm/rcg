@@ -98,7 +98,7 @@ module.exports.statAdd = function(req, res) {
   if (tankName && statName) {
 		tankModel
 			.find({"tankName" : req.params.tankName})
-      .select(statName)
+      .select('tankName')
 			.exec(function(err, statData) {
         if (!statData.length) {
           sendJsonResponse(res, 404, { "message" : "tank not found" });
@@ -110,8 +110,25 @@ module.exports.statAdd = function(req, res) {
           console.log("error object passed down");
           return;
         }
-        doAddData(req, res, statData);
-			})
+        if (!statData) {
+          sendJsonResponse(res, 404, {"message" : "tank not found"});
+        } else {
+          statData.push({
+            timestamp: new Date(),
+            reading: req.body.reading
+          });
+        }
+sendJsonResponse(res, 200, statData);
+        statData.save(function(err, statData) {
+          var thisData;
+          if (err) {
+            sendJsonResponse(res, 400, err);
+          } else {
+            thisData = statData.statName[statData.statName.length - 1];
+            sendJsonResponse(res, 201, thisData);
+          }
+        })
+      })
   }
   else {
     sendJsonResponse(res, 404, { "message" : "No tank name and/or stat in request" });
@@ -119,23 +136,4 @@ module.exports.statAdd = function(req, res) {
   }
 }
 
-var doAddData = function(req, res, tankData) {
-  if(!tankData) {
-    sendJsonResponse(res, 404, {"message" : "tank not found"});
-  } else {
-    tankData.push({
-      timestamp: new Date(),
-      reading: req.body.reading
-    });
-  }
-  sendJsonResponse(res, 201, tankData);
-  tankData.save(function(err, tankData) {
-    var thisData;
-    if(err) {
-      sendJsonResponse(res, 400, err);
-    } else {
-      thisData = tankData.statName[tankData.statName.length - 1];
-      sendJsonResponse(res, 201, thisData);
-    }
-  });
-}   
+
