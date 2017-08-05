@@ -36,3 +36,4 @@ process.on('SIGINT', function() {
   });
 });
 require('./data');
+require('./logs');
