@@ -11,7 +11,7 @@ var readingSchema = new mongoose.Schema({
 
 var tankSchema = new mongoose.Schema({
   tankName: {type: String, required: true},
-  tankType: {type: String, required: true},
+  tankType: {type: String},
   tankNumber: {type: Number, required: true},
   phData: [readingSchema],
   doData: [readingSchema],

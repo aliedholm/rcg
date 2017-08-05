@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var ctrlTanks = require('../controllers/tanks');
+var ctrlTest = require('../controllers/test');
 
 //tanks api definitions
 router.get('/tanks/', ctrlTanks.allTanks);
@@ -19,5 +20,8 @@ router.post('/tanks', ctrlTanks.tankCreate);
 router.post('/tanks/:tankName', ctrlTanks.statAdd);
 router.post('/tanks/:tankName/stats', ctrlTanks.statAdd);
 router.post('/tanks/:tankName/stats/:statName', ctrlTanks.statAdd);
+
+router.post('/test/:testNumber', ctrlTest.tankById);
+router.post('/test/:testNumber/stat/:stat', ctrlTest.testAdd);
 
 module.exports = router;

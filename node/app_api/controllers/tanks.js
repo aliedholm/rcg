@@ -97,7 +97,7 @@ module.exports.statAdd = function(req, res) {
   var statName = req.params.statName;
   if (tankName && statName) {
 		tankModel
-			.find({"tankName" : req.params.tankName})
+			.findById(req.params.tankName)
       .select('tankName')
 			.exec(function(err, statData) {
         if (!statData.length) {
