@@ -1,3 +1,7 @@
+var request = require('request');
+var apiOptions = {
+  server : "http://localhost:3000"
+};
 /* GET 'control' pages */
 module.exports.control = function(req, res) {
   res.render('control', { title: 'Aquaponics System Control' });

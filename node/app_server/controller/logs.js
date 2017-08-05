@@ -1,3 +1,7 @@
+var request = require('request');
+var apiOptions = {
+  server : "http://localhost:3000"
+};
 /* GET 'logs' pages */
 
 module.exports.logs = function(req, res) {

@@ -1,3 +1,12 @@
+var request = require('request');
+var apiOptions = {
+  server : "http://localhost:3000"
+};
+
+var renderPage = function(req, res, body) {
+  res.render('fish', {"tanks" : body});
+};
+
 /* GET 'reporting' pages */
 module.exports.reporting = function(req, res) {
   res.render('reporting', { 
@@ -10,7 +19,20 @@ module.exports.reporting = function(req, res) {
 };
 
 module.exports.fish = function(req, res) {
-  res.render('fish', { title: 'Fish Tank Reporting' });
+  var requestOptions, path;
+  path = '/api/tanks/fish';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, body);
+    }
+  );
 };
 
 module.exports.biofilter = function(req, res) {

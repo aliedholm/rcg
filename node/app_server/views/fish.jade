@@ -5,3 +5,15 @@ block content
     .col-lg-12
       h1= title
       p Welcome to #{title}
+        each tank in tanks
+          each data in tank.wlvlData
+            ul
+              li
+                .data= data.reading
+                .timestamp= data.timestamp 
+          hr
+          each data in tank.wtempData
+            ul
+              li
+                .data= data.reading
+                .timestamp= data.timestamp

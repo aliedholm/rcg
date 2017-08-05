@@ -10,13 +10,17 @@ module.exports.allTanks = function(req, res) {
   tankModel
     .find()
     .exec(function(err, tanks) {
-      sendJsonResponse(res, 200, {"status" : tanks})
-    })
+      sendJsonResponse(res, 200, tanks);
+    });
 }
 
 module.exports.fishTanks = function(req, res) { 
-  sendJsonResponse(res, 200, {"status" : "success"})
-};
+  tankModel
+    .find({"tankType" : "fish"})
+    .exec(function(err, tanks) {
+      sendJsonResponse(res, 200, tanks);
+    });
+}
 
 module.exports.biofilterTanks = function(req, res) { 
   sendJsonResponse(res, 200, {"status" : "success"})
@@ -50,28 +54,6 @@ module.exports.tankByName = function(req, res) {
   }
 }
 
-module.exports.tankStats = function(req, res) {
-  if(req.params.tankName && req.params.stat) {
-		tankModel
-			.find({"tankName" : req.params.tankName})
-			.select(req.params.stat)
-			.exec(function(err, data) {
-        if(!data) {
-          sendJsonResponse(res, 404, {"message" : "data not found"});
-          return;
-        }
-        else if(err) {
-          sendJsonResponse(res, 404, err);
-          return;
-        }
-				sendJsonResponse(res, 200, {"status" : data})
-			})
-  }
-  else {
-    sendJsonResponse(res, 404, {"message" : "incomplete request"});
-  }
-}
-
 module.exports.tankCreate = function(req, res) {
   tankModel.create({
     tankName: req.body.tankName,
@@ -92,48 +74,28 @@ module.exports.tankCreate = function(req, res) {
   })
 }
 
-module.exports.statAdd = function(req, res) {
-  var tankName = req.params.tankName;
-  var statName = req.params.statName;
-  if (tankName && statName) {
+module.exports.delById = function(req, res) {
+  if(req.params.tankId) {
 		tankModel
-			.findById(req.params.tankName)
-      .select('tankName')
-			.exec(function(err, statData) {
-        if (!statData.length) {
-          sendJsonResponse(res, 404, { "message" : "tank not found" });
-          console.log("tank not found error");
-          return;
-        }
-        else if (err) { 
-          sendJsonResponse(res, 404, err);
-          console.log("error object passed down");
-          return;
-        }
-        if (!statData) {
-          sendJsonResponse(res, 404, {"message" : "tank not found"});
-        } else {
-          statData.push({
-            timestamp: new Date(),
-            reading: req.body.reading
-          });
-        }
-sendJsonResponse(res, 200, statData);
-        statData.save(function(err, statData) {
-          var thisData;
-          if (err) {
-            sendJsonResponse(res, 400, err);
-          } else {
-            thisData = statData.statName[statData.statName.length - 1];
-            sendJsonResponse(res, 201, thisData);
-          }
-        })
-      })
-  }
-  else {
-    sendJsonResponse(res, 404, { "message" : "No tank name and/or stat in request" });
-    console.log("No tank name and/or stat in request");
+			.findByIdAndRemove(req.params.tankId)
+			.exec(function(err, tank) {
+				if(err){
+					sendJsonResponse(res, 400, err);
+					return;
+				} 
+				sendJsonResponse(res, 204, null);
+			})
+  } else {
+    sendJsonResponse(res, 400, {"message" : "no tank id"});
   }
 }
 
-
+module.exports.delByName = function(req, res) {
+  if(req.params.tankName) {
+    tankModel.findOne({"tankName" : req.params.tankName}).remove().exec(function(err, tank) {
+      sendJsonResponse(res, 204, null);
+    })
+  } else {
+    sendJsonResponse(res, 400, {"message" : "no tank name in request"});
+  } 
+}
