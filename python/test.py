@@ -4,7 +4,5 @@ import sys
 sys.path.append("~/Github/rcg/python/")
 
 from ReadFromArduino import ReadFromArduino
-import PiToDatabase
-client,db=PiToDatabase.setup_connection()
-ReadFromArduino(db,'/dev/ttyAMA0')
+ReadFromArduino('/dev/ttyACM0')
 
