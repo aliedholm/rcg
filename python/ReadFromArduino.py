@@ -1,6 +1,4 @@
 import serial
-import sys
-sys.path.append("~/Github/rcg/python/")
 from ParseAsUrl import ParseAsUrl
 import requests
 
