@@ -2,10 +2,26 @@ var request = require('request');
 var apiOptions = {
   server : "http://localhost:3000"
 };
-/* GET 'logs' pages */
 
+var renderPage = function(req, res, body) {
+  res.render('logs', {"logs" : body});
+};
+
+/* GET 'logs' pages */
 module.exports.logs = function(req, res) {
-  res.render('logs', { title: 'Logs' });
+  var requestOptions, path;
+  path = '/api/logs';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, body);
+    })  
 };
 
 module.exports.systemLogs = function(req, res) {
