@@ -87,7 +87,8 @@ module.exports.reservoir = function(req, res) {
 };
 
 module.exports.tankByName = function(req, res) {
-  var template = "tankByName";
+  var title = req.params.tankName;
+  var template = "tanks";
   var requestOptions, path;
   path = '/api/tanks/name/' + req.params.tankName;
   requestOptions = {
@@ -99,7 +100,7 @@ module.exports.tankByName = function(req, res) {
   request(
     requestOptions,
     function(err, response, body) {
-      renderPage(req, res, template, body);
+      renderPage(req, res, template, title, body);
     }
   );
 };

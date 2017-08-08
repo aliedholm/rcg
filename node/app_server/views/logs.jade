@@ -1,10 +1,13 @@
 extends layout
 
+include _includes/sharedHTMLfunctions
+
 block content
   .row.page-header
     .col-lg-12
       h1= title
-      p Welcome to #{title}
-        ul.list-group 
-          each log in logs
-            li.list-group-item Time: #{log.logTime} | Type: #{log.logType} | Log: #{log.logBody}
+      ul.list-group 
+        each log in logs
+          li.list-group-item Time: 
+            +formatDate(log.logTime)
+            &nbsp;| Type: #{log.logType} | Log: #{log.logBody}

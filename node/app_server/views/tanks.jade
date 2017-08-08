@@ -1,48 +1,66 @@
 extends layout
+include _includes/sharedHTMLfunctions 
 
 block content
   .row.page-header
     .col-lg-12
-      h1= title
-      p Welcome to #{title}
+        h1= title
         each tank in tanks
-          p
-            b= tank.tankName
           table
             tr
-              td
-                .wlvl Water Level
+              td  
+                b Tank Name: #{tank.tankName}
+            tr
+              td(valign="top") 
+                b Water Level:
+                ul.list-group
                   each data in tank.wlvlData
-                    ul.list-group
-                      li.list-group-item
-                        .data= data.reading
-                        .timestamp= data.timestamp 
-               
-              td
-                .wTemp Water Temperature 
+                    li.list-group-item
+                      p
+                        .reading Reading: #{data.reading} &nbsp; 
+                      p
+                        .time Time: &nbsp;
+                          +formatDate(data.timestamp)
+              td(valign="top") 
+                b Water Temperature:
+                ul.list-group
                   each data in tank.wtempData
-                    ul.list-group
-                      li.list-group-item
-                        .data= data.reading
-                        .timestamp= data.timestamp
-              td
-                .ph pH
+                    li.list-group-item
+                      p
+                        .reading Reading: #{data.reading} &nbsp; 
+                      p
+                        .time Time: &nbsp;
+                          +formatDate(data.timestamp)
+              td(valign="top")
+                b pH: 
+                ul.list-group
                   each data in tank.phData
-                    ul.list-group
-                      li.list-group-item
-                        .data= data.reading
-                        .timestamp= data.timestamp
-              td
-                .ec EC 
+                    li.list-group-item
+                      p
+                        .reading Reading: #{data.reading} &nbsp; 
+                      p
+                        .time Time: &nbsp;
+                          +formatDate(data.timestamp)
+              td(valign="top")
+                b Electrical Conductivity:
+                ul.list-group
                   each data in tank.ecData
-                    ul.list-group
-                      li.list-group-item
-                        .data= data.reading
-                        .timestamp= data.timestamp
-              td
-                .do DO 
+                    li.list-group-item
+                      p
+                        .reading Reading: #{data.reading} &nbsp; 
+                      p
+                        .time Time: &nbsp;
+                          +formatDate(data.timestamp)
+              td(valign="top")
+                b Dissolved Oxygen: 
+                ul.list-group
                   each data in tank.doData
-                    ul.list-group
-                      li.list-group-item
-                        .data= data.reading
-                        .timestamp= data.timestamp
+                    li.list-group-item
+                      p
+                        .reading Reading: #{data.reading} &nbsp; 
+                      p
+                        .time Time: &nbsp;
+                          +formatDate(data.timestamp)
+            tr
+              td
+                br
