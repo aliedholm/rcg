@@ -49,6 +49,20 @@ html
               a(href='/settings/control') Control Settings
             li.dropItem
               a(href='/settings/reporting') Reporting Settings
+        .dropdown
+          button#reportingDrop.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true') Api Interface(Dev Only)
+            span.caret
+          ul.dropdown-menu(aria-labelledby='apiDrop')
+            li.dropItem
+              a(href='/reporting/new/tank') New Tank
+            li.dropItem
+              a(href='/reporting/edit/tank/') Edit Tank
+            li.dropItem
+              a(href='/reporting/delete/tank/') Delete Tank
+            li.dropItem
+              a(href='/reporting/add/stat') Add Stats
+            li.dropItem
+              a(href='/reporting/add/log') Add Log
     .container
       .error= message
       block content

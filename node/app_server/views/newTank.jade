@@ -1,0 +1,23 @@
+extends layout
+
+include _includes/sharedHTMLfunctions
+
+block content
+  .row.page-header
+    .col-lg-12
+      h1= title
+      .row
+        form.form-horizontal(action="", method="post", role="form")
+          .form-group
+            label.col-xs-10.col-sm-2.control-label(for="tankName") Tank Name
+            .col-xs-12.col-sm-10
+              input#tankName.form-control(name="tankName")
+          .form-group
+            label.col-xs-10.col-sm-2.control-label(for="tankType") Tank Type
+            .col-xs-12.col-sm-10
+              input#tankType.form-control(name="tankType")
+          .form-group
+            label.col-xs-10.col-sm-2.control-label(for="tankNumber") Tank Number
+            .col-xs-12.col-sm-10
+              input#tankNumber.form-control(name="tankNumber")
+          button.btn.btn-default.pull-right Add Tank

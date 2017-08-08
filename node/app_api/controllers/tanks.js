@@ -77,7 +77,7 @@ module.exports.tankCreate = function(req, res) {
       sendJsonResponse(res, 400, err);
     }
     else {
-      sendJsonResponse(res, 201, tank);
+      sendJsonResponse(res, 200, tank);
     }
   })
 }

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+
 var ctrlDashboard = require('../controller/dashboard');
 var ctrlLogs = require('../controller/logs');
 var ctrlReporting = require('../controller/reporting');
@@ -20,6 +21,12 @@ router.get('/reporting/fish', ctrlReporting.fish);
 router.get('/reporting/biofilter', ctrlReporting.biofilter);
 router.get('/reporting/reservoir', ctrlReporting.reservoir);
 router.get('/reporting/tank/:tankName', ctrlReporting.tankByName);
+
+router.post('/reporting/new/tank', ctrlReporting.newTank);
+router.get('/reporting/new/tank', ctrlReporting.newTank);
+
+router.get('/reporting/delete/tank', ctrlReporting.deleteTank);
+router.delete('/reporting/delete/tank', ctrlReporting.deleteTank);
 
 /* Control Pages */
 router.get('/control', ctrlControl.control);
