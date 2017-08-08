@@ -11,7 +11,6 @@ router.get('/tanks/fish', ctrlTanks.fishTanks);
 router.get('/tanks/biofilter', ctrlTanks.biofilterTanks);
 router.get('/tanks/reservoir', ctrlTanks.reservoirTanks);
 router.get('/tanks/name/:tankName', ctrlTanks.tankByName);
-router.get('/tanks/name', ctrlTanks.tankByName);
 
 router.post('/tanks', ctrlTanks.tankCreate);
 

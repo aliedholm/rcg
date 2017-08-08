@@ -23,19 +23,27 @@ module.exports.fishTanks = function(req, res) {
 }
 
 module.exports.biofilterTanks = function(req, res) { 
-  sendJsonResponse(res, 200, {"status" : "success"})
+  tankModel
+    .find({"tankType" : "biofilter"})
+    .exec(function(err, tanks) {
+      sendJsonResponse(res, 200, tanks);
+    });
 };
 
 module.exports.reservoirTanks = function(req, res) { 
-  sendJsonResponse(res, 200, {"status" : "success"})
+  tankModel
+    .find({"tankType" : "reservoir"})
+    .exec(function(err, tanks) {
+      sendJsonResponse(res, 200, tanks);
+    });
 };
 
 module.exports.tankByName = function(req, res) {
   if (req.params.tankName) {
 		tankModel
 			.find({"tankName" : req.params.tankName})
-			.exec(function(err, tankData) {
-        if (!tankData.length) {
+			.exec(function(err, tanks) {
+        if (!tanks.length) {
           sendJsonResponse(res, 404, { "message" : "tank not found" });
           console.log("tank not found error");
           return;
@@ -45,7 +53,7 @@ module.exports.tankByName = function(req, res) {
           console.log("error object passed down");
           return;
         }
-				sendJsonResponse(res, 200, {"status" : tankData});
+				sendJsonResponse(res, 200, tanks);
 			})
   }
   else {

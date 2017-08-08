@@ -13,36 +13,36 @@ block content
               td
                 .wlvl Water Level
                   each data in tank.wlvlData
-                    ul
-                      li
+                    ul.list-group
+                      li.list-group-item
                         .data= data.reading
                         .timestamp= data.timestamp 
                
               td
                 .wTemp Water Temperature 
                   each data in tank.wtempData
-                    ul
-                      li
+                    ul.list-group
+                      li.list-group-item
                         .data= data.reading
                         .timestamp= data.timestamp
               td
                 .ph pH
                   each data in tank.phData
-                    ul
-                      li
+                    ul.list-group
+                      li.list-group-item
                         .data= data.reading
                         .timestamp= data.timestamp
               td
                 .ec EC 
                   each data in tank.ecData
-                    ul
-                      li
+                    ul.list-group
+                      li.list-group-item
                         .data= data.reading
                         .timestamp= data.timestamp
               td
                 .do DO 
                   each data in tank.doData
-                    ul
-                      li
+                    ul.list-group
+                      li.list-group-item
                         .data= data.reading
                         .timestamp= data.timestamp

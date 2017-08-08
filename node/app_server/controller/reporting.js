@@ -3,22 +3,35 @@ var apiOptions = {
   server : "http://localhost:3000"
 };
 
-var renderPage = function(req, res, body) {
-  res.render('fish', {"tanks" : body});
+var renderPage = function(req, res, template, title, body) {
+  res.render(template, {
+    "title" : title,
+    "tanks" : body});
 };
 
 /* GET 'reporting' pages */
-module.exports.reporting = function(req, res) {
-  res.render('reporting', { 
-    title: 'Aquaponics Data',
-    pageHeader: {
-      title: 'Aquaponics Data',
-      strapline: 'Set of data for the project'
+module.exports.allTanks = function(req, res) {
+  var title = "All Aquaponics Tanks";
+  var template = "tanks";
+  var requestOptions, path;
+  path = '/api/tanks';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, template, title, body);
     }
-  });  
+  );
 };
 
 module.exports.fish = function(req, res) {
+  var title = "All Fish Tanks";
+  var template = "tanks";
   var requestOptions, path;
   path = '/api/tanks/fish';
   requestOptions = {
@@ -30,15 +43,63 @@ module.exports.fish = function(req, res) {
   request(
     requestOptions,
     function(err, response, body) {
-      renderPage(req, res, body);
+      renderPage(req, res, template, title, body);
     }
   );
 };
 
 module.exports.biofilter = function(req, res) {
-  res.render('biofilter', { title: 'Biofilter Reporting' });
+  var title = "All Biofilter Tanks";
+  var template = "tanks";
+  var requestOptions, path;
+  path = '/api/tanks/biofilter';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, template, title, body);
+    }
+  );
 };
 
 module.exports.reservoir = function(req, res) {
-  res.render('reservoir', { title: 'Plant Reservoir Reporting' });
+  var title = "All Reservoir Tanks";
+  var template = "tanks";
+  var requestOptions, path;
+  path = '/api/tanks/reservoir';
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, template, title, body);
+    }
+  );
+};
+
+module.exports.tankByName = function(req, res) {
+  var template = "tankByName";
+  var requestOptions, path;
+  path = '/api/tanks/name/' + req.params.tankName;
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "GET",
+    json : {},
+    qs : {}
+  };
+  request(
+    requestOptions,
+    function(err, response, body) {
+      renderPage(req, res, template, body);
+    }
+  );
 };

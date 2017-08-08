@@ -15,10 +15,11 @@ router.get('/logs/system', ctrlLogs.systemLogs);
 router.get('/logs/user', ctrlLogs.userLogs);
 
 /* Reporting Pages */
-router.get('/reporting', ctrlReporting.reporting);
+router.get('/reporting', ctrlReporting.allTanks);
 router.get('/reporting/fish', ctrlReporting.fish);
 router.get('/reporting/biofilter', ctrlReporting.biofilter);
 router.get('/reporting/reservoir', ctrlReporting.reservoir);
+router.get('/reporting/tank/:tankName', ctrlReporting.tankByName);
 
 /* Control Pages */
 router.get('/control', ctrlControl.control);

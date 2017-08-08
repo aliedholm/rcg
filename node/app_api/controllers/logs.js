@@ -16,7 +16,7 @@ module.exports.allLogs = function(req, res) {
 
 module.exports.userLogs = function(req, res) {
   logModel
-    .find()
+    .find({"logType" : "user"})
     .exec(function(err, logs) {
       sendJsonResponse(res, 200, logs);
     })
@@ -24,7 +24,7 @@ module.exports.userLogs = function(req, res) {
 
 module.exports.systemLogs = function(req, res) {
   logModel
-    .find()
+    .find({"logType" : "system"})
     .exec(function(err, logs) {
       sendJsonResponse(res, 200, logs);
     })

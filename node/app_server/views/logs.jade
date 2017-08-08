@@ -5,9 +5,6 @@ block content
     .col-lg-12
       h1= title
       p Welcome to #{title}
-        each log in logs
-          ul
-            li
-              .type= log.logType
-              .time= log.logTime
-              .body= log.logBody
+        ul.list-group 
+          each log in logs
+            li.list-group-item Time: #{log.logTime} | Type: #{log.logType} | Log: #{log.logBody}

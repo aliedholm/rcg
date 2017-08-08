@@ -23,6 +23,7 @@ module.exports.statById = function(req, res) {
       })
   } else {
       sendJsonResponse(res, 404, {"message" : "no tank id in request"});
+      return;
   }
 }
 
@@ -45,6 +46,7 @@ module.exports.statByName = function(req, res) {
       })
   } else {
       sendJsonResponse(res, 404, {"message" : "no tank id in request"});
+      return;
   }
 }
 
@@ -65,6 +67,7 @@ module.exports.statAddById = function(req, res) {
       })
   } else {
       sendJsonResponse(res, 404, {"message" : "no tank id in request"});
+      return;
   }
 }
 
@@ -86,17 +89,24 @@ module.exports.statAddByName = function(req, res) {
       })
   } else {
       sendJsonResponse(res, 404, {"message" : "no tank id in request"});
+      return;
   }
 }
 
 var doAddData = function(req, res, tankData) { 
   if(!tankData) {
     sendJsonResponse(res, 404, {"message" : "no tank data passed to doAddData"});
+    return;
   } else {
-    tankData[req.params.stat].push({
-      timestamp: new Date(),
-      reading: req.body.reading 
-    });
+    if(!(tankData[req.params.stat])) {
+      sendJsonResponse(res, 404, {"message" : "stat to add does not exist in tank"});
+      return;
+    } else {
+      tankData[req.params.stat].push({
+        timestamp: new Date(),
+        reading: req.body.reading 
+      });
+    }
     tankData.save(function(err, tankData) {
       var thisData;
       if(err) {

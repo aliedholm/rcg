@@ -16,6 +16,8 @@ html
             span.caret
           ul.dropdown-menu(aria-labelledby='reportingDrop')
             li.dropItem
+              a(href='/reporting') All Tanks
+            li.dropItem
               a(href='/reporting/fish') Fish Tanks
             li.dropItem
               a(href='/reporting/biofilter') Biofilters
@@ -34,6 +36,8 @@ html
             span.caret
           ul.dropdown-menu(aria-labelledby='logsDrop')
             li.dropItem
+              a(href='/logs') All Logs
+            li.dropItem
               a(href='/logs/system') System Logs
             li.dropItem
               a(href='/logs/user') User Logs
@@ -46,6 +50,7 @@ html
             li.dropItem
               a(href='/settings/reporting') Reporting Settings
     .container
+      .error= message
       block content
     .container
       footer
