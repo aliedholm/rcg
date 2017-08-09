@@ -15,7 +15,6 @@ router.get('/tanks/name/:tankName', ctrlTanks.tankByName);
 router.post('/tanks', ctrlTanks.tankCreate);
 
 router.delete('/tanks/id/:tankId', ctrlTanks.delById);
-router.delete('/tanks/name/:tankName', ctrlTanks.delByName);
 
 //stats api route definitions
 router.get('/stats/read/name/:tankName/:statName', ctrlStats.statByName);
