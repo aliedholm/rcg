@@ -32,13 +32,13 @@ void loop() {
     temp = sensors.getTempCByIndex(0);
     delay(500);
     if (temp == -127){
-      to_print = "Error: Data corruption during transit! Please check the associated pull-up resistor.";
+      to_print = "Sensor number: " + String(sens_on_bus+1) + " Error: Data corruption during transit! Please check the associated pull-up resistor.";
     }
     else if (temp == 85){
-      to_print = "Error: Data read before complete read! Please wait until power cycle is completed.";
+      to_print = "Sensor number: " + String(sens_on_bus+1) + " Error: Data read before complete read! Please wait until power cycle is completed.";
     }
     else if (temp == 0){
-      to_print = "Error: No DS18b20 sensor detected! Please check that the circuit is completed.";
+      to_print = "Sensor number: " + String(sens_on_bus+1) + " Error: No DS18b20 sensor detected! Please check that the circuit is completed.";
     }
     else{
       temp = sensors.getTempFByIndex(0);
