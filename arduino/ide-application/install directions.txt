@@ -1,0 +1,1 @@
+in the folder in terminal type ./install.sh
