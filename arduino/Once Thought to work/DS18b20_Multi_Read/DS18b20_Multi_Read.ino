@@ -22,19 +22,8 @@ String to_print;
 void setup() {
   Serial.begin(9600); //Initialize Serial Port
   sens_on_bus = sensors.getDeviceCount();
-  delay(30);
-  if(sens_on_bus == 0){
-    Serial.println("There are no DS18b20's on the bus!");
-    Serial.println("Quitting sketch!");
-    delay(5000);
-    Serial.println("Goodbye!");
-    delay(10);
-    exit(0);
-  }
-  else{
-    Serial.println("There are " + String(sens_on_bus+1) + " DS18b20's on this bus.");
-  }
-  delay(1000);
+  delay(3000);
+
 }
 
 void loop() {
