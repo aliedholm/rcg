@@ -1,7 +1,4 @@
 const int relay1 = 8;
-const int relay2 = 9;
-const int relay3 = 10;
-const int relay4 = 11;
 
 void setup() {
   pinMode(relay1, OUTPUT);
