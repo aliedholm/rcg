@@ -93,6 +93,8 @@ void loop() {
       cmd = strtok(NULL, ":");     
         open_channel();                               // Call the function "open_channel" to open the correct data path      
         if (cmd != 0) {                               // if no command has been sent, send nothing
+          Serial.print("cmd exists ");
+          Serial.println(cmd);
           sSerial.print(cmd);                         // Send the command from the computer to the Atlas Scientific device using the softserial port
           sSerial.print("\r");                        // <CR> carriage return to terminate message
       }
@@ -103,6 +105,7 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+      Serial.print("sensor daata ");
       Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
     }
    }

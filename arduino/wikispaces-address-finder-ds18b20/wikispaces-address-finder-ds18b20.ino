@@ -10,7 +10,7 @@
  - Right  = +5 or +3.3 V   
  This sketch looks for 1-wire devices and  prints their addresses (serial number)
  to the Serial Monitor in a format that is useful in Arduino sketches.
- Based on example at: 
+ Based on example at: a cou
  http://www.hacktronics.com/Tutorials/arduino-1-wire-address-finder.html
  */
 
