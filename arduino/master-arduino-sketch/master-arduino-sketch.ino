@@ -20,7 +20,7 @@ DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
 //relay control code end
 
 //declare command code variable
-int commandCode = 0;
+String commandCode = "0";
 
 //tentacle sheild code 
 #include <SoftwareSerial.h>         //Include the software serial library  
@@ -43,6 +43,12 @@ char *cmd;                          // Char pointer used in string parsing
 String str;
 String str_channel;
 //tentacle sheild code end
+
+//Serial buffer code
+const byte numChars = 32;
+char receivedChars[numChars]; // an array to store the received data
+boolean newData = false;
+//Serial buffer code end
 
 void setup() {
   
@@ -87,27 +93,33 @@ void loop() {
   delay(100);
   //end ds18b20 generic code
 
-  // read serial data if its available and set command code
-  if(Serial.available()){
-    commandCode = Serial.read() - '0';
-    delay(50);
-  } 
+  // serial buffer code
   
+
+  // read serial data if its available and set command code
+//  if(Serial.available()){
+//    commandCode = Serial.read() - '0';
+//    delay(50);
+//  } 
+
+  // Serial buffer code
+  recvWithEndMarker();
+  showNewData();
   //Main set of if statements to trigger conditions from Serial commands
       
- if(commandCode == 1){
+  if(commandCode == "1111"){
     Serial.print("Temperature Probe 1: ");
     printTemperature(Probe01);
-    commandCode = 0;
+      commandCode = "0";
   }
   
-  if(commandCode == 2){
+  if(commandCode == "2222"){
     Serial.print("Temperature Probe 2: ");
     printTemperature(Probe02);
-    commandCode = 0;
-}
+      commandCode = "0";
+  }
   
-  if(commandCode == 3){
+  if(commandCode == "3333"){
    for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
@@ -138,12 +150,14 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+      Serial.print("EC Data: ");
+      Serial.println(sensordata);
     }
    }
-      commandCode = 0;
+      commandCode = "0";
   }
   
-  if(commandCode == 4){
+  if(commandCode == "4444"){
    for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
@@ -174,12 +188,14 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+      Serial.print("pH Data: ");
+      Serial.println(sensordata); 
     }
    }
-      commandCode = 0;
+      commandCode = "0";
   }
 
-  if(commandCode == 5){
+  if(commandCode == "5555"){
    for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
@@ -209,10 +225,12 @@ void loop() {
     }
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
+      Serial.print("DO Data: ");
+      Serial.println(sensordata); 
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
     }
    }
-      commandCode = 0;
+      commandCode = "0";
   }
 
 
@@ -223,6 +241,40 @@ void loop() {
 }//end of main loop
 
 //start of functions needed to be called in them main loop
+
+//Serial buffer functions
+void recvWithEndMarker() {
+ static byte ndx = 0;
+ char endMarker = '>';
+ char rc;
+ 
+ // if (Serial.available() > 0) {
+ while (Serial.available() > 0 && newData == false) {
+ rc = Serial.read();
+
+ if (rc != endMarker) {
+  receivedChars[ndx] = rc;
+  ndx++;
+  if (ndx >= numChars) {
+    ndx = numChars - 1;
+  }
+  String String(receivedChars);
+  commandCode = receivedChars;
+ }
+ else {
+ receivedChars[ndx] = '\0'; // terminate the string
+ ndx = 0;
+ newData = true;
+ }
+ }
+}
+
+void showNewData() {
+ if (newData == true) {
+ Serial.println(receivedChars);
+ newData = false;
+ }
+}
 
 //ds18b20 code functions
 void printTemperature(DeviceAddress deviceAddress)
