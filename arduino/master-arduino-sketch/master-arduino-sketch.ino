@@ -79,12 +79,7 @@ void setup() {
   
 }
 
-//tentacle sheild code
-void serialEvent() {               //This interrupt will trigger when the data coming from the serial monitor(pc/mac/other) is received
-  computer_bytes_received = Serial.readBytesUntil(13, computerdata, 20); //We read the data sent from the serial monitor(pc/mac/other) until we see a <CR>. We also count how many characters have been received
-  computerdata[computer_bytes_received] = 0;      //We add a 0 to the spot in the array just after the last character we received.. This will stop us from transmitting incorrect data that may have been left in the buffer
-}
-//tentacle sheild code end
+
 
 void loop() {
   
@@ -103,7 +98,7 @@ void loop() {
 //  } 
 
   // Serial buffer code
-  recvWithEndMarker();
+  recvWithStartEndMarkers();
   showNewData();
   //Main set of if statements to trigger conditions from Serial commands
       
@@ -120,7 +115,6 @@ void loop() {
   }
   
   if(commandCode == "3333"){
-   for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
     str = str_channel.concat(":r");                  // Create command 
@@ -131,7 +125,7 @@ void loop() {
  
     if (computer_bytes_received != 0) {             // If computer_bytes_received does not equal zero
         channel = strtok(computerdata, ":");          // Let's parse the string at each colon
-      cmd = strtok(NULL, ":");     
+      cmd = "r";
         open_channel();                               // Call the function "open_channel" to open the correct data path      
         if (cmd != 0) {                               // if no command has been sent, send nothing
           sSerial.print(cmd);                         // Send the command from the computer to the Atlas Scientific device using the softserial port
@@ -144,21 +138,19 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("EC Data: ");
+      Serial.print("pH Data: ");
       Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
     }
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("EC Data: ");
+      Serial.print("pH Data: ");
       Serial.println(sensordata);
     }
-   }
       commandCode = "0";
   }
   
   if(commandCode == "4444"){
-   for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
     str = str_channel.concat(":r");                  // Create command 
@@ -169,7 +161,7 @@ void loop() {
  
     if (computer_bytes_received != 0) {             // If computer_bytes_received does not equal zero
         channel = strtok(computerdata, ":");          // Let's parse the string at each colon
-      cmd = strtok(NULL, ":");     
+      cmd = "r";
         open_channel();                               // Call the function "open_channel" to open the correct data path      
         if (cmd != 0) {                               // if no command has been sent, send nothing
           sSerial.print(cmd);                         // Send the command from the computer to the Atlas Scientific device using the softserial port
@@ -182,21 +174,19 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("pH Data: ");
+      Serial.print("DO Data: ");
       Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
     }
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("pH Data: ");
+      Serial.print("DO Data: ");
       Serial.println(sensordata); 
     }
-   }
       commandCode = "0";
   }
 
   if(commandCode == "5555"){
-   for (channel = 0; channel <=3; channel++) {
     str_channel = String(channel);
     computer_bytes_received = 3;                  // Character length is always 3 for read commands
     str = str_channel.concat(":r");                  // Create command 
@@ -207,7 +197,7 @@ void loop() {
  
     if (computer_bytes_received != 0) {             // If computer_bytes_received does not equal zero
         channel = strtok(computerdata, ":");          // Let's parse the string at each colon
-      cmd = strtok(NULL, ":");     
+      cmd = "r";
         open_channel();                               // Call the function "open_channel" to open the correct data path      
         if (cmd != 0) {                               // if no command has been sent, send nothing
           sSerial.print(cmd);                         // Send the command from the computer to the Atlas Scientific device using the softserial port
@@ -220,16 +210,15 @@ void loop() {
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("DO Data: ");
+      Serial.print("EC Data: ");
       Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
     }
     if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
       sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      Serial.print("DO Data: ");
+      Serial.print("EC Data: ");
       Serial.println(sensordata); 
       sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
     }
-   }
       commandCode = "0";
   }
 
@@ -243,30 +232,40 @@ void loop() {
 //start of functions needed to be called in them main loop
 
 //Serial buffer functions
-void recvWithEndMarker() {
- static byte ndx = 0;
- char endMarker = '>';
- char rc;
+void recvWithStartEndMarkers() {
+    static boolean recvInProgress = false;
+    static byte ndx = 0;
+    char startMarker = '<';
+    char endMarker = '>';
+    char rc;
  
  // if (Serial.available() > 0) {
- while (Serial.available() > 0 && newData == false) {
- rc = Serial.read();
+    while (Serial.available() > 0 && newData == false) {
+        rc = Serial.read();
 
- if (rc != endMarker) {
-  receivedChars[ndx] = rc;
-  ndx++;
-  if (ndx >= numChars) {
-    ndx = numChars - 1;
-  }
-  String String(receivedChars);
-  commandCode = receivedChars;
- }
- else {
- receivedChars[ndx] = '\0'; // terminate the string
- ndx = 0;
- newData = true;
- }
- }
+        if (recvInProgress == true) {
+            if (rc != endMarker) {
+                receivedChars[ndx] = rc;
+                ndx++;
+                if (ndx >= numChars) {
+                    ndx = numChars - 1;
+                }
+                
+                commandCode = receivedChars;
+                String String(commandCode);
+            }
+            else {
+                receivedChars[ndx] = '\0'; // terminate the string
+                recvInProgress = false;
+                ndx = 0;
+                newData = true;
+            }
+        }
+
+        else if (rc == startMarker) {
+            recvInProgress = true;
+        }
+    }
 }
 
 void showNewData() {
