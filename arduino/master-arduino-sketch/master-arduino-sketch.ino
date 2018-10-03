@@ -132,22 +132,16 @@ void loop() {
           sSerial.print("\r");                        // <CR> carriage return to terminate message
         }
       computer_bytes_received = 0;                  // Reset the var computer_bytes_received
+    }
+    for(int i = 0; i<2; i++){
+      if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
+        sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
+        sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+        Serial.print("pH Data: ");
+        Serial.println(sensordata);
       }
-  
-  
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("pH Data: ");
-      Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
     }
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("pH Data: ");
-      Serial.println(sensordata);
-    }
-      commandCode = "0";
+    commandCode = "0";
   }
   
   if(commandCode == "4444"){
@@ -170,20 +164,15 @@ void loop() {
       computer_bytes_received = 0;                  // Reset the var computer_bytes_received
       }
   
-  
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("DO Data: ");
-      Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
+    for(int i = 0; i<2; i++){
+      if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
+        sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
+        sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+        Serial.print("DO Data: ");
+        Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
+      }
     }
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("DO Data: ");
-      Serial.println(sensordata); 
-    }
-      commandCode = "0";
+    commandCode = "0";
   }
 
   if(commandCode == "5555"){
@@ -205,21 +194,17 @@ void loop() {
         }
       computer_bytes_received = 0;                  // Reset the var computer_bytes_received
       }
-  
-  
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-      Serial.print("EC Data: ");
-      Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
+
+    for(int i = 0; i<2; i++){
+      if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
+        sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
+        sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
+        Serial.print("EC Data: ");
+        Serial.println(sensordata);                  // let’s transmit the data received from the Atlas Scientific device to the serial monitor
+      }
+      delay(20);
     }
-    if (sSerial.available() > 0) {                 // If data has been transmitted from an Atlas Scientific device
-      sensor_bytes_received = sSerial.readBytesUntil(13, sensordata, 30); //we read the data sent from the Atlas Scientific device until we see a <CR>. We also count how many character have been received
-      Serial.print("EC Data: ");
-      Serial.println(sensordata); 
-      sensordata[sensor_bytes_received] = 0;       // we add a 0 to the spot in the array just after the last character we received. This will stop us from transmitting incorrect data that may have been left in the buffer
-    }
-      commandCode = "0";
+    commandCode = "0";
   }
 
 
