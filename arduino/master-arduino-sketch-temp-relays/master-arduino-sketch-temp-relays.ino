@@ -16,9 +16,9 @@ DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
 //for relay control code
 // declare and name all actuator pins on the arduino
 int relay1 = 11;
-int relay2 = 12;
-int relay3 = 13;
-int relay4 = 14;
+int relay2 = 10;
+int relay3 = 9;
+int relay4 = 8;
 //relay control code end
 
 //declare command code variable
@@ -106,35 +106,63 @@ void loop() {
   showNewData();
   //Main set of if statements to trigger conditions from Serial commands
       
-  if(commandCode == "1111"){
+  if(commandCode == "1001"){
     printTemperature(Probe01);
     commandCode = "0";
   }
   
-  if(commandCode == "2222"){
+  if(commandCode == "1002"){
     printTemperature(Probe02);
     commandCode = "0";
   }
 
-  if(commandCode == "3333"){
+  if(commandCode == "1003"){
     printTemperature(Probe03);
     commandCode = "0";
   }
 
-  if(commandCode == "4444"){
+  if(commandCode == "1004"){
     printTemperature(Probe04);
     commandCode = "0";
   }
 
-  if(commandCode == "5555"){
+  if(commandCode == "2011"){
     digitalWrite(relay1, HIGH);
-    Serial.println("R11");
     commandCode = "0";
   }
 
-  if(commandCode == "6666"){
+  if(commandCode == "2010"){
     digitalWrite(relay1, LOW);
-    Serial.println("R10");
+    commandCode = "0";
+  }
+
+  if(commandCode == "2021"){
+    digitalWrite(relay2, HIGH);
+    commandCode = "0";
+  }
+
+  if(commandCode == "2020"){
+    digitalWrite(relay2, LOW);
+    commandCode = "0";
+  }
+
+  if(commandCode == "2031"){
+    digitalWrite(relay3, HIGH);
+    commandCode = "0";
+  }
+
+  if(commandCode == "2030"){
+    digitalWrite(relay3, LOW);
+    commandCode = "0";
+  }
+
+  if(commandCode == "2041"){
+    digitalWrite(relay4, HIGH);
+    commandCode = "0";
+  }
+
+  if(commandCode == "2040"){
+    digitalWrite(relay4, LOW);
     commandCode = "0";
   }
 
