@@ -1,3 +1,6 @@
+// include the library LCD code:
+#include <LiquidCrystal.h>
+
 //for ds18b20 code
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -7,8 +10,9 @@ OneWire oneWire(ONE_WIRE_BUS_PIN);
 DallasTemperature sensors(&oneWire);
 
   //device addresses to be found in another sketch and assigned here
-DeviceAddress Probe01 = { 0x28, 0x52, 0x0F, 0x28, 0x00, 0x00, 0x80, 0xD1 }; 
-DeviceAddress Probe02 = { 0x28, 0x83, 0x03, 0x28, 0x00, 0x00, 0x80, 0x03 };
+
+DeviceAddress Probe01 = { 0x28, 0xAA, 0x06, 0xC3, 0x17, 0x13, 0x02, 0x95 }; 
+DeviceAddress Probe02 = { 0x28, 0x27, 0x2B, 0xAB, 0x1F, 0x13, 0x01, 0x6A };
 DeviceAddress Probe03 = { 0x28, 0xFF, 0x7B, 0xCC, 0xC1, 0x16, 0x04, 0xA1 };
 DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
 //ds18b20 code end
@@ -18,6 +22,9 @@ DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
 
 
 //relay control code end
+//LCD Setup Code
+const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 //declare command code variable
 String commandCode = "0";
@@ -53,6 +60,8 @@ boolean newData = false;
 void setup() {
   
   Serial.begin(9600);
+  //LCD Code
+  lcd.begin(16, 2);
   
   //for ds18b20 code
   sensors.begin();
@@ -104,8 +113,13 @@ void loop() {
       
   if(commandCode == "1111"){
     Serial.print("Temperature Probe 1: ");
-    printTemperature(Probe01);
-      commandCode = "0";
+    float temp;
+    temp = printTemperature(Probe01);
+    lcd.setCursor(0,0);
+    lcd.print("Temp1");
+    lcd.setCursor(1,0);
+    lcd.print(temp);
+    commandCode = "0";
   }
   
   if(commandCode == "2222"){
@@ -261,7 +275,7 @@ void showNewData() {
 }
 
 //ds18b20 code functions
-void printTemperature(DeviceAddress deviceAddress)
+float printTemperature(DeviceAddress deviceAddress)
 {
 
 float tempC = sensors.getTempC(deviceAddress);
@@ -276,6 +290,7 @@ float tempC = sensors.getTempC(deviceAddress);
    Serial.print(tempC);
    Serial.print(" F: ");
    Serial.println(DallasTemperature::toFahrenheit(tempC));
+   return(DallasTemperature::toFahrenheit(tempC));
    }
 }
 // ds18b20 end code

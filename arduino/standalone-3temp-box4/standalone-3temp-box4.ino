@@ -10,10 +10,9 @@ OneWire oneWire(ONE_WIRE_BUS_PIN);
 DallasTemperature sensors(&oneWire);
 
   //device addresses to be found in another sketch and assigned here
-DeviceAddress Probe01 = { 0x28, 0xAA, 0x06, 0xC3, 0x17, 0x13, 0x02, 0x95 }; 
-DeviceAddress Probe02 = { 0x28, 0x27, 0x2B, 0xAB, 0x1F, 0x13, 0x01, 0x6A }; 
-DeviceAddress Probe03 = { 0x28, 0xFF, 0x50, 0xEF, 0xC1, 0x16, 0x04, 0xD1 };
-DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
+DeviceAddress Probe01 = {0x28, 0xAA, 0x5E, 0xBE, 0x17, 0x13, 0x02, 0x0B}; 
+DeviceAddress Probe02 = {0x28, 0xAA, 0x19, 0x15, 0x18, 0x13, 0x02, 0xD1}; 
+DeviceAddress Probe03 = {0x28, 0xF6, 0xBE, 0xA8, 0x1F, 0x13, 0x01, 0x74};
 //ds18b20 code end
 
 //LCD Setup Code
@@ -71,7 +70,6 @@ void setup() {
   sensors.setResolution(Probe01, 12);
   sensors.setResolution(Probe02, 12);
   sensors.setResolution(Probe03, 12);
-  sensors.setResolution(Probe04, 12);
   //ds18b20 code end
 
   //tentacle sheild code
@@ -82,14 +80,7 @@ void setup() {
 
   sSerial.begin(9600);             // Set the soft serial port to 9600 (change if all your devices use another baudrate)
   intro();                         // display startup message
-  //tentacle sheild code end
 
-  //relay control code
-  pinMode(relay1, OUTPUT);
-  pinMode(relay2, OUTPUT);
-  pinMode(relay3, OUTPUT);
-  pinMode(relay4, OUTPUT);
-  //relay control code end
   
 }
 
@@ -102,89 +93,41 @@ void loop() {
   delay(100);
   //end ds18b20 generic code
 
-  // serial buffer code
-  
-
-  // read serial data if its available and set command code
-//  if(Serial.available()){
-//    commandCode = Serial.read() - '0';
-//    delay(50);
-//  } 
-
-  // Serial buffer code
-  recvWithStartEndMarkers();
-  showNewData();
   //Main set of if statements to trigger conditions from Serial commands
-      
+  commandCode = "1001";   
   if(commandCode == "1001"){
     float temp = printTemperature(Probe01);
     lcd.setCursor(0,0);
-    lcd.print("Temp 1:");
-    lcd.setCursor(9,0);
+    lcd.print("T1:");
+    lcd.setCursor(0,1);
     lcd.print(temp);
+    lcd.setCursor(4,1);
+    lcd.print(" ");
+    delay(200);
     commandCode = "0";
   }
-  
+  commandCode = "1002";   
   if(commandCode == "1002"){
     float temp = printTemperature(Probe02);
-    lcd.setCursor(0,1);
-    lcd.print("Temp 2:");
-    lcd.setCursor(9,1);
+    lcd.setCursor(6,0);
+    lcd.print("T2:");
+    lcd.setCursor(6,1);
     lcd.print(temp);
+    lcd.setCursor(10,1);
+    lcd.print(" ");
+    delay(200);
     commandCode = "0";
   }
-
+  commandCode = "1003";   
   if(commandCode == "1003"){
-    printTemperature(Probe03);
+    float temp = printTemperature(Probe03);
+    lcd.setCursor(12,0);
+    lcd.print("T3:");
+    lcd.setCursor(12,1);
+    lcd.print(temp);
+    delay(200);
     commandCode = "0";
   }
-
-  if(commandCode == "1004"){
-    printTemperature(Probe04);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2011"){
-    digitalWrite(relay1, HIGH);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2010"){
-    digitalWrite(relay1, LOW);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2021"){
-    digitalWrite(relay2, HIGH);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2020"){
-    digitalWrite(relay2, LOW);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2031"){
-    digitalWrite(relay3, HIGH);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2030"){
-    digitalWrite(relay3, LOW);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2041"){
-    digitalWrite(relay4, HIGH);
-    commandCode = "0";
-  }
-
-  if(commandCode == "2040"){
-    digitalWrite(relay4, LOW);
-    commandCode = "0";
-  }
-
-
   
 //End of Main set of if statements 
         
