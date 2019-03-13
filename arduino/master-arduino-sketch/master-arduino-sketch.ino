@@ -57,6 +57,8 @@ char receivedChars[numChars]; // an array to store the received data
 boolean newData = false;
 //Serial buffer code end
 
+
+
 void setup() {
   
   Serial.begin(9600);
@@ -221,7 +223,12 @@ void loop() {
     commandCode = "0";
   }
 
+  if(commandCode == "9999"){
+    String identity = "Arduino4";
+    Serial.print(identity);
+    commandCode = "0";
 
+  }
 
   
 //End of Main set of if statements 
