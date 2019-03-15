@@ -1,7 +1,7 @@
 import subprocess
 import time
 
-d1 = .015
+d1 = .0015
 d2 = .25
 
 
@@ -27,10 +27,26 @@ def relaySwitch(command, device, relayNum, state):
   print "Relay" + " " + relayNum + " " + state
   time.sleep(d1)
 
-arduinos = checkArduinos().splitlines()
-print arduinos
+#check the system for arduinos and have them all reports identities  
+addresses = checkArduinos().splitlines()
+
+arduinos = [0] * 10 
+
+for x in range(len(addresses)):
+  identity = writeCommand("9999", addresses[x])
+  time.sleep(d1)
+  arduinos[x] = [addresses[x], identity]
 
 for x in arduinos:
-  identity = writeCommand("9999", x)
-  time.sleep(d2)
-  print identity 
+  if x != 0:
+    print x
+
+#test function to request some temperature values from arduino
+
+while 1: 
+  checkTemp("1111", "/dev/ttyACM5", "1")
+  time.sleep(.25)
+  checkTemp("1112", "/dev/ttyACM5", "2")
+  time.sleep(.25)
+  checkTemp("1113", "/dev/ttyACM5", "3")
+  time.sleep(.25)

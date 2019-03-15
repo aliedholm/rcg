@@ -32,12 +32,20 @@ void loop() {
     digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
     delay(1000); 
     digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-    Serial.println("blink happened$");
+    Serial.print("blink happened$");
     commandCode = "0";
   }
 
+  if(commandCode == "8888"){
+    String error = "error";
+    Serial.print(error);
+    Serial.print("@");
+    commandCode = "0";
+
+  }
+
   if(commandCode == "9999"){
-    String identity = "box2";
+    String identity = "box5,2te,1hu,2ph,3re,3pu";
     Serial.print(identity);
     Serial.print("$");
     commandCode = "0";
@@ -86,8 +94,8 @@ void recvWithStartEndMarkers() {
 
 void showNewData() {
     if (newData == true) {
-        Serial.print(receivedChars);
-        Serial.print(":");
+//        Serial.print(receivedChars);
+//        Serial.print(":");
         commandCode = receivedChars;
         newData = false;
     }
