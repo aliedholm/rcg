@@ -95,7 +95,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "box5,2te,1hu,2ph,3re,3pu";
+      String identity = "box5,3te,1hu,2ph,3re,3pu";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
