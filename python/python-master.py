@@ -32,24 +32,25 @@ def relaySwitch(command, device, relayNum, state):
 
 #check the system for arduinos and have them all reports identities  
 def getAddresses():
-  addresses = checkArduinos().splitlines()
-  arduinosRaw = [0] * 100
-  for x in range(len(addresses)):
-    identity = writeCommand("9999", addresses[x])
-    time.sleep(d1)
-    arduinosRaw[x] = [addresses[x], identity]
+  if '0' in arduinos[0]:
+    addresses = checkArduinos().splitlines()
+    arduinosRaw = ['0'] * 100
+    for x in range(len(addresses)):
+      identity = writeCommand("9999", addresses[x])
+      time.sleep(d1)
+      arduinosRaw[x] = [addresses[x], identity]
 
-  for x in range(len(arduinosRaw)):
-    if arduinosRaw[x] != 0:
-      arduinos[x] = arduinosRaw[x]
-      print arduinos[x]
+    for x in range(len(arduinosRaw)):
+      if arduinosRaw[x] != '0':
+        arduinos[x] = arduinosRaw[x]
+        print arduinos[x]
 
 #setup of the program getting ready for main loop
 
-arduinos = [0] * 100
+arduinos = ['0'] * 100
 attempts = 0
 
-while attempts < 5:
+while attempts < 8:
   attempts = attempts + 1
   if __name__ == '__main__':
     p = Process(target=getAddresses, args=())
@@ -62,18 +63,17 @@ while attempts < 5:
     time.sleep(.005)
 
 for x in range(len(arduinos)):
-  if arduinos[x] != 0:
+  if arduinos[x] != '0':
     print arduinos[x]
 
 print len(arduinos)
-print "anything?"
 print arduinos
 #main loop to monitor conditions and adjust system
-while 1:
-  arduino = "/dev/ttyACM1" 
-  checkTemp("1111", arduino, "1")
-  time.sleep(.25)
-  checkTemp("1112", arduino, "2")
-  time.sleep(.25)
-  checkTemp("1113", arduino, "3")
-  time.sleep(.25)
+#while 1:
+#  arduino = "/dev/ttyACM1" 
+#  checkTemp("1111", arduino, "1")
+#  time.sleep(.25)
+#  checkTemp("1112", arduino, "2")
+#  time.sleep(.25)
+#  checkTemp("1113", arduino, "3")
+#  time.sleep(.25)

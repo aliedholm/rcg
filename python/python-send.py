@@ -1,4 +1,3 @@
-from timeout import timeout
 import serial
 import sys
 import time, threading
@@ -46,3 +45,10 @@ finalData = dataReturn[:-1]
 
 #return the data to the python-master program
 print finalData
+
+#close the serial port
+ardSerial.close()
+try:
+  sys.stdout.flush()
+except:
+  pass
