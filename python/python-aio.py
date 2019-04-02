@@ -9,32 +9,34 @@ import time
 d1 = .0015
 d2 = .25
 
+def establishSerial(arduinoNum):
+  ardSerial = serial.Serial(arduinoNum, 9600)
+  return ardSerial
+
+def stringArray(array):
+  string = ''
+  for x in array:
+    string += x
+  return string
+
 def send(commandCode, arduinoNum):
-  def establishSerial(arduinoNum):
-    ardSerial = serial.Serial(arduinoNum, 9600)
-    return ardSerial
-
-  ardSerial = establishSerial(arduinoNum)
-
-  ardSerial = establishSerial(arduinoNum)
-  #write the actual command code the arduino is to execute
-  ardSerial.write('<' + commandCode + '>')
-  time.sleep(.05)
-
   ardDataBuffer = []
   endOfData = 0
   endOfDataChar = '$'
   errorChar = '@'
   dataReturn = ''
 
-  def stringArray(array):
-    string = ''
-    for x in array:
-      string += x
-    return string
+  ardSerial = establishSerial(arduinoNum)
 
+  #write the actual command code the arduino is to execute
   while endOfData == 0:
+    myData = []
+    while ardSerial.in_waiting == 0:
+      time.sleep(.5)
+      print "in waiting"
+      ardSerial.write('<' + commandCode + '>')
     myData = ardSerial.read()
+    print "this2"
     ardDataBuffer += myData
     if endOfDataChar in myData:
       dataReturn = stringArray(ardDataBuffer)
@@ -47,15 +49,15 @@ def send(commandCode, arduinoNum):
   #remove the $ character from the results
   finalData = dataReturn[:-1]
 
-  #return the data to the python-master program
-  return finalData
-
   #close the serial port
   ardSerial.close()
   try:
     sys.stdout.flush()
   except:
     pass
+  
+  #return the data to the python-master program
+  return finalData
 
 #return the list of ports occupied by arduinos on the rpi system
 def checkArduinos():
@@ -70,13 +72,13 @@ def checkTemp(command, device, sensorNum):
   time.sleep(d1)
   return temp
 
-
 #check the system for arduinos and have them all reports identities  
 def getAddresses():
   addresses = checkArduinos().splitlines()
   arduinosRaw = ['0'] * len(addresses)
   for x in range(len(addresses)):
     identity = send("9999", addresses[x])
+    print "send finsihed"
     time.sleep(d1)
     arduinosRaw[x] = [addresses[x], identity]
   return arduinosRaw    
@@ -85,6 +87,7 @@ def getAddresses():
 
 arduinos = getAddresses()
 
+print "main print statement"
 for x in arduinos:
   print x
 
