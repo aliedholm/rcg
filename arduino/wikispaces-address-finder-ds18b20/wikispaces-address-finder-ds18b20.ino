@@ -18,7 +18,7 @@
 #include <OneWire.h>
 
 /*-----( Declare Constants and Pin Numbers )-----*/
-#define SENSOR_PIN A0  // Any pin 2 to 12 (not 13) and A0 to A5
+#define SENSOR_PIN 2  // Any pin 2 to 12 (not 13) and A0 to A5
 
 /*-----( Declare objects )-----*/
 OneWire  ourBus(SENSOR_PIN);  // Create a 1-wire object

@@ -1,3 +1,6 @@
+import mysql.connector
+from mysql.connector import Error
+from mysql.connector import errorcode
 import serial
 import sys
 import threading
@@ -5,6 +8,7 @@ import io
 from multiprocessing import Process
 import subprocess
 import time
+import datetime
 
 d1 = .0015
 d2 = .25
@@ -32,11 +36,10 @@ def send(commandCode, arduinoNum):
   while endOfData == 0:
     myData = []
     while ardSerial.in_waiting == 0:
-      time.sleep(.5)
-      print "in waiting"
+      time.sleep(1)
       ardSerial.write('<' + commandCode + '>')
+      print "command code sent"
     myData = ardSerial.read()
-    print "this2"
     ardDataBuffer += myData
     if endOfDataChar in myData:
       dataReturn = stringArray(ardDataBuffer)
@@ -78,10 +81,21 @@ def getAddresses():
   arduinosRaw = ['0'] * len(addresses)
   for x in range(len(addresses)):
     identity = send("9999", addresses[x])
-    print "send finsihed"
     time.sleep(d1)
     arduinosRaw[x] = [addresses[x], identity]
   return arduinosRaw    
+
+#function to insert data to database
+def dbInsert(host, database, user, password, table, datetime, reading):
+  try: 
+    connection = mysql.connector.connect(host=host, database=database, user=user, password=password)
+    sql_insert_query = "INSERT INTO '" + table + "' ('datetime', 'reading') VALUES(" + datetime + ", " + reading + ");"
+    cursor = connection.cursor()
+    result = cursor.execute(sql_insert_query)
+    connection.commit()
+    print "db record sent"
+  except:
+    print "failed db record insert"
 
 #setup of the program getting ready for main loop
 
@@ -92,10 +106,13 @@ for x in arduinos:
   print x
 
 #main loop to monitor conditions and adjust system
-#while 1:
-#  arduino = "/dev/ttyACM11" 
-#  checkTemp("1111", arduino, "1")
-#  time.sleep(.25)
+while 1:
+  arduino = "/dev/ttyACM1" 
+  internalTemp = checkTemp("1111", arduino, "internal")
+  time.sleep(.25)
+  timestamp = datetime.datetime.now()
+  print timestamp
+  dbInsert("localhost", "sensors", "root", "8693ViaMallorca", "tInternal", timestamp, internalTemp)
 #  checkTemp("1112", arduino, "2")
 #  time.sleep(.25)
 #  checkTemp("1113", arduino, "3")

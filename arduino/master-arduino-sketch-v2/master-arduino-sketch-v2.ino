@@ -13,32 +13,29 @@
     
     #include <DallasTemperature.h>
     
-    #define ONE_WIRE_BUS_PIN A0
+    #define ONE_WIRE_BUS_PIN 2
     
     OneWire oneWire(ONE_WIRE_BUS_PIN);
     
     DallasTemperature sensors(&oneWire);
     
-    DeviceAddress Probe01 = { 0x28, 0xAA, 0xA4, 0x54, 0x13, 0x13, 0x02, 0xDC }; 
+    DeviceAddress Probe01 = { 0x28, 0xFF, 0x41, 0xEB, 0xC1, 0x16, 0x04, 0x6E }; 
     DeviceAddress Probe02 = { 0x28, 0xAA, 0x9F, 0x0E, 0x18, 0x13, 0x02, 0x2A };
     DeviceAddress Probe03 = { 0x28, 0x39, 0x99, 0xAA, 0x1F, 0x13, 0x01, 0x61 };
 
 //Program setup
 void setup() {
   //basic setup
-      Serial.begin(9600);
+  Serial.begin(9600);
 
   //blink diagnostic setup
-      pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   //ds18b20 code
-      sensors.begin();
+  sensors.begin();
       
-      // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
-      sensors.setResolution(Probe01, 12);
-      sensors.setResolution(Probe02, 12);
-      sensors.setResolution(Probe03, 12);
-
+  // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
+  sensors.setResolution(Probe01, 12);
 }
 
 
@@ -95,7 +92,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "box5,3te,1hu,2ph,3re,3pu";
+      String identity = "box1,3te,1hu,2ph,3re,3pu";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
