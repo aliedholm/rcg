@@ -39,6 +39,7 @@ def send(commandCode, arduinoNum):
       time.sleep(1)
       ardSerial.write('<' + commandCode + '>')
       print "command code sent"
+      time.sleep(2)
     myData = ardSerial.read()
     ardDataBuffer += myData
     if endOfDataChar in myData:
@@ -67,6 +68,9 @@ def checkArduinos():
   data = subprocess.check_output("ls /dev/ttyACM*", shell=True)
   return data
 
+#function to check if variable is a number or letters
+#def numberCheck(variable):
+  
 #specialized temperature check function
 def checkTemp(command, arduino, sensorNum):
   temp = send(command, arduino)
@@ -75,7 +79,6 @@ def checkTemp(command, arduino, sensorNum):
   time.sleep(d1)
   timestamp = getTime()
   print timestamp
-  time.sleep(.0025)
   dbLocal(sensorNum, timestamp, temp)
   return temp
 
@@ -85,7 +88,6 @@ def getAddresses():
   arduinosRaw = ['0'] * len(addresses)
   for x in range(len(addresses)):
     identity = send("9999", addresses[x])
-    time.sleep(d1)
     arduinosRaw[x] = [addresses[x], identity]
   return arduinosRaw    
 
@@ -132,5 +134,5 @@ for x in arduinos:
 
 #main loop to monitor conditions and adjust system
 while 1:
-  checkTemp("1111", "/dev/ttyACM1", "tAir")
+  checkTemp("1111", "/dev/ttyACM2", "tSoil")
   time.sleep(.25)

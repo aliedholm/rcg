@@ -92,7 +92,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "tentacleArd";
+      String identity = "tempArd";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
