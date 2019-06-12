@@ -68,11 +68,15 @@ def checkArduinos():
   return data
 
 #specialized temperature check function
-def checkTemp(command, device, sensorNum):
-  temp = send(command, device)
-  print "T" + sensorNum
+def checkTemp(command, arduino, sensorNum):
+  temp = send(command, arduino)
+  print sensorNum
   print temp 
   time.sleep(d1)
+  timestamp = getTime()
+  print timestamp
+  time.sleep(.0025)
+  dbLocal(sensorNum, timestamp, temp)
   return temp
 
 #check the system for arduinos and have them all reports identities  
@@ -85,11 +89,32 @@ def getAddresses():
     arduinosRaw[x] = [addresses[x], identity]
   return arduinosRaw    
 
-#function to insert data to database
-def dbInsert(host, database, user, password, table, datetime, reading):
+#function to get current time
+def getTime():
+  ts = time.time()
+  timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S') 
+  return timestamp
+
+#function to create table if it does not exist
+def createTableLocal(table):
   try: 
-    connection = mysql.connector.connect(host=host, database=database, user=user, password=password)
-    sql_insert_query = "INSERT INTO '" + table + "' ('datetime', 'reading') VALUES(" + datetime + ", " + reading + ");"
+    connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
+    sql_insert_query = "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(8) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB;"
+    print sql_insert_query
+    cursor = connection.cursor()
+    result = cursor.execute(sql_insert_query)
+    connection.commit()
+    print "table creation or was already successful"
+  except:
+    print "failed table creation"
+
+#function to insert data to local database
+def dbLocal(table, datetime, reading):
+  createTableLocal(table)
+  try: 
+    connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
+    sql_insert_query = "INSERT INTO " + table + " (datetime, reading) VALUES('" + datetime + "', '" + reading + "');"
+    print sql_insert_query
     cursor = connection.cursor()
     result = cursor.execute(sql_insert_query)
     connection.commit()
@@ -107,13 +132,5 @@ for x in arduinos:
 
 #main loop to monitor conditions and adjust system
 while 1:
-  arduino = "/dev/ttyACM1" 
-  internalTemp = checkTemp("1111", arduino, "internal")
+  checkTemp("1111", "/dev/ttyACM1", "tAir")
   time.sleep(.25)
-  timestamp = datetime.datetime.now()
-  print timestamp
-  dbInsert("localhost", "sensors", "root", "8693ViaMallorca", "tInternal", timestamp, internalTemp)
-#  checkTemp("1112", arduino, "2")
-#  time.sleep(.25)
-#  checkTemp("1113", arduino, "3")
-#  time.sleep(.25)

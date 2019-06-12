@@ -26,16 +26,16 @@ void loop() {
   Serial.print("Switch Value");
   Serial.println(switchValue);
   
-  if(switchValue == HIGH && floatValue == HIGH) {
+  if(switchValue == LOW && floatValue == LOW) {
     digitalWrite(relayPin, LOW);
   }
-  if(switchValue == LOW && floatValue == LOW) {
+  if(switchValue == HIGH && floatValue == HIGH) {
     digitalWrite(relayPin, HIGH);
   }
-  if(switchValue == LOW && floatValue == HIGH) {
+  if(switchValue == HIGH && floatValue == LOW) {
     digitalWrite(relayPin, LOW);
   }
-  if(switchValue == HIGH && floatValue == LOW) {
+  if(switchValue == LOW && floatValue == HIGH) {
     digitalWrite(relayPin, LOW);
   }    
   delay(500); 

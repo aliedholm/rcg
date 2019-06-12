@@ -19,7 +19,7 @@
     
     DallasTemperature sensors(&oneWire);
     
-    DeviceAddress Probe01 = { 0x28, 0xFF, 0x41, 0xEB, 0xC1, 0x16, 0x04, 0x6E }; 
+    DeviceAddress tInternal = { 0x28, 0xFF, 0x41, 0xEB, 0xC1, 0x16, 0x04, 0x6E }; 
     DeviceAddress Probe02 = { 0x28, 0xAA, 0x9F, 0x0E, 0x18, 0x13, 0x02, 0x2A };
     DeviceAddress Probe03 = { 0x28, 0x39, 0x99, 0xAA, 0x1F, 0x13, 0x01, 0x61 };
 
@@ -35,7 +35,7 @@ void setup() {
   sensors.begin();
       
   // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
-  sensors.setResolution(Probe01, 12);
+  sensors.setResolution(tInternal, 12);
 }
 
 
@@ -52,9 +52,9 @@ void loop() {
     
 //Main set of if statements to trigger conditions from Serial commands
 
-  //check temperatures
+  //check temperatures 
     if(commandCode == "1111"){
-      printTemperature(Probe01);
+      printTemperature(tInternal);
       Serial.print("$");
       commandCode = "0";
     }
@@ -92,7 +92,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "box1,3te,1hu,2ph,3re,3pu";
+      String identity = "tentacleArd";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
