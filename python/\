@@ -19,20 +19,15 @@ class sensor(object):
     self.address = address
     self.ardName = ardName
 
-  def getData(self):
-    data = send(self.command, self.address)
-    print self.uniName
+  def getData(command, arduino, sensorNum):
+    data = send(command, arduino)
+    print sensorNum
     print data
     time.sleep(d1)
     timestamp = getTime()
     print timestamp
+    dbLocal(sensorNum, timestamp, data)
     return data
-  
-  def printObject(self):
-    print self.uniName
-    print self.command
-    print self.address
-    print self.ardName
 
   def establishSerial(arduinoNum):
     ardSerial = serial.Serial(arduinoNum, 9600)
@@ -90,12 +85,25 @@ class sensor(object):
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     return timestamp
 
-  #function to insert data to local database
-  def localDB(self, datetime, reading):
-    createTableLocal(self.uniName)
+  #function to create table if it does not exist
+  def createTableLocal(table):
     try:
       connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
-      sql_insert_query = "INSERT INTO " + self.uniName + " (datetime, reading) VALUES('" + datetime + "', '" + reading + "');"
+      sql_insert_query = "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(8) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB;"
+      print sql_insert_query
+      cursor = connection.cursor()
+      result = cursor.execute(sql_insert_query)
+      connection.commit()
+      print "table creation or was already successful"
+    except:
+      print "failed table creation"
+
+  #function to insert data to local database
+  def localDB(table, datetime, reading):
+    createTableLocal(table)
+    try:
+      connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
+      sql_insert_query = "INSERT INTO " + table + " (datetime, reading) VALUES('" + datetime + "', '" + reading + "');"
       print sql_insert_query
       cursor = connection.cursor()
       result = cursor.execute(sql_insert_query)
@@ -113,19 +121,6 @@ def stringArray(array):
 def establishSerial(arduinoNum):
   ardSerial = serial.Serial(arduinoNum, 9600)
   return ardSerial
-
-#function to create table if it does not exist
-def createTableLocal(table):
-  try:
-    connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
-    sql_insert_query = "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(8) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB;"
-    print sql_insert_query
-    cursor = connection.cursor()
-    result = cursor.execute(sql_insert_query)
-    connection.commit()
-    print "table creation or was already successful"
-  except:
-    print "failed table creation"
 
 def send(commandCode, arduinoNum):
   ardDataBuffer = []
@@ -188,7 +183,6 @@ def getTime():
   return timestamp
 
 def parseSensors(arduinos):
-  sensors = {}
   for arduino in arduinos:
     address = arduino[0]
     #print "address is: " + address
@@ -203,17 +197,9 @@ def parseSensors(arduinos):
       #print "command is: " + command
       engName = pair[1]
       #print "engName is: " + engName
-      sensorObj = sensor(engName, command, address, ardName)
-      sensorList = ""
-      for x in sensors:
-        sensorList = sensorList + x
-      print sensorList
-      chanel = "a"
-      if engName in sensorList:
-        chanel = chanel + "a"
-        engName + chanel
-      sensors[engName] = sensorObj
-  return sensors
+      sensors[engName] = sensor(engName, command, address, ardName)
+      if (sensors[engName].engName == "temp1"):
+        sensors.engName.getData()
 #setup of the program getting ready for main loop
 sensors = {}
 arduinos = getAddresses()
@@ -223,12 +209,8 @@ print "main print statement"
 for x in arduinos:
   print x
 
-for y in sensors:
-  print (y)
-
+print sensors
 #main loop to monitor conditions and adjust system
-while 1:
-  temp1 = sensors["temp1"].getData()
-  timestamp = getTime()
-  sensors["temp1"].localDB(timestamp, temp1)
-  time.sleep(1);
+#while 1:
+#  checkTemp("1111", "/dev/ttyACM1", "tSoil")
+#  time.sleep(.25)

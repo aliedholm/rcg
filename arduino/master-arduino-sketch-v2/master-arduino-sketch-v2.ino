@@ -92,7 +92,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "tempArd";
+      String identity = "tempArd:1111;temp1,1112;temp2,1113;temp3,9991;temp-error,9998;temp-blink,9999;temp-identity";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
