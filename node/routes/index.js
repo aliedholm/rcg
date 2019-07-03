@@ -21,4 +21,8 @@ router.get('/retrieveTable', function(req, res){
   ctrl.retrieveTable(req, res);
 });
 
+router.get('/retrieveTableDates', function(req, res){
+  ctrl.retrieveTableDates(req, res);
+});
+
 module.exports = router;

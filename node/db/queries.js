@@ -64,7 +64,7 @@ var connection = mysql.createConnection({
       console.error('error retrieving the table names');
       return;
     }
-    console.log('successfully retrieved tables' + results);
+    console.log('successfully retrieved table' + results);
     res.send(results);
   });
 //end of the query strings
@@ -78,4 +78,45 @@ var connection = mysql.createConnection({
     console.log('connection successfully terminated');
   });
 }
+
+//function to retrieve a specific tables and its rows between certain dates
+retrieveTableDates = function(req, res, database, table, start, end) {
+
+var connection = mysql.createConnection({
+  host : 'localhost',
+  user : 'rcg',
+  password: '8693ViaMallorca',
+  database: req.query.database
+});
+
+//opening the connection to the database
+  connection.connect(function(err) {
+    if(err) {
+      console.error('error connecting: ' + err.stack);
+      return;
+    }
+    console.log('connected as id ' + connection.threadID);
+  });
+
+// where the query string begins
+  connection.query('SELECT * FROM ' + table + 'WHERE datetime between "' + start.substring(0, 11) + '" AND "' + end.substring(0, 11) + '";', function(error, results, fields) {
+    if(error) {
+      console.error('error retrieving the table names');
+      return;
+    }
+    console.log('successfully retrieved table' + results);
+    res.send(results);
+  });
+//end of the query strings
+
+//closing the connection to the database
+  connection.end(function(err) {
+    if(err) {
+      console.error('error terminating connection');
+      return;
+    }
+    console.log('connection successfully terminated');
+  });
+}
+
 module.exports = retrieveTables, retrieveTable;

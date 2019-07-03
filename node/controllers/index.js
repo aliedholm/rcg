@@ -32,6 +32,14 @@ let controller = {
     let database = req.query.database;
     let table = req.query.table;
     retrieveTable(req, res, database, table);
+  },
+
+  retrieveTableDates: function(req, res) {
+    let database = req.query.database;
+    let table = req.query.table;
+    let start = req.query.start;
+    let end = req.query.end;
+    retrieveTable(req, res, database, table, start, end);
   }
 }
 
