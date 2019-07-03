@@ -12,4 +12,12 @@
     type: varchar(10)
     message: varchar(30)
     table: name of table to insert data into, will create if it does not already exist
-    
+  
+- 132.239.205.288/api/tables
+  //query strings
+    database: name of the database to retrieve tables from
+
+- 132.239.205.288/api/retrieveTable
+  //query strings
+    database: name of the database
+    table: name of table

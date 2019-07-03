@@ -1,8 +1,9 @@
 //filename: controller.js
 let bodyparser = require('body-parser');
-let db = require('../db/index.js');
+let logs = require('../db/logs.js');
+let queries = require('../db/queries.js');
 
-let loggingController = {
+let controller = {
   logData: function(req, res) {
     let datetime = req.query.datetime;
     let reading = req.query.reading;
@@ -20,7 +21,18 @@ let loggingController = {
     console.log(table + " - " + datetime + " - " + type + " - " + message);
     res.send("logged: " + table + " - " + datetime + " - " + type + " - " + " successfully");
     postLog(req, res, datetime, type, message, table);
+  },
+
+  listTables: function(req, res) {
+    let database = req.query.database;
+    retrieveTables(req, res, database);
+  },
+
+  retrieveTable: function(req, res) {
+    let database = req.query.database;
+    let table = req.query.table;
+    retrieveTable(req, res, database, table);
   }
 }
 
-module.exports = loggingController;
+module.exports = controller;
