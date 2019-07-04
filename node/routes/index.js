@@ -5,6 +5,11 @@ var router = express.Router();
 
 const ctrl = require('../controllers/index.js');
 
+router.get('/', function(req, res){
+  req.query.database = 'sensors';
+  ctrl.listTables(req, res);
+});
+
 router.get('/postReading', function(req, res){
   ctrl.logData(req, res);
 });

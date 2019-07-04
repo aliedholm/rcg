@@ -99,7 +99,7 @@ var connection = mysql.createConnection({
   });
 
 // where the query string begins
-  connection.query('SELECT * FROM ' + table + 'WHERE datetime between "' + start.substring(0, 11) + '" AND "' + end.substring(0, 11) + '";', function(error, results, fields) {
+  connection.query('SELECT * FROM ' + table + ' WHERE datetime between "' + req.query.start + '" AND "' + req.query.end + '";', function(error, results, fields) {
     if(error) {
       console.error('error retrieving the table names');
       return;
