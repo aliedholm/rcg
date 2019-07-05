@@ -1,8 +1,10 @@
 //filename: controller.js
 let bodyparser = require('body-parser');
-let logs = require('../db/logs.js');
-let queries = require('../db/queries.js');
+const logsDb = require('../db/logs.js');
+const queryDb = require('../db/queries.js');
+const dbUtilities = require('../db/db.js');
 
+//control for logging data
 let controller = {
   logData: function(req, res) {
     let datetime = req.query.datetime;
@@ -23,23 +25,21 @@ let controller = {
     postLog(req, res, datetime, type, message, table);
   },
 
-  listTables: function(req, res) {
-    let database = req.query.database;
-    retrieveTables(req, res, database);
+//control for retrieval of data
+  retrieveTables: function(req, res) {
+    retrieveTables(req, res);
   },
 
   retrieveTable: function(req, res) {
-    let database = req.query.database;
-    let table = req.query.table;
-    retrieveTable(req, res, database, table);
+    retrieveTable(req, res);
   },
 
   retrieveTableDates: function(req, res) {
-    let database = req.query.database;
-    let table = req.query.table;
-    let start = req.query.start;
-    let end = req.query.end;
-    retrieveTable(req, res, database, table, start, end);
+    retrieveTableDates(req, res);
+  },
+
+  retrieveTableIds: function(req, res) {
+    retrieveTableIds(req, res);
   }
 }
 

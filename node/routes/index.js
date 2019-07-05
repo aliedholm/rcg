@@ -18,16 +18,20 @@ router.get('/postLog', function(req, res){
   ctrl.logMessage(req, res);
 });
 
-router.get('/tables', function(req, res){
-  ctrl.listTables(req, res);
+router.get('/tables/:database', function(req, res){
+  ctrl.retrieveTables(req, res);
 });
 
-router.get('/retrieveTable', function(req, res){
+router.get('/retrieveTable/:database-:table', function(req, res){
   ctrl.retrieveTable(req, res);
 });
 
-router.get('/retrieveTableDates', function(req, res){
+router.get('/retrieveTableDates/:database-:table', function(req, res){
   ctrl.retrieveTableDates(req, res);
+});
+
+router.get('/retrieveTableIds/:database-:table', function(req, res){
+  ctrl.retrieveTableIds(req, res);
 });
 
 module.exports = router;

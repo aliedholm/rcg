@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 //import express
 var express = require('express');
-
+var controllers = require('./controllers/index.js')
 var routes = require('./routes/index.js');
 
 //initialize the app
@@ -12,6 +12,9 @@ var app = express();
 
 //use API routes in the app
 app.use('/api', routes);
+
+//set server to use jade templates
+app.set('view engine', 'pug');
 
 //configure body parser to handle post requests
 app.use(bodyParser.urlencoded({
@@ -23,7 +26,9 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
 
 //send message for default URL
-app.get('/', (req, res) => res.send("Hello World from Express"));
+app.get('/', function(req, res){
+  res.render('dashboard');
+});
 
 //launch app to listen on specified port
 app.listen(port, function(){

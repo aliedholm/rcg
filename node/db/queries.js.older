@@ -1,0 +1,103 @@
+var mysql = require('mysql');
+
+var dbUtilities = require('./db.js');
+
+retrieveTables = function(req, res, host, user, password, database){
+  query = "'SHOW TABLES FROM '" + database + "';'";
+  fullQuery(connection, query);
+};
+
+/*
+   connection.query('SHOW TABLES FROM ' + database + ';', function(error, results, fields) {
+    if(error) {
+      console.error('error retrieving the table names');
+      return;
+    }
+    console.log('successfully retrieved tables' + results);
+    res.send(results);
+  });  */
+
+
+
+  //function to retrieve a specific tables and its rows
+retrieveTable = function(req, res, database, table) {
+
+var connection = mysql.createConnection({
+  host : 'localhost',
+  user : 'rcg',
+  password: '8693ViaMallorca',
+  database: database
+});
+
+//opening the connection to the database
+  connection.connect(function(err) {
+    if(err) {
+      console.error('error connecting: ' + err.stack);
+      return;
+    }
+    console.log('connected as id ' + connection.threadID);
+  });
+
+// where the query string begins
+  connection.query('SELECT * FROM ' + table + ';', function(error, results, fields) {
+    if(error) {
+      console.error('error retrieving the table names');
+      return;
+    }
+    console.log('successfully retrieved table' + results);
+    res.send(results);
+  });
+//end of the query strings
+
+//closing the connection to the database
+  connection.end(function(err) {
+    if(err) {
+      console.error('error terminating connection');
+      return;
+    }
+    console.log('connection successfully terminated');
+  });
+}
+
+//function to retrieve a specific tables and its rows between certain dates
+retrieveTableDates = function(req, res, database, table, start, end) {
+
+var connection = mysql.createConnection({
+  host : 'localhost',
+  user : 'rcg',
+  password: '8693ViaMallorca',
+  database: database
+});
+
+//opening the connection to the database
+  connection.connect(function(err) {
+    if(err) {
+      console.error('error connecting: ' + err.stack);
+      return;
+    }
+    console.log('connected as id ' + connection.threadID);
+  });
+
+// where the query string begins
+  connection.query(
+    'SELECT * FROM ' + table + ' WHERE datetime BETWEEN "' + start + '" AND "' + end + '";', function(error, results, fields) {
+    if(error) {
+      console.error('error retrieving the table names');
+      return;
+    }
+    console.log('successfully retrieved table' + results);
+    res.send(results);
+  });
+//end of the query strings
+
+//closing the connection to the database
+  connection.end(function(err) {
+    if(err) {
+      console.error('error terminating connection');
+      return;
+    }
+    console.log('connection successfully terminated');
+  });
+}
+
+module.exports = retrieveTables, retrieveTable, retrieveTableDates;
