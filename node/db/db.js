@@ -31,7 +31,7 @@ connectDb = function(req, res, query, database){
     else{
       console.log('this is the query that was run ' + query);
       console.log('successfully executed query and these are the results' + results);
-      res.send(results);
+      res.render('dashboard', {data: results});
     };
   });
 
