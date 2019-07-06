@@ -22,7 +22,7 @@ connectDb = function(req, res, query, database){
   });
 
 //runnin the query statement
-  connection.query(query, function(error, results, fields){
+  let result = connection.query(query, function(error, results, fields){
     if(error){
       console.error('error retrieving the query');
       console.log(query);
@@ -31,8 +31,9 @@ connectDb = function(req, res, query, database){
     else{
       console.log('this is the query that was run ' + query);
       console.log('successfully executed query and these are the results' + results);
-      res.render('dashboard', {data: results});
     };
+  res.render('dashboard', {data: results});
+  return results;
   });
 
 //closing the connection to the database

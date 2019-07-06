@@ -5,7 +5,9 @@ const dbUtilities = require('../db/db.js');
 retrieveTables = function(req, res){
   database = req.params.database;
   query = "SHOW TABLES FROM " + database + ";";
-  connectDb(req, res, query);
+  let results = connectDb(req, res, query);
+  console.log("results from controller   " + results);
+//  res.render('dashboard', {data: results});
 };
 
 retrieveTable = function(req, res,){

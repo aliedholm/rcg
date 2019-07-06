@@ -5,5 +5,6 @@ head
 body
         h1 Basic Set of Sensors in Database
         ul
-                each val in results
-                        li= val 
+                each value, key in data
+                        each values, keys in value
+                                li= values

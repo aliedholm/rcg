@@ -1,23 +1,31 @@
 //API endpoints
 
-- 132.239.205.188:8080/api/postReading
+//Logging Information
+
+- 132.239.205.188:8080/api/postReading/:database-table
   //query strings 
     datetime: datetime obj (yyyy-mm-dd hh:mm:ss)
     reading: varchar(10)
-    table: name of table to insert data into, will create if it does not already exist
 
-- 132.239.205.288/api/postLog
+- 132.239.205.288/api/postLog/:database-table
   //query strings
     datetime: datetime obj (yyyy-mm-dd hh:mm:ss)
     type: varchar(10)
     message: varchar(30)
-    table: name of table to insert data into, will create if it does not already exist
-  
-- 132.239.205.288/api/tables
-  //query strings
-    database: name of the database to retrieve tables from
+ 
 
-- 132.239.205.288/api/retrieveTable
+//Retrieving Information 
+
+- 132.239.205.288/api/tables/:database
+
+- 132.239.205.288/api/retrieveTable/:database-table
+
+- 132.239.205.288/api/retrieveTableDates/:database-table
   //query strings
-    database: name of the database
-    table: name of table
+    start: yyyy-mm-dd
+    end: yyyy-mm-dd
+
+- 132.239.205.288/api/retrieveTableIds/:database-table
+  //query strings
+    start: id number
+    end: id number
