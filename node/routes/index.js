@@ -10,11 +10,11 @@ router.get('/', function(req, res){
   ctrl.retrieveTables(req, res);
 });
 
-router.get('/postReading', function(req, res){
+router.get('/postReading/:database-:table', function(req, res){
   ctrl.logData(req, res);
 });
 
-router.get('/postLog', function(req, res){
+router.get('/postLog/:database-:table', function(req, res){
   ctrl.logMessage(req, res);
 });
 

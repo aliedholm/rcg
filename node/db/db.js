@@ -21,8 +21,8 @@ connectDb = function(req, res, query, database){
     console.log('connected as id ' + connection.threadID);
   });
 
-//runnin the query statement
-  let result = connection.query(query, function(error, results, fields){
+//running the query statement
+  connection.query(query, function(error, results, fields){
     if(error){
       console.error('error retrieving the query');
       console.log(query);
@@ -32,17 +32,17 @@ connectDb = function(req, res, query, database){
       console.log('this is the query that was run ' + query);
       console.log('successfully executed query and these are the results' + results);
     };
-  res.render('dashboard', {data: results});
-  return results;
-  });
-
 //closing the connection to the database
-  connection.end(function(err) {
-    if(err) {
-      console.error('error terminating connection');
-      return;
-    }
-    console.log('connection successfully terminated');
+    connection.end(function(err) {
+      if(err) {
+        console.error('error terminating connection');
+        return;
+      }
+      console.log('connection successfully terminated');
+    });
+  
+    res.render('dashboard', {data: results});
+    return results;
   });
 };
 
