@@ -22,27 +22,32 @@ connectDb = function(req, res, query, database){
   });
 
 //running the query statement
-  connection.query(query, function(error, results, fields){
+for(i=0; i < query.length; i++){ 
+  connection.query(query[i], function(error, results, fields){
     if(error){
       console.error('error retrieving the query');
-      console.log(query);
+      console.log(query[i]);
       return;
     }
     else{
-      console.log('this is the query that was run ' + query);
+      console.log('this is the query that was run ' + query[i]);
       console.log('successfully executed query and these are the results' + results);
     };
+    if(req.method == 'GET'){
+      res.send(results);
+    }
+    if(req.method == "POST"){
+      res.send("executed query");
+    }
+  });
+}
 //closing the connection to the database
-    connection.end(function(err) {
-      if(err) {
-        console.error('error terminating connection');
-        return;
-      }
-      console.log('connection successfully terminated');
-    });
-  
-    res.render('dashboard', {data: results});
-    return results;
+  connection.end(function(err) {
+    if(err) {
+      console.error('error terminating connection');
+      return;
+    }
+    console.log('connection successfully terminated');
   });
 };
 
