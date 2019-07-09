@@ -14,12 +14,7 @@ let controller = {
       "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(10) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY(ID)) ENGINE=INNODB;", 
       "INSERT INTO " + table + " (datetime, reading) VALUES('" + datetime + "', " + reading + ");"
     ];
-    //connectDb(query, database);
-    var initPromise = runQuery(query, database);
-    initPromise.then(function(result){
-      res.send(result);
-    });
-     
+    connectDb(query, database);
   },
   
   logMessage: function(req, res) {
@@ -35,12 +30,6 @@ let controller = {
     ];
     connectDb(query, database);
   },
-}
-
-function runQuery(query, database){
-  return new Promise(function(resolve, reject){
-    connectDb(query, database);
-  });
 }
 
 module.exports = controller;

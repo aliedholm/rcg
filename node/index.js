@@ -4,7 +4,8 @@ var bodyParser = require('body-parser');
 
 //import express
 var express = require('express');
-var controllers = require('./controllers/index.js')
+var logControl = require('./controllers/logCtrl.js')
+var queryControl = require('./controllers/queryCtrl.js')
 var routes = require('./routes/index.js');
 
 //initialize the app

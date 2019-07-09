@@ -6,14 +6,17 @@ let controller = {
   retrieveTables: function(req, res){
     database = req.params.database;
     query = ["SHOW TABLES FROM " +database +";"];
-    connectDb(req, res, query, database);
+    connectDb(query, database, function(results){
+      res.render('dashboard', {data: results});
+      console.log('results from controller' + results);
+    });
   },
 
   retrieveTable: function(req, res){
     database = req.params.database;
     table = req.params.table;
     query = ["SELECT * FROM " +table +";"];
-    connectDb(req, res, query, database);
+    connectDb(query, database);
   },
 
   retrieveTableDates: function(req, res) {
@@ -22,7 +25,7 @@ let controller = {
     start = req.query.start;
     end = req.query.end;
     query = ["SELECT * FROM " +table +" WHERE datetime BETWEEN '" +start + "' AND '" +end +"';"];
-    connectDb(req, res, query, database);
+    connectDb(query, database);
   },
 
   retrieveTableIds: function(req, res) {
@@ -31,7 +34,7 @@ let controller = {
     start = req.query.start;
     end = req.query.end;
     query = ["SELECT * FROM " +table +" WHERE id BETWEEN " +start +" AND " +end +";"];
-    connectDb(req, res, query, database);
+    connectDb(query, database);
   }
 }
 

@@ -8,7 +8,7 @@ const queryCtrl = require('../controllers/queryCtrl.js');
 
 router.get('/', function(req, res){
   req.params.database = 'sensors';
-  ctrl.retrieveTables(req, res);
+  queryCtrl.retrieveTables(req, res);
 });
 
 //posting data to the database
