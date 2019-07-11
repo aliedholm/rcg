@@ -1,10 +1,12 @@
 doctype html
 html
 head
-        title test
+  title dashboard
 body
-        h1 Basic Set of Sensors in Database
-        ul
-                each value, key in data
-                        each values, keys in value
-                                li= values
+  h1 all of the tables from the #{database} database
+  ul
+    each array in data
+      each result in array
+        each table in result
+          li
+            a(href='retrieveTable/sensors-' + table) #{table}

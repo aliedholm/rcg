@@ -1,41 +1,69 @@
-//filename: logController.js
+//filename: queryController.js
 let bodyparser = require('body-parser');
 const dbUtilities = require('../db/db.js');
 
 let controller = {
-  retrieveTables: function(req, res){
-    database = req.params.database;
-    query = ["SHOW TABLES FROM " +database +";"];
-    connectDb(query, database, function(results){
-      res.render('dashboard', {data: results});
-      console.log('results from controller' + results);
-    });
+  retrieveTables: async function(req, res){
+    const database = req.params.database;
+    const query = ["SHOW TABLES FROM " +database +";"];
+    const view = 'dashboard'
+
+    const results = await connectDb(query, database);
+      res.render(view, {
+        data: results,
+        database: database
+      });
   },
 
-  retrieveTable: function(req, res){
-    database = req.params.database;
-    table = req.params.table;
-    query = ["SELECT * FROM " +table +";"];
-    connectDb(query, database);
+  retrieveTable: async function(req, res){
+    const database = req.params.database;
+    const table = req.params.table;
+    const query = ["SELECT * FROM " +table +";"];
+    const view = 'sensorTable'
+    
+    const results = await connectDb(query, database);
+      res.render(view, {
+        data: results,
+        database: database,
+        table: table
+      });
   },
 
-  retrieveTableDates: function(req, res) {
-    database = req.params.database;
-    table = req.params.table;
-    start = req.query.start;
-    end = req.query.end;
-    query = ["SELECT * FROM " +table +" WHERE datetime BETWEEN '" +start + "' AND '" +end +"';"];
-    connectDb(query, database);
+  retrieveTableDates: async function(req, res) {
+    const database = req.params.database;
+    const table = req.params.table;
+    const start = req.query.start;
+    const end = req.query.end;
+    const query = ["SELECT * FROM " +table +" WHERE datetime BETWEEN '" +start + "' AND '" +end +"';"];
+    const view = 'dashboard'
+    
+    const results = await connectDb(query, database);
+      res.render(view, {
+        data: results,
+        database: database,
+        table: table,
+        start: start,
+        end: end
+      });
   },
 
-  retrieveTableIds: function(req, res) {
-    database = req.params.database;
-    table = req.params.table;
-    start = req.query.start;
-    end = req.query.end;
-    query = ["SELECT * FROM " +table +" WHERE id BETWEEN " +start +" AND " +end +";"];
-    connectDb(query, database);
-  }
+  retrieveTableIds: async function(req, res) {
+    const database = req.params.database;
+    const table = req.params.table;
+    const start = req.query.start;
+    const end = req.query.end;
+    const query = ["SELECT * FROM " +table +" WHERE id BETWEEN " +start +" AND " +end +";"];
+    const view = 'dashboard'
+    
+    const results = await connectDb(query, database);
+      res.render(view, {
+        data: results,
+        database: database,
+        table: table,
+        start: start,
+        end: end
+      });
+  },
 }
 
 module.exports = controller;

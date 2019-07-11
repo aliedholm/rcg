@@ -4,36 +4,48 @@ const dbUtilities = require('../db/db.js');
 
 //control for logging data
 let controller = {
-  logData: function(req, res) {
-    database = req.params.database;
-    table = req.params.table;
-    datetime = req.query.datetime;
-    reading = req.query.reading;
-    console.log(table + " - " + datetime + " - " + reading);
-    query = [
+  logData: async function(req, res) {
+    const database = req.params.database;
+    const table = req.params.table;
+    const datetime = req.query.datetime;
+    const reading = req.query.reading;
+    const query = [
       "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(10) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY(ID)) ENGINE=INNODB;", 
       "INSERT INTO " + table + " (datetime, reading) VALUES('" + datetime + "', " + reading + ");"
     ];
-    //connectDb(query, database);
-    var initPromise = runQuery(query, database);
-    initPromise.then(function(result){
-      res.send(result);
-    });
-     
+    const view = 'dashboard';  
+    
+    const results = await connectDb(query, database);
+      res.render(view, {
+        data: results,
+        database: database,
+        table: table,
+        datetime: datetime,
+        reading: reading
+      });
   },
   
-  logMessage: function(req, res) {
-    database = req.params.database;
-    table = req.params.table;
-    datetime = req.query.datetime;
-    type = req.query.type;
-    message = req.query.message;
-    console.log(table + " - " + datetime + " - " + type + " - " + message);
-    query = [
+  logMessage: async function(req, res) {
+    const database = req.params.database;
+    const table = req.params.table;
+    const datetime = req.query.datetime;
+    const type = req.query.type;
+    const message = req.query.message;
+    const query = [
       'CREATE TABLE IF NOT EXISTS ' + table + ' (id INT AUTO_INCREMENT NOT NULL, datetime DATETIME NOT NULL, type VARCHAR(10) NOT NULL, message VARCHAR(30) NOT NULL, PRIMARY KEY(ID)) ENGINE=INNODB;', 
       'INSERT INTO ' + table + ' (datetime, type, message) VALUES("' + datetime + '", "' + type + '"    , "' + message + '")'
     ];
-    connectDb(query, database);
+    const view = 'dashboard';  
+    
+    const results = await connectDb(query, database);
+    res.render(view, {
+      data: results,
+      database: database,
+      table: table,
+      datetime: datetime,
+      type: type,
+      message: message
+    });
   },
 }
 
