@@ -1,4 +1,4 @@
-
+import requests
 import subprocess
 import mysql.connector
 from mysql.connector import Error
@@ -89,6 +89,14 @@ class sensor(object):
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     return timestamp
+
+  #function to send data to an api via requests
+  def apiSend(self, datetime, reading):
+    data = {"database": "sensors", "table": self.uniName, "datetime": datetime, "reading": reading}
+    url = "http://132.239.205.188:8080/api/post/reading/sensors-"
+    response = requests.post(url + self.uniName, params=data)
+    print("post reponse")
+    print("result of API send" + response.content)
 
   #function to insert data to local database
   def localDB(self, datetime, reading):
@@ -231,4 +239,5 @@ while 1:
   temp1 = sensors["temp1"].getData()
   timestamp = getTime()
   sensors["temp1"].localDB(timestamp, temp1)
-  time.sleep(1);
+  sensors["temp1"].apiSend(timestamp, temp1)
+  time.sleep(2);
