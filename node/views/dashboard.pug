@@ -1,12 +1,55 @@
 doctype html
-html
-head
-  title dashboard
-body
-  h1 all of the tables from the #{database} database
-  ul
-    each array in data
-      each result in array
-        each table in result
-          li
-            a(href='retrieveTable/sensors-' + table) #{table}
+html(lang='en')
+
+
+  head
+
+    meta(charset='utf-8')
+    meta(name='viewport' content='width-device-width, initial-scale=1, shrink-to-fit=no')
+
+    link(
+      href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+      rel='stylesheet'
+      integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T'
+      crossorigin='anonymous'
+    )
+
+    title dashboard
+
+
+  body
+    div.container
+      div.jumbotron
+        h1 #{database} database
+        ul.nav.nav-tabs
+          li.nav-item
+            a.nav-link.active(href='http://132.239.205.188:8080/api/') Dashboard
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
+              div.dropdown-menu
+                each array in data
+                  each result in array
+                    each table in result
+                      a.dropdown-item(href='retrieveTable/sensors-' + table) #{table}
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Change Database
+              div.dropdown-menu
+                a.dropdown-item(href="#") Sensors
+                a.dropdown-item(href="#") Logs
+                a.dropdown-item(href="#") Settings
+      p body
+    script(
+      src='https://code.jquery.com/jquery-3.3.1.slim.min.js'
+      integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo'
+      crossorigin='anonymous'
+    )
+    script(
+      src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+      integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1'
+      crossorigin='anonymous'
+    )
+    script(
+      src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+      integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM'
+      crossorigin='anonymous'
+    )
