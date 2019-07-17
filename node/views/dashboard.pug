@@ -22,22 +22,30 @@ html(lang='en')
       div.jumbotron
         h1 #{database} database
         ul.nav.nav-tabs
-          li.nav-item
-            a.nav-link.active(href='http://132.239.205.188:8080/api/') Dashboard
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
               div.dropdown-menu
-                each array in data
+                each array in tables
                   each result in array
                     each table in result
-                      a.dropdown-item(href='retrieveTable/sensors-' + table) #{table}
+                      a.dropdown-item(href='/api/retrieveTable/sensors-' + table) #{table}
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Change Database
               div.dropdown-menu
                 a.dropdown-item(href="#") Sensors
                 a.dropdown-item(href="#") Logs
                 a.dropdown-item(href="#") Settings
-      p body
+        br
+        h1 Data from #{table}
+        ul.nav.nav-tabs
+          li.nav-item.dropdown
+            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Date
+              div.dropdown-menu
+                each date in dates
+                  a.dropdown-item(href='/api/retrieveTableDates/sensors-' + table + '?start="' + date + '"&stop="' + date + '"') #{date}
+      ul.list-group
+        each array in data
+          li.list-group-item= array.id + ' - ' + array.datetime + ' - ' + array.reading
     script(
       src='https://code.jquery.com/jquery-3.3.1.slim.min.js'
       integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo'

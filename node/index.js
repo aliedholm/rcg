@@ -1,7 +1,7 @@
 //fileName: index.js
 //import body parser
 var bodyParser = require('body-parser');
-
+var process = require('process');
 //import express
 var express = require('express');
 var logControl = require('./controllers/logCtrl.js')
@@ -35,3 +35,15 @@ app.get('/', function(req, res){
 app.listen(port, function(){
   console.log("running apiTest on port " + port);
 });
+
+process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
+process.on('exit', handle);
+process.on('SIGQUIT', handle);
+process.on('SIGHUP', handle);
+
+function handle(signal){
+  console.log("Received " + signal);
+  app.close();
+  process.exit();
+}
