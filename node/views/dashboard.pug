@@ -25,8 +25,7 @@ html(lang='en')
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
               div.dropdown-menu
-                each array in tables
-                  each result in array
+                each result in tables
                     each table in result
                       a.dropdown-item(href='/api/retrieveTable/sensors-' + table) #{table}
           li.nav-item.dropdown
@@ -42,10 +41,11 @@ html(lang='en')
             a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Date
               div.dropdown-menu
                 each date in dates
-                  a.dropdown-item(href='/api/retrieveTableDates/sensors-' + table + '?start="' + date + '"&stop="' + date + '"') #{date}
-      ul.list-group
-        each array in data
-          li.list-group-item= array.id + ' - ' + array.datetime + ' - ' + array.reading
+                  a.dropdown-item(href='/api/retrieveTableDates/sensors-' + table + '?start=' + date + '&days=' + '1') #{date}
+      #dataDisplay
+        ul.list-group
+          each array in data
+            li.list-group-item= array.id + ' - ' + array.datetime + ' - ' + array.reading
     script(
       src='https://code.jquery.com/jquery-3.3.1.slim.min.js'
       integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo'

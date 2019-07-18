@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-//generalized utility db functions
+//run an array of queries 
 connectDb = async function(query, database){
   resultArray = [];
   const connection = await dbConnect(database);
@@ -14,6 +14,7 @@ connectDb = async function(query, database){
 };
 
 //helper functions
+
 //opening the db connection
 function dbConnect(database){
   return new Promise(function(resolve, reject){

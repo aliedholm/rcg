@@ -1,4 +1,4 @@
-//filename: routes.js
+//filename: pageRoutes.js
 
 var express = require('express');
 var router = express.Router();
@@ -8,6 +8,7 @@ const queryCtrl = require('../controllers/queryCtrl.js');
 
 router.get('/', function(req, res){
   req.params.database = 'sensors';
+  req.params.table = 'temp1';
   queryCtrl.retrieveTable(req, res);
 });
 

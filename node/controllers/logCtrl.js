@@ -16,13 +16,14 @@ let controller = {
     const view = 'dashboard';  
     
     const results = await connectDb(query, database);
-      res.render(view, {
-        data: results,
-        database: database,
-        table: table,
-        datetime: datetime,
-        reading: reading
-      });
+    res.send(results);
+//      res.render(view, {
+//        data: results,
+//        database: database,
+//        table: table,
+//        datetime: datetime,
+//        reading: reading
+//      });
   },
   
   logMessage: async function(req, res) {
