@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //setup server port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 //launch app to listen on specified port
 app.listen(port, function(){
