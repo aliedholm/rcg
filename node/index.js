@@ -1,11 +1,11 @@
 //fileName: index.js
 //import body parser
 var bodyParser = require('body-parser');
+//import process
 var process = require('process');
 //import express
 var express = require('express');
-var logCtrl = require('./controllers/logCtrl.js')
-var queryCtrl = require('./controllers/queryCtrl.js')
+//import api and page routes
 var apiRoutes = require('./routes/apiRoutes.js');
 var pageRoutes = require('./routes/pageRoutes.js');
 
@@ -27,12 +27,15 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+//configure app to serve static files
+app.use(express.static('static'));
+
 //setup server port
 var port = process.env.PORT || 8080;
 
 //launch app to listen on specified port
 app.listen(port, function(){
-  console.log("running apiTest on port " + port);
+  console.log("RUF running on: " + port);
 });
 
 //Graceful exit hooks

@@ -49,7 +49,7 @@ let controller = {
         resultsTrimmed = results[1].reverse();
     }
     const datesAvail = skimDates(resultsTrimmed);
-      res.render(view, {
+      res.send({
         data: resultsTrimmed,
         database: database,
         table: table,
@@ -77,19 +77,19 @@ let controller = {
       for(var i = results[1].length - 1; i >= 0; i--){
         if(i % 10 == 0){
           resultsTrimmed.push(results[1][i]);
-          console.log('RESULTS ----- ' + results[1][i].id);
         }
       }
     } else{
         resultsTrimmed = results[1].reverse();
     }
     const datesAvail = skimDates(resultsTrimmed);
-      res.render(view, {
-        database: database,
-        table: table,
-        tables: tables,
-        dates: datesAvail
-      });
+      res.send(resultsTrimmed);
+        //data: resultsTrimmed,
+        //database: database,
+        //table: table,
+        //tables: tables,
+        //dates: datesAvail
+      //});
   },
 
   retrieveTableIds: async function(req, res) {
@@ -110,14 +110,13 @@ let controller = {
       for(var i = results[1].length - 1; i >= 0; i--){
         if(i % 10 == 0){
           resultsTrimmed.push(results[1][i]);
-          console.log('RESULTS ----- ' + results[1][i].id);
         }
       }
     } else{
         resultsTrimmed = results[1].reverse();
     }
     const datesAvail = skimDates(resultsTrimmed);
-      res.render(view, {
+      res.send({
         data: resultsTrimmed,
         database: database,
         table: table,

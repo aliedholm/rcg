@@ -3,8 +3,8 @@
 var express = require('express');
 var router = express.Router();
 
-const logCtrl = require('../controllers/logCtrl.js');
-const queryCtrl = require('../controllers/queryCtrl.js');
+const logCtrl = require('../controllers/apiLogCtrl.js');
+const queryCtrl = require('../controllers/apiQueryCtrl.js');
 
 //posting data to the database
 router.post('/post/reading/:database-:table', function(req, res){logCtrl.logData(req, res);});

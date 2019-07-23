@@ -1,11 +1,11 @@
 doctype html
-html(lang='en')
+html(lang='en' ng-app='rufAngular')
 
 
   head
 
     meta(charset='utf-8')
-    meta(name='viewport' content='width-device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
 
     link(
       href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
@@ -14,38 +14,27 @@ html(lang='en')
       crossorigin='anonymous'
     )
 
-    title dashboard
+    title RUF sensors
 
 
-  body
+  body(ng-controller='angCtrl')
     div.container
       div.jumbotron
         h1 #{database} database
         ul.nav.nav-tabs
           li.nav-item.dropdown
             a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
-              div.dropdown-menu
-                each result in tables
-                    each table in result
-                      a.dropdown-item(href='/api/retrieveTable/sensors-' + table) #{table}
-          li.nav-item.dropdown
-            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Change Database
-              div.dropdown-menu
-                a.dropdown-item(href="#") Sensors
-                a.dropdown-item(href="#") Logs
-                a.dropdown-item(href="#") Settings
-        br
-        h1 Data from #{table}
-        ul.nav.nav-tabs
-          li.nav-item.dropdown
-            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Date
-              div.dropdown-menu
-                each date in dates
-                  a.dropdown-item(href='/api/retrieveTableDates/sensors-' + table + '?start=' + date + '&days=' + '1') #{date}
-      #dataDisplay
-        ul.list-group
-          each array in data
-            li.list-group-item= array.id + ' - ' + array.datetime + ' - ' + array.reading
+
+      #angDataDisplay
+        ul
+          li(ng-repeat="item in data.readings") {{ item.id }} - {{ item.datetime }} - {{ item.reading }} 
+
+    script(
+      src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js'
+    )
+    script(
+      src='../js/rufAngular.js'
+    )
     script(
       src='https://code.jquery.com/jquery-3.3.1.slim.min.js'
       integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo'

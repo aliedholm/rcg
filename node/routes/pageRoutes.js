@@ -9,7 +9,11 @@ const queryCtrl = require('../controllers/queryCtrl.js');
 router.get('/', function(req, res){
   req.params.database = 'sensors';
   req.params.table = 'temp1';
-  queryCtrl.retrieveTable(req, res);
+  const view = 'dashboard';
+  res.render(view, {
+    title: 'rufSensor'
+  });
+//  queryCtrl.retrieveTable(req, res);
 });
 
 //posting data to the database

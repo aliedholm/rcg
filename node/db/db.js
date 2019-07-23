@@ -11,6 +11,7 @@ connectDb = async function(query, database){
     resultArray.push(result);
   }
   return resultArray;
+  dbDisconnect(connection);
 };
 
 //helper functions
@@ -28,7 +29,7 @@ function dbConnect(database){
     connection.connect(function(err) {
       if(err) {
         console.error('error connecting: ' + err.stack);
-        reject(error);
+        reject(err);
       }
       else{
         console.log('connected as id ' + connection.threadID);
