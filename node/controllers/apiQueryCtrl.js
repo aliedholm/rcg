@@ -1,4 +1,4 @@
-//filename: queryController.js
+//filename: apiQueryController.js
 let bodyparser = require('body-parser');
 const dbUtilities = require('../db/db.js');
 
@@ -28,6 +28,21 @@ skimDates = function(array){
 
 //defnining the actuall controller and its methods
 let controller = {
+  retrieveTables: async function(req, res){
+    const database = req.params.database;
+    const query = [
+      'SHOW TABLES FROM ' +database +';',
+    ];
+    const view = 'dashboard'; 
+    const results = await connectDb(query, database);
+    const tables = results[0];
+    var sensors = [];
+    for(var i = 0; i < tables.length; i++){
+      sensors.push(tables[i]);
+    } 
+    res.send(sensors);
+  },
+
   retrieveTable: async function(req, res){
     const database = req.params.database;
     const table = req.params.table;
