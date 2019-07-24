@@ -18,16 +18,8 @@ html(lang='en' ng-app='rufAngular')
 
 
   body(ng-controller='angCtrl')
-    div.container
-      div.jumbotron
-        h1 #{database} database
-        ul.nav.nav-tabs
-          li.nav-item.dropdown
-            a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
-
-      #angDataDisplay
-        ul
-          li(ng-repeat="item in data.readings") {{ item.id }} - {{ item.datetime }} - {{ item.reading }} 
+    include nav.pug
+    include data.pug
 
     script(
       src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js'

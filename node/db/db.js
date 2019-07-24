@@ -10,8 +10,8 @@ connectDb = async function(query, database){
     console.log(result);
     resultArray.push(result);
   }
-  return resultArray;
   dbDisconnect(connection);
+  return resultArray;
 };
 
 //helper functions
