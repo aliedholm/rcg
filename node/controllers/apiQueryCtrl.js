@@ -28,33 +28,42 @@ skimDates = function(array){
 
 //defnining the actuall controller and its methods
 let controller = {
+  retrieveTables: async function(req, res){
+    const database = req.params.database;
+    const query = [
+      'SHOW TABLES FROM ' +database +';',
+    ];
+    const results = await connectDb(query, database);
+    const tables = results[0];
+    var sensors = [];
+    for(var i = 0; i < tables.length; i++){
+      sensors.push(tables[i].Tables_in_sensors);
+    }
+      res.send({
+        sensors: sensors
+      });
+  },
+
   retrieveTable: async function(req, res){
     const database = req.params.database;
     const table = req.params.table;
     const query = [
-      'SHOW TABLES FROM ' +database +';',
       'SELECT * FROM ' +table +';'
     ];
     const view = 'dashboard'; 
     const results = await connectDb(query, database);
-    const tables = results[0];
     let resultsTrimmed = [];
-    if(results[1].length > 500){
-      for(var i = results[1].length; i > 0; i--){
+    if(results[0].length > 500){
+      for(var i = results[0].length; i > 0; i--){
         if(i % 10 == 0){
-          resultsTrimmed.push(results[1][i]);
+          resultsTrimmed.push(results[0][i]);
         }
       }
     } else{
-        resultsTrimmed = results[1].reverse();
+        resultsTrimmed = results[0].reverse();
     }
-    const datesAvail = skimDates(resultsTrimmed);
       res.send({
         data: resultsTrimmed,
-        database: database,
-        table: table,
-        tables: tables,
-        dates: datesAvail
       });
   },
 
@@ -65,31 +74,21 @@ let controller = {
     const days = req.query.days;
     const end = datePlus(start, days);
     const query = [
-      'SHOW TABLES FROM ' +database +';',
       "SELECT * FROM " +table +" WHERE datetime BETWEEN '" +start + "' AND '" +end +"';"
     ];
-    const view = 'dashboard'
     
     const results = await connectDb(query, database);
-    const tables = results[0];
     var resultsTrimmed = [];
-    if(results[1].length > 500){
-      for(var i = results[1].length - 1; i >= 0; i--){
+    if(results[0].length > 500){
+      for(var i = results[0].length - 1; i >= 0; i--){
         if(i % 10 == 0){
-          resultsTrimmed.push(results[1][i]);
+          resultsTrimmed.push(results[0][i]);
         }
       }
     } else{
-        resultsTrimmed = results[1].reverse();
+        resultsTrimmed = results[0].reverse();
     }
-    const datesAvail = skimDates(resultsTrimmed);
       res.send(resultsTrimmed);
-        //data: resultsTrimmed,
-        //database: database,
-        //table: table,
-        //tables: tables,
-        //dates: datesAvail
-      //});
   },
 
   retrieveTableIds: async function(req, res) {
@@ -98,7 +97,6 @@ let controller = {
     const start = req.query.start;
     const end = req.query.end;
     const query = [
-      'SHOW TABLES FROM ' +database +';',
       "SELECT * FROM " +table +" WHERE id BETWEEN " +start +" AND " +end +";"
     ];
     const view = 'dashboard'
@@ -106,24 +104,17 @@ let controller = {
     const results = await connectDb(query, database);
     const tables = results[0];
     var resultsTrimmed = [];
-    if(results[1].length > 500){
-      for(var i = results[1].length - 1; i >= 0; i--){
+    if(results[0].length > 500){
+      for(var i = results[0].length - 1; i >= 0; i--){
         if(i % 10 == 0){
-          resultsTrimmed.push(results[1][i]);
+          resultsTrimmed.push(results[0][i]);
         }
       }
     } else{
-        resultsTrimmed = results[1].reverse();
+        resultsTrimmed = results[0].reverse();
     }
-    const datesAvail = skimDates(resultsTrimmed);
-      res.send({
-        data: resultsTrimmed,
-        database: database,
-        table: table,
-        tables: tables,
-        dates: datesAvail
-      });
-  },
+      res.send(resultsTrimmed);
+  }
 }
 
 module.exports = controller;

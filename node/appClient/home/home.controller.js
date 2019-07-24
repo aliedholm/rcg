@@ -1,5 +1,7 @@
 //defining the module
-angular.module('rufAngular', []);
+angular
+  .module('rufAngular', []);
+  .controller('angCtrl', angCtrl);  
 
 //defining the angular controller
 var angCtrl = async function($scope, $http, $q, fetchData){

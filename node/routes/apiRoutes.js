@@ -11,7 +11,7 @@ router.post('/post/reading/:database-:table', function(req, res){logCtrl.logData
 router.post('/post/log/:database-:table', function(req, res){logCtrl.logMessage(req, res);});
 
 //retrieving data from the database
-router.get('/tables/:database', function(req, res){queryCtrl.retrieveTables(req, res);});
+router.get('/retrieveTables/:database', function(req, res){queryCtrl.retrieveTables(req, res);});
 router.get('/retrieveTable/:database-:table', function(req, res){queryCtrl.retrieveTable(req, res);});
 router.get('/retrieveTableDates/:database-:table', function(req, res){queryCtrl.retrieveTableDates(req, res);});
 router.get('/retrieveTableIds/:database-:table', function(req, res){queryCtrl.retrieveTableIds(req, res);});

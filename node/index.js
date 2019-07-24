@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 
 //configure app to serve static files
 app.use(express.static('static'));
+app.use(express.static('appClient'));
 
 //setup server port
 var port = process.env.PORT || 8080;

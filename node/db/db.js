@@ -10,8 +10,9 @@ connectDb = async function(query, database){
     console.log(result);
     resultArray.push(result);
   }
+  connection.destroy();
+  console.log('connection destroyed');
   return resultArray;
-  dbDisconnect(connection);
 };
 
 //helper functions
@@ -19,14 +20,15 @@ connectDb = async function(query, database){
 //opening the db connection
 function dbConnect(database){
   return new Promise(function(resolve, reject){
-    var connection = mysql.createConnection({
+    var connection = mysql.createPool({
+      connectionLimit : 10,
       host : 'localhost',
       user : 'rcg',
       password: '8693ViaMallorca',
       database: database
     });
 
-    connection.connect(function(err) {
+    connection.getConnection(function(err, connection) {
       if(err) {
         console.error('error connecting: ' + err.stack);
         reject(err);
@@ -57,7 +59,7 @@ function buildQuery(connection, query){
 
 //closing the connection to the database
 function dbDisconnect(connection){
-  connection.end(function(err) {
+  connection.release(function(err) {
     if(err) {
       console.error('error terminating connection');
       return(error);
@@ -68,4 +70,4 @@ function dbDisconnect(connection){
   });
 }
 
-module.exports = connectDb;
+module.exports = connectDb, dbConnect, dbDisconnect, buildQuery;
