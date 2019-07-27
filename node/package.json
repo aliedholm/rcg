@@ -1,5 +1,5 @@
 {
-  "name": "apitest",
+  "name": "rufSensors",
   "version": "1.0.0",
   "description": "a simple API test to establish pipelines and be further built out",
   "main": "index.js",

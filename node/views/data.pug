@@ -1,4 +1,5 @@
 div.container
   #angDataDisplay
+    button(ng-click="changeData('http://132.239.205.188:8080/api/retrieveTable/sensors-table61', $scope, fetchData, setScope)") Table61
     ul
       li(ng-repeat="item in data.readings") {{ item.id }} - {{ item.datetime }} - {{ item.reading }}
