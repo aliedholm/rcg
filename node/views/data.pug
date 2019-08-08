@@ -1,5 +1,5 @@
-div.container
-  #angDataDisplay
-    button(ng-click="changeData('http://132.239.205.188:8080/api/retrieveTable/sensors-table61', $scope, fetchData, setScope)") Table61
-    ul
-      li(ng-repeat="item in data.readings") {{ item.id }} - {{ item.datetime }} - {{ item.reading }}
+.container
+  p Can I see the {{ ctrl.fakeTitle }}
+  p Maybe I can see this {{ ctrl.title }}
+  ul
+    li(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime }} - {{ item.reading }}

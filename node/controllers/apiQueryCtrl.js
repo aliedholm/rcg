@@ -38,7 +38,7 @@ let controller = {
     const tables = results[0];
     var sensors = [];
     for(var i = 0; i < tables.length; i++){
-      sensors.push(tables[i]);
+      sensors.push(tables[i].Tables_in_sensors);
     } 
     res.send(sensors);
   },

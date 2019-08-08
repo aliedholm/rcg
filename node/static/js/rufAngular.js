@@ -1,48 +1,48 @@
-angular.module('rufAngular', []);
-//defining the angular controller
-var angCtrl = async function($scope, fetchData){
-  var temp1Url = 'http://132.239.205.188:8080/api/retrieveTable/sensors-temp1';
-  var table61Url = 'http://132.239.205.188:8080/api/retrieveTable/sensors-table61';
-  var results;
-  changeData(temp1Url, $scope, fetchData, setScope);
-}
+//set module name
+angular.module('rufAngular', [])
 
-//function to string together other required functions
-changeData = function(url, $scope, fetchData, setScope){
-  var fetchedData = fetchData(url);
-  setScope(fetchedData, $scope);
-}
+//dataCtrl controller definition
+  .controller('dataCtrl', function(httpService){
+    var self = this;
+    self.title = 'This is the title ';
+    self.fakeTitle = 'This is not the title ';
 
-//function to set the scope based on the results of a promise return of data
-setScope = function(promise, $scope){
-  promise.then(function(data){
-    var results = data;
-    $scope.data = {readings : results.data}
-  }, function(error){
-    console.error(data);
-  })
-}
+//URLs of respective data or buildling the URL strings
+    var sensorsUrl = 'http://132.239.205.188:8080/api/retrieveTables/sensors';
+    var table61Url = 'http://132.239.205.188:8080/api/retrieveTable/sensors-table61';
+    var temp1Url = 'http://132.239.205.188:8080/api/retrieveTable/sensors-temp1';
 
-//function to generate a promise that will return the required data
-fetchData = function($http, $q){
-  return function(url){
-    var defer = $q.defer()
-    fetchedData = $http({
-      method: 'GET',
-      url: url
-    }).then(function(response){
-        defer.resolve(response)
-      }, function(err){
-        defer.reject(err)
+//Call for all the sensor names
+    httpService.getData(sensorsUrl)
+      .then(function(response){
+        self.sensors = response;
       })
-    return defer.promise
-  }
-}
 
-angular
-  .module('rufAngular')
-  .controller('angCtrl', angCtrl)
-  .service('fetchData', fetchData)
-  .service('changeData', changeData)
-  .service('setScope', setScope);
+//Call for the initial data
+      .then(function(results){
+        httpService.getData(temp1Url)
+          .then(function(response){
+            self.dataPoints = response;
+          });    
+      });
+      
+      self.fetchNew = function(url){
+        httpService.getData(temp1Url)
+          .then(function(response){
+            self.dataPoints = response;
+          });    
+      }
+  })
 
+//API data call service  
+  .service('httpService', function($http){
+    return {
+      getData: function(url){
+        return $http.get(url)
+          .then(function(response){
+          console.log("This is the response: " + JSON.stringify(response.data));
+          return response.data;
+          });
+      }
+    };
+  });
