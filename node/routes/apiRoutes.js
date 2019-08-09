@@ -13,6 +13,7 @@ router.post('/post/log/:database-:table', function(req, res){apiLogCtrl.logMessa
 //retrieving data from the database
 router.get('/retrieveTables/:database', function(req, res){apiQueryCtrl.retrieveTables(req, res);});
 router.get('/retrieveTable/:database-:table', function(req, res){apiQueryCtrl.retrieveTable(req, res);});
+router.get('/retrieveDates/:database-:table', function(req, res){apiQueryCtrl.retrieveDates(req, res);});
 router.get('/retrieveTableDates/:database-:table', function(req, res){apiQueryCtrl.retrieveTableDates(req, res);});
 router.get('/retrieveTableIds/:database-:table', function(req, res){apiQueryCtrl.retrieveTableIds(req, res);});
 

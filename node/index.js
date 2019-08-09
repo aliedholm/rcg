@@ -1,4 +1,5 @@
 //fileName: index.js
+var shell = require('shelljs');
 //import body parser
 var bodyParser = require('body-parser');
 //import process
@@ -8,6 +9,12 @@ var express = require('express');
 //import api and page routes
 var apiRoutes = require('./routes/apiRoutes.js');
 var pageRoutes = require('./routes/pageRoutes.js');
+
+//define the port for the application to work on
+var port = 8080;
+
+//kill anything that might have been using the port
+shell.echo("application starting up");
 
 //initialize the app
 var app = express();
@@ -31,7 +38,7 @@ app.use(bodyParser.json());
 app.use(express.static('static'));
 
 //setup server port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || port;
 
 //launch app to listen on specified port
 app.listen(port, function(){
