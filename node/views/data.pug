@@ -1,5 +1,3 @@
 .container
-  p Can I see the {{ ctrl.fakeTitle }}
-  p Maybe I can see this {{ ctrl.title }}
-  ul
-    li(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime }} - {{ item.reading }}
+  ul.list-group
+    li.list-group-item(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime | date : "medium" }} - {{ item.reading }}
