@@ -28,7 +28,7 @@
       select(ng-model="ctrl.endDate")
         option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" }}
 
-    button(ng-click="ctrl.fetchNewDates(ctrl.startDate, ctrl.endDate)") Run Dates
+    button(ng-click="ctrl.fetchNewSensorDates(ctrl.startDate, ctrl.endDate)") Run Dates
 
     p {{ ctrl.currentSensor }} has data from {{ ctrl.dateOldest | date : "yyyy-MM-dd" }} through {{ ctrl.dateNewest | date : "yyyy-MM-dd" }}
-    p you are seeing data from {{ ctrl.dataStart }} through {{ ctrl.dataEnd }}
+    p you are seeing data from {{ ctrl.startDate | date : "yyyy-MM-dd" }} through {{ ctrl.endDate | date : "yyyy-MM-dd" }}
