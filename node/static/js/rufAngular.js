@@ -12,22 +12,47 @@ angular.module('rufAngular', [])
     self.dateOldest = "2000-01-01";
     self.dateNewest = "3000-01-01";
     
-//function to setup page fresh for new DB change
+//function to load a new database used when changing databases and also on page load
     self.changeDb = function(database){
       self.currentDatabase = database;
       httpService.getData(buildDatabaseUrl(self.currentDatabase))
-        .then(function(response){
-          self.sensors = response;
-          self.currentSensor = response[0];
-        })
-        .then(function(results){
-          self.fetchDistinctDates(self.currentSensor);
-        })
-        .then(function(results){
-          self.fetchNewSensorDates(self.startDate, self.endDate);
-        })
+        .then(function(sensors){
+          self.sensors = sensors;
+          self.currentSensor = sensors[0];
+          httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
+          .then(function(dates){
+            self.datesAvailable = dates;
+            self.oldest = dayjs(dates[dates.length - 1]).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+            self.newest = dayjs(dates[0]).add(8, 'hour').endOf('day').format('YYYY-MM-DD HH:mm:ss');
+            self.dataStart = dayjs(dates[dates.length -1]).startOf('day').format('YYYY-MM-DD');
+            self.dataEnd = dayjs(dates[0]).add(8, 'hour').endOf('day').format('YYYY-MM-DD');
+            var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
+            var params = { "start" : self.oldest, "end" : self.newest };
+            httpService.getData(url, params)
+              .then(function(data){
+                self.dataPoints = data;
+              })
+          })
+        })  
     } 
 
+//function to load a new database used when changing databases and also on page load
+    self.changeSensor = function(sensor){
+      self.currentSensor = sensor;
+      httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
+      .then(function(dates){
+        self.datesAvailable = dates;
+        self.newest = dates[0];
+        self.oldest = dates[dates.length - 1]; 
+        var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
+        var params = { "start" : self.oldest, "end" : self.newest };
+        httpService.getData(url, params)
+          .then(function(data){
+            self.dataPoints = data;
+          })
+      })        
+    }
+ 
 //data fetching functions to assist in grabbing data 
   //function to fetch new list of tables from DB and update the page
     self.fetchTables = function(database){
@@ -38,23 +63,10 @@ angular.module('rufAngular', [])
         });
     }
 
-  //function to fetch new data from a sensor table and update the page 
-    self.fetchNewSensor = function(sensor){
-      self.currentSensor = sensor;
-      url = buildSensorUrl(self.currentDatabase, self.currentSensor);
-      httpService.getData(url)
-        .then(function(response){
-          self.dataPoints = response;
-        })
-        .then(function(dates){
-          self.fetchDistinctDates(self.currentSensor);
-        });
-    }
-
   //function to fetch new data from a sensor table by date and update the page 
     self.fetchNewSensorDates = function(start, end){
-      self.dateOldest = start;
-      self.dateNewest = end;
+      self.dataStart = start;
+      self.dataEnd = end;
       var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
       var params = { "start" : start, "end" : end };
       httpService.getData(url, params)
@@ -69,17 +81,17 @@ angular.module('rufAngular', [])
       httpService.getData(url)
         .then(function(response){
           self.datesAvailable = response;
-          self.dateNewest = response[0];
-          self.dateOldest = response[response.length - 1];
-          self.endDate = response[0];
-          self.startDate = response[response.length - 1];
+          self.oldest = dayjs(dates[dates.length - 1]).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+          self.newest = dayjs(dates[0]).add(8, 'hour').endOf('day').format('YYYY-MM-DD HH:mm:ss');
         });
     }
 //initialize the page by loading the default db
     self.changeDb(self.currentDatabase);
 
-  })
+
 //end of controller function
+  })
+
 
 //API data call service  
   .service('httpService', function($http){
@@ -92,7 +104,8 @@ angular.module('rufAngular', [])
         }
         return $http(getReq)
           .then(function(response){
-          console.log("This is the response: " + JSON.stringify(response.data));
+         // console.log("This is the response: " + JSON.stringify(response.data));
+         // console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
           return response.data;
           });
       }
@@ -125,17 +138,4 @@ angular.module('rufAngular', [])
     var buildDatesUrl = function(database, sensor){
       url = "http://132.239.205.188:8080/api/retrieveDates/" + database + "-" + sensor;
       return url;
-    }
-
-    //function to get todays date
-    var getCurrentDate = function(days){
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      if(days){
-        dd = dd + days;
-      }
-      var mm = String(today.getMonth() + 1).padStart(2, '0');
-      var yyyy = today.getFullYear();
-      today = mm + '-' + dd + '-' + yyyy;
-      return today;
     }

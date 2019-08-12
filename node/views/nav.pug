@@ -10,7 +10,7 @@
         a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
           div.dropdown-menu
             a(ng-repeat='sensor in ctrl.sensors').dropdown-item
-              div(ng-click='ctrl.fetchNewSensor(sensor)') {{ sensor }}
+              div(ng-click='ctrl.changeSensor(sensor)') {{ sensor }}
 
 
       li.nav-item.dropdown
@@ -22,13 +22,12 @@
 
     div Start Date: 
       select(ng-model="ctrl.startDate")
-        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" }}
+        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" : "UTC" }}
  
     div End Date: 
       select(ng-model="ctrl.endDate")
-        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" }}
+        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" : "UTC"  }}
 
     button(ng-click="ctrl.fetchNewSensorDates(ctrl.startDate, ctrl.endDate)") Run Dates
 
-    p {{ ctrl.currentSensor }} has data from {{ ctrl.dateOldest | date : "yyyy-MM-dd" }} through {{ ctrl.dateNewest | date : "yyyy-MM-dd" }}
-    p you are seeing data from {{ ctrl.startDate | date : "yyyy-MM-dd" }} through {{ ctrl.endDate | date : "yyyy-MM-dd" }}
+    p {{ ctrl.currentSensor }} has data from {{ ctrl.oldest | date : "yyyy-MM-dd" : "UTC" }} through {{ ctrl.newest | date : "yyyy-MM-dd" : "UTC" }}
