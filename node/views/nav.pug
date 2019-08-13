@@ -19,15 +19,3 @@
             a(ng-repeat='database in ctrl.databases').dropdown-item
               div(ng-click='ctrl.changeDb(database)') {{ database }}
 
-
-    div Start Date: 
-      select(ng-model="ctrl.startDate")
-        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" : "UTC" }}
- 
-    div End Date: 
-      select(ng-model="ctrl.endDate")
-        option(ng-repeat="date in ctrl.datesAvailable") {{ date | date : "yyyy-MM-dd" : "UTC"  }}
-
-    button(ng-click="ctrl.fetchNewSensorDates(ctrl.startDate, ctrl.endDate)") Run Dates
-
-    p {{ ctrl.currentSensor }} has data from {{ ctrl.oldest | date : "yyyy-MM-dd" : "UTC" }} through {{ ctrl.newest | date : "yyyy-MM-dd" : "UTC" }}

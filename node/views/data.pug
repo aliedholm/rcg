@@ -1,3 +1,16 @@
 .container
-  ul.list-group
-    li.list-group-item(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime | date : "medium" : 'UTC' }} - {{ item.reading }}
+
+  div.dateSelector.row
+    div.col.col-sm-12
+      button(ng-click="ctrl.previousDay()") Previous Day
+
+      select(ng-options="date for date in ctrl.datesAvailable" ng-change="console.log('ng-change fired off')" ng-model="ctrl.currentDate.start")
+
+      button(ng-click="ctrl.nextDay()") Next Day
+
+      br  
+  
+      div.dataDisplay.row
+        div.col.col-sm-12
+          ul.list-group
+            li.list-group-item(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime | date : "medium" : 'UTC' }} - {{ item.reading }}
