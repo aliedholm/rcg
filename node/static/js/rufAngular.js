@@ -9,8 +9,7 @@ angular.module('rufAngular', [])
     self.databases = ["sensors", "logs", "digester"]; 
     self.currentDatabase = self.databases[0];
     self.datesAvailable = [];
-     
-    self.currentDate = getCurrentDate();
+    self.currentDate = getDate();
 
 //function to load a new database used when changing databases and also on page load
     self.changeDb = function(database){
@@ -21,13 +20,12 @@ angular.module('rufAngular', [])
           self.currentSensor = sensors[0];
           httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
           .then(function(dates){
-            self.oldest = moment.utc(dates[dates.length - 1]).startOf('day').format('YYYY-MM-DD HH:mm:ss');
-            self.newest = moment.utc(dates[0]).endOf('day').format('YYYY-MM-DD HH:mm:ss');
+            self.oldest = moment.utc(dates[dates.length - 1]).startOf('day').format(momentFormat);
+            self.newest = moment.utc(dates[0]).endOf('day').format(momentFormat);
+            self.currentDate = getDate(self.newest);
             for(var i = 0; i < dates.length; i++){
-              self.datesAvailable[i] = (moment.utc(dates[i]).format('YYYY-MM-DD HH:mm:ss')); 
+              self.datesAvailable[i] = getDate(moment.utc(dates[i]).format(momentFormat)); 
             }
-            self.dataStart = self.currentDate.start;
-            self.dataEnd = self.currentDate.end;
             var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
             var params = { "start" : self.currentDate.start, "end" : self.currentDate.end };
             httpService.getData(url, params)
@@ -43,9 +41,12 @@ angular.module('rufAngular', [])
       self.currentSensor = sensor;
       httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
       .then(function(dates){
-        self.datesAvailable = dates;
-        self.newest = dates[0];
-        self.oldest = dates[dates.length - 1]; 
+        self.currentDate = getDate(moment.utc(dates[0]).format(momentFormat));
+        self.oldest = moment.utc(dates[dates.length - 1]).startOf('day').format(momentFormat);
+        self.newest = moment.utc(dates[0]).endOf('day').format(momentFormat);
+        for(var i = 0; i < dates.length; i++){
+          self.datesAvailable[i] = getDate(moment.utc(dates[i]).format(momentFormat)); 
+        }
         var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
         var params = { "start" : self.oldest, "end" : self.newest };
         httpService.getData(url, params)
@@ -57,22 +58,25 @@ angular.module('rufAngular', [])
  
     //function to move the date back one day
     self.previousDay = function(){
-      var dateIndex = self.datesAvailable.indexOf(self.currentDate.start);
-      var newDateIndex = dateIndex + 1;
-      var newDate = self.datesAvailable[newDateIndex];
-      newDate = dateStartEnd(newDate);
-      self.currentDate = newDate;
-      self.changeDay(newDate);
+      for(var i = 0; i < self.datesAvailable.length; i++){
+        if (self.datesAvailable[i].start == self.currentDate.start){
+          self.dateIndex = i;
+        }
+      }
+      var newDateIndex = self.dateIndex + 1;
+      self.currentDate = self.datesAvailable[newDateIndex];
+      self.changeDay(self.currentDate);
     }
 
-    //function to move the date forward one day
     self.nextDay = function(){
-      var dateIndex = self.datesAvailable.indexOf(self.currentDate.start);
-      var newDateIndex = dateIndex - 1;
-      var newDate = self.datesAvailable[newDateIndex];
-      newDate = dateStartEnd(newDate);
-      self.currentDate = newDate;
-      self.changeDay(newDate);
+      for(var i = 0; i < self.datesAvailable.length; i++){
+        if (self.datesAvailable[i].start == self.currentDate.start){
+          self.dateIndex = i;
+        }
+      }
+      var newDateIndex = self.dateIndex - 1;
+      self.currentDate = self.datesAvailable[newDateIndex];
+      self.changeDay(self.currentDate);
     }
 
   //function to fetch a new date and update the page
@@ -103,7 +107,7 @@ angular.module('rufAngular', [])
         return $http(getReq)
           .then(function(response){
           //console.log("This is the response: " + JSON.stringify(response.data));
-          //console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
+          console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
           return response.data;
           });
       }
@@ -137,23 +141,30 @@ angular.module('rufAngular', [])
     }
     
     //function to return current date
-    var getCurrentDate = function(){
+    var getDate = function(date){
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');
       var mm = String(today.getMonth() + 1).padStart(2, '0');
       var yyyy = today.getFullYear();
       today = mm + '/' + dd + '/' + yyyy;
-      today = moment.utc(today);
+      if(date){
+        today = moment.utc(date).format(momentFormat);
+      }
+      else {
+        today = moment.utc(today);
+      }
       return dateStartEnd(today)
     }
 
     //function to get the start and end of a day
     var dateStartEnd = function(date){
-      var start = moment(date).startOf('day').format("YYYY-MM-DD HH:mm:ss");
-      var end = moment(date).endOf('day').format("YYYY-MM-DD HH:mm:ss");
+      var start = moment(date).startOf('day').format(momentFormat);
+      var end = moment(date).endOf('day').format(momentFormat);
       return {
         start : start,
         end : end,
         date : date
       } 
     }
+
+    var momentFormat = "YYYY-MM-DD HH:mm:ss";
