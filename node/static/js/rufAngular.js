@@ -9,8 +9,19 @@ angular.module('rufAngular', [])
     self.databases = ["sensors", "logs", "digester"]; 
     self.currentDatabase = self.databases[0];
     self.datesAvailable = [];
-    self.currentDate = getDate();
 
+//function to disable navigation buttons for dates that don't exist
+    self.checkStops = function(){
+      self.oldStop = 0; 
+      self.newStop = 0; 
+      if(self.currentDate == self.datesAvailable[0]){
+        self.newStop = 1;
+      }
+      if(self.currentDate == self.datesAvailable[(self.datesAvailable).length - 1]){
+        self.oldStop = 1;
+      }
+    }
+    
 //function to load a new database used when changing databases and also on page load
     self.changeDb = function(database){
       self.currentDatabase = database;
@@ -18,20 +29,11 @@ angular.module('rufAngular', [])
         .then(function(sensors){
           self.sensors = sensors;
           self.currentSensor = sensors[0];
+
           httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
           .then(function(dates){
-            self.oldest = moment.utc(dates[dates.length - 1]).startOf('day').format(momentFormat);
-            self.newest = moment.utc(dates[0]).endOf('day').format(momentFormat);
-            self.currentDate = getDate(self.newest);
-            for(var i = 0; i < dates.length; i++){
-              self.datesAvailable[i] = getDate(moment.utc(dates[i]).format(momentFormat)); 
-            }
-            var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
-            var params = { "start" : self.currentDate.start, "end" : self.currentDate.end };
-            httpService.getData(url, params)
-              .then(function(data){
-                self.dataPoints = data;
-              })
+            processDates(self, dates);
+            self.changeDay(self.currentDate);
           })
         })  
     } 
@@ -41,22 +43,12 @@ angular.module('rufAngular', [])
       self.currentSensor = sensor;
       httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
       .then(function(dates){
-        self.currentDate = getDate(moment.utc(dates[0]).format(momentFormat));
-        self.oldest = moment.utc(dates[dates.length - 1]).startOf('day').format(momentFormat);
-        self.newest = moment.utc(dates[0]).endOf('day').format(momentFormat);
-        for(var i = 0; i < dates.length; i++){
-          self.datesAvailable[i] = getDate(moment.utc(dates[i]).format(momentFormat)); 
-        }
-        var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
-        var params = { "start" : self.oldest, "end" : self.newest };
-        httpService.getData(url, params)
-          .then(function(data){
-            self.dataPoints = data;
-          })
+        processDates(self, dates);
+        self.changeDay(self.currentDate);
       })        
     }
  
-    //function to move the date back one day
+//function to move the date back one day
     self.previousDay = function(){
       for(var i = 0; i < self.datesAvailable.length; i++){
         if (self.datesAvailable[i].start == self.currentDate.start){
@@ -68,6 +60,7 @@ angular.module('rufAngular', [])
       self.changeDay(self.currentDate);
     }
 
+//function to move the date forward one day
     self.nextDay = function(){
       for(var i = 0; i < self.datesAvailable.length; i++){
         if (self.datesAvailable[i].start == self.currentDate.start){
@@ -79,10 +72,11 @@ angular.module('rufAngular', [])
       self.changeDay(self.currentDate);
     }
 
-  //function to fetch a new date and update the page
+//function to fetch a new date and update the page
     self.changeDay = function(date){
       var url = buildSensorDatesUrl(self.currentDatabase, self.currentSensor);
       var params = { "start" : date.start, "end" : date.end };
+      self.checkStops();
       httpService.getData(url, params)
         .then(function(response){
           self.dataPoints = response;
@@ -107,7 +101,7 @@ angular.module('rufAngular', [])
         return $http(getReq)
           .then(function(response){
           //console.log("This is the response: " + JSON.stringify(response.data));
-          console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
+          //console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
           return response.data;
           });
       }
@@ -166,5 +160,16 @@ angular.module('rufAngular', [])
         date : date
       } 
     }
+//function to process the returned dates object and load it into relevant places
+    var processDates = function(self, dateArray){
+      self.oldest = moment.utc(dateArray[dateArray.length - 1]).startOf('day').format(momentFormat);
+      self.newest = moment.utc(dateArray[0]).endOf('day').format(momentFormat);
+      for(var i = 0; i < dateArray.length; i++){
+        self.datesAvailable[i] = getDate(moment.utc(dateArray[i]).format(momentFormat)); 
+      }
+      self.currentDate = self.datesAvailable[0];
+    }
 
-    var momentFormat = "YYYY-MM-DD HH:mm:ss";
+
+    //variable to set the format of the general dates for the page
+var momentFormat = "YYYY-MM-DD HH:mm:ss";
