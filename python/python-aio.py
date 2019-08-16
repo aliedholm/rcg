@@ -24,8 +24,6 @@ class sensor(object):
     print self.uniName
     print data
     time.sleep(d1)
-    timestamp = getTime()
-    print timestamp
     return data
   
   def printObject(self):
@@ -60,11 +58,12 @@ class sensor(object):
         time.sleep(1)
         ardSerial.write('<' + commandCode + '>')
         print "command code sent"
-        time.sleep(2)
+        time.sleep(1)
       myData = ardSerial.read()
       ardDataBuffer += myData
       if endOfDataChar in myData:
         dataReturn = stringArray(ardDataBuffer)
+        print "THis is the datareturn from send " + dataReturn
         endOfData = 1
 
       if errorChar in myData:
@@ -94,9 +93,11 @@ class sensor(object):
   def apiSend(self, datetime, reading):
     data = {"database": "sensors", "table": self.uniName, "datetime": datetime, "reading": reading}
     url = "http://132.239.205.188:8080/api/post/reading/sensors-"
-    response = requests.post(url + self.uniName, params=data)
-    print("post reponse")
-    print("result of API send" + response.content)
+    try:
+      response = requests.post(url + self.uniName, params=data)
+      print("data successfully sent")
+    except requests.exceptions.RequestException as e:
+      print("error sending API request")
 
   #function to insert data to local database
   def localDB(self, datetime, reading):
@@ -104,7 +105,6 @@ class sensor(object):
     try:
       connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
       sql_insert_query = "INSERT INTO " + self.uniName + " (datetime, reading) VALUES('" + datetime + "', '" + reading + "');"
-      print sql_insert_query
       cursor = connection.cursor()
       result = cursor.execute(sql_insert_query)
       connection.commit()
@@ -240,4 +240,16 @@ while 1:
   timestamp = getTime()
   sensors["temp1"].localDB(timestamp, temp1)
   sensors["temp1"].apiSend(timestamp, temp1)
-  time.sleep(2);
+  time.sleep(1);
+  
+  DHThum = sensors["DHThum"].getData()
+  timestamp = getTime()
+  sensors["DHThum"].localDB(timestamp, DHThum)
+  sensors["DHThum"].apiSend(timestamp, DHThum)
+  time.sleep(1);
+
+  DHTtemp = sensors["DHTtemp"].getData()
+  timestamp = getTime()
+  sensors["DHTtemp"].localDB(timestamp, DHTtemp)
+  sensors["DHTtemp"].apiSend(timestamp, DHTtemp)
+  time.sleep(1);

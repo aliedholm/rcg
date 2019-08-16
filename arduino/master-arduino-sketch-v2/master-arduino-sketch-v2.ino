@@ -7,6 +7,14 @@
     char receivedChars[numChars];
     
     boolean newData = false;
+//end serial buffer code
+
+//dht22 code
+#include "DHT.h"
+#define DHTPIN 10
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+//end dht22 code
 
 //ds18b20 code
     #include <OneWire.h>
@@ -30,6 +38,9 @@ void setup() {
 
   //blink diagnostic setup
   pinMode(LED_BUILTIN, OUTPUT);
+
+  //DHT22 code
+  dht.begin();
 
   //ds18b20 code
   sensors.begin();
@@ -70,6 +81,20 @@ void loop() {
       Serial.print("$");
       commandCode = "0";
     }
+
+    if(commandCode == "1121"){
+      float h = dht.readHumidity();
+      Serial.print(h);
+      Serial.print("$");
+      commandCode = "0";
+    }
+
+    if(commandCode == "1122"){
+      float t = dht.readTemperature();
+      Serial.print(t);
+      Serial.print("$");
+      commandCode = "0";
+    }
     
   // blink diagnostic
     if(commandCode == "9998"){
@@ -92,7 +117,7 @@ void loop() {
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "tempArd:1111;temp1,1112;temp2,1113;temp3,9991;temp-error,9998;temp-blink,9999;temp-identity";
+      String identity = "tempArd:1111;temp1,1112;temp2,1113;temp3,1121;DHThum,1122;DHTtemp,1122;temp-error,9998;temp-blink,9999;temp-identity";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
