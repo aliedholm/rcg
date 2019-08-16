@@ -1,26 +1,20 @@
 var mysql = require('mysql');
 
-//generalized utility db functions
-//function to open a db connection
+//run an array of queries 
+connectDb = async function(query, database){
+  resultArray = [];
+  const connection = await dbConnect(database);
+  
+  for(let i=0; i < query.length; i++){
+    const result = await buildQuery(connection, query[i]);
+    console.log(result);
+    resultArray.push(result);
+  }
+  dbDisconnect(connection);
+  return resultArray;
+};
 
-//opening the connection to the database
-connectDb = function(query, database){  
-resultData = [];
-  var connectionPromise = dbConnect(database);
-    connectionPromise.then(function(connection){
-      for(var i = 0; i < query.length; i++){
-        var queryPromise = buildQuery(connection, query[i]);
-        queryPromise.then(function(result){
-          console.log('QUERY' + i + ': ' + query[i]);
-          console.log(result);
-          resultData.push(result);
-          if(resultData.length == query.length){
-            dbDisconnect(connection);
-            return(resultData);
-          }
-        })
-      }
-    });
+//helper functions
 
 //opening the db connection
 function dbConnect(database){
@@ -35,7 +29,7 @@ function dbConnect(database){
     connection.connect(function(err) {
       if(err) {
         console.error('error connecting: ' + err.stack);
-        reject(error);
+        reject(err);
       }
       else{
         console.log('connected as id ' + connection.threadID);
@@ -74,5 +68,4 @@ function dbDisconnect(connection){
   });
 }
 
-}
 module.exports = connectDb;

@@ -1,0 +1,21 @@
+.container
+  .jumbotron
+
+    h1 {{ ctrl.currentSensor }}
+
+
+    ul.nav.nav-tabs
+
+      li.nav-item.dropdown
+        a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Sensor
+          div.dropdown-menu
+            a(ng-repeat='sensor in ctrl.sensors').dropdown-item
+              div(ng-click='ctrl.changeSensor(sensor)') {{ sensor }}
+
+
+      li.nav-item.dropdown
+        a.nav-link.dropdown-toggle(data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false") Choose Database
+          div.dropdown-menu
+            a(ng-repeat='database in ctrl.databases').dropdown-item
+              div(ng-click='ctrl.changeDb(database)') {{ database }}
+

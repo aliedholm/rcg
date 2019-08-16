@@ -1,5 +1,5 @@
 {
-  "name": "apitest",
+  "name": "rufSensors",
   "version": "1.0.0",
   "description": "a simple API test to establish pipelines and be further built out",
   "main": "index.js",
@@ -9,9 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.7.8",
     "body-parser": "^1.19.0",
+    "dayjs": "^1.8.15",
     "express": "^4.17.1",
     "mysql": "^2.17.1",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "shelljs": "^0.8.3"
   }
 }
