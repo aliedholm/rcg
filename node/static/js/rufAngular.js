@@ -162,6 +162,7 @@ angular.module('rufAngular', [])
 
     //function to process the returned dates object and load it into relevant places
     var processDates = function(self, dateArray){
+      self.datesAvailable = [];
       self.oldest = moment.utc(dateArray[dateArray.length - 1]).startOf('day').format(momentFormat);
       self.newest = moment.utc(dateArray[0]).endOf('day').format(momentFormat);
       for(var i = 0; i < dateArray.length; i++){
