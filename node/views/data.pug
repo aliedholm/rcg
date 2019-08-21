@@ -4,12 +4,10 @@
 
       button(ng-click="ctrl.previousDay()" ng-disabled="ctrl.oldStop") Previous Day
 
-      select(ng-options="date.start for date in ctrl.datesAvailable" ng-change="ctrl.changeDay(ctrl.currentDate)" ng-model="(ctrl.currentDate)")
+      select(ng-options="date.date for date in ctrl.datesAvailable" ng-change="ctrl.changeDay(ctrl.currentDate)" ng-model="(ctrl.currentDate)")
 
       button(ng-click="ctrl.nextDay()" ng-disabled="ctrl.newStop") Next Day
 
-      br  
-  
       div.dataDisplay.row
         div.col.col-sm-12
 

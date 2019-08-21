@@ -1,3 +1,5 @@
+var runPort = "8080";
+var apiUrl = "http://132.239.205.188:"
 //set module name
 angular.module('rufAngular', [])
 
@@ -109,28 +111,29 @@ angular.module('rufAngular', [])
   });
  
 
-  //utility functions
+//utility functions that don't need to be called from the page
+
     //function to build database URLs
     var buildDatabaseUrl = function(database){
-      url = "http://132.239.205.188:8080/api/retrieveTables/" + database;
+      url = apiUrl + runPort + "/api/retrieveTables/" + database;
       return url;
     }
 
     //function to build sensor URLs
     var buildSensorUrl = function(database, sensor){
-      url = "http://132.239.205.188:8080/api/retrieveTable/" + database + "-" + sensor;
+      url = apiUrl + runPort + "/api/retrieveTable/" + database + "-" + sensor;
       return url;
     }
 
     //function to build sensor URLs
     var buildSensorDatesUrl = function(database, sensor){
-      url = "http://132.239.205.188:8080/api/retrieveTableDates/" + database + "-" + sensor;
+      url = apiUrl + runPort + "/api/retrieveTableDates/" + database + "-" + sensor;
       return url;
     }
 
     //function to build sensor URLs
     var buildDatesUrl = function(database, sensor){
-      url = "http://132.239.205.188:8080/api/retrieveDates/" + database + "-" + sensor;
+      url = apiUrl + runPort + "/api/retrieveDates/" + database + "-" + sensor;
       return url;
     }
     
@@ -145,22 +148,19 @@ angular.module('rufAngular', [])
         today = moment.utc(date).format(momentFormat);
       }
       else {
-        today = moment.utc(today);
+        today = moment.utc(today).format(momentFormat);
       }
-      return dateStartEnd(today)
-    }
-
-    //function to get the start and end of a day
-    var dateStartEnd = function(date){
-      var start = moment(date).startOf('day').format(momentFormat);
-      var end = moment(date).endOf('day').format(momentFormat);
+      var start = moment.utc(date).startOf('day').format(momentFormat);
+      var end = moment.utc(date).endOf('day').format(momentFormat);
+      day = moment.utc(date).format(momentDate);
       return {
         start : start,
         end : end,
-        date : date
+        date : day
       } 
     }
-//function to process the returned dates object and load it into relevant places
+
+    //function to process the returned dates object and load it into relevant places
     var processDates = function(self, dateArray){
       self.oldest = moment.utc(dateArray[dateArray.length - 1]).startOf('day').format(momentFormat);
       self.newest = moment.utc(dateArray[0]).endOf('day').format(momentFormat);
@@ -172,4 +172,5 @@ angular.module('rufAngular', [])
 
 
     //variable to set the format of the general dates for the page
-var momentFormat = "YYYY-MM-DD HH:mm:ss";
+    var momentFormat = "YYYY-MM-DD HH:mm:ss";
+    var momentDate = "YYYY-MM-DD";
