@@ -1,5 +1,7 @@
 var runPort = "8080";
 var apiUrl = "http://132.239.205.188:"
+
+
 //set module name
 angular.module('rufAngular', [])
 

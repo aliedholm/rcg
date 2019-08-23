@@ -1,5 +1,6 @@
 //filename: apiQueryController.js
 let bodyparser = require('body-parser');
+var jStat = require('jStat').jStat;
 const dbUtilities = require('../db/db.js');
 
 const freq = 50;
@@ -75,8 +76,24 @@ let controller = {
     } else{
         resultsTrimmed = results[0].reverse();
     }
+      resultsTrimmed = calcStats(resultsTrimmed);
       res.send(resultsTrimmed);
   },
+}
+
+//function to calculate stats object and attach it to outgoing data
+var calcStats = function(dataSet){
+  var stats = {};
+  var justNumbers = [];
+  for(var i = 0; i < dataSet.length - 1; i++){
+    justNumbers.push(dataSet[i].reading);
+  }
+  stats.min = jStat.min(justNumbers);
+  stats.max = jStat.max(justNumbers);
+  stats.mean = jStat.mean(justNumbers);
+  console.log("From inside calcStats Mean: " + JSON.stringify(stats));
+  dataSet.push(stats);
+  return dataSet;
 }
 
 module.exports = controller;
