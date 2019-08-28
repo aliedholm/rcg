@@ -2,6 +2,9 @@
   div.statsRow.row
     div.col.col-sm-12
       div.statDisplay Mean: {{ ctrl.stats.mean }}
+      div.statDisplay Max: {{ ctrl.stats.max }}
+      div.statDisplay Min: {{ ctrl.stats.min }}
+
 
   div.dateSelector.row
     div.col.col-sm-12
@@ -16,5 +19,5 @@
         div.col.col-sm-12
 
           ul.list-group
-
+            li.list-group-item ID:     Date/Time:   Reading:
             li.list-group-item(ng-repeat="item in ctrl.dataPoints") {{ item.id }} - {{ item.datetime | date : "medium" : 'UTC' }} - {{ item.reading }}
