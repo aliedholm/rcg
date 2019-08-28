@@ -3,7 +3,7 @@ var apiUrl = "http://132.239.205.188:"
 
 
 //set module name
-angular.module('rufAngular', [])
+angular.module('rufAngular')
 
 //dataCtrl controller definition
   .controller('dataCtrl', function(httpService){
@@ -91,27 +91,6 @@ angular.module('rufAngular', [])
 
   })
 //end of controller function
-
-
-//API data call service  
-  .service('httpService', function($http){
-    return {
-      getData: function(url, params){
-        getReq = {
-          url : url,
-          method : "GET",
-          params : params
-        }
-        return $http(getReq)
-          .then(function(response){
-          //console.log("This is the response: " + JSON.stringify(response.data));
-          //console.log("This was the URL Sent: " + url + " These were the params: " + JSON.stringify(params)); 
-          return response.data;
-          });
-      }
-    };
-  });
- 
 
 //utility functions that don't need to be called from the page
 
