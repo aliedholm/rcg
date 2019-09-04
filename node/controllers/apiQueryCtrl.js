@@ -3,7 +3,7 @@ let bodyparser = require('body-parser');
 var jStat = require('jStat').jStat;
 const dbUtilities = require('../db/db.js');
 
-const freq = 10;
+const freq = 3;
 
 //defnining the actual controller and its methods
 let controller = {

@@ -32,7 +32,7 @@ angular.module('rufAngular')
       httpService.getData(buildDatabaseUrl(self.currentDatabase))
         .then(function(sensors){
           self.sensors = sensors;
-          self.currentSensor = sensors[0];
+          self.currentSensor = sensors[2];
 
           httpService.getData(buildDatesUrl(self.currentDatabase, self.currentSensor))
           .then(function(dates){
