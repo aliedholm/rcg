@@ -1,14 +1,16 @@
 .container
   div.statsRow.row
-    div.col.col-sm-12
+    div.col.col-sm-3
+      h3.subHeading Statistics:
+      div.statDisplay Std Dev: {{ ctrl.stats.stDev }}
       div.statDisplay Mean: {{ ctrl.stats.mean }}
       div.statDisplay Max: {{ ctrl.stats.max }}
       div.statDisplay Min: {{ ctrl.stats.min }}
 
 
-  div.dateSelector.row
-    div.col.col-sm-12
+    div.col.col-sm-9
 
+      h3.subHeading Data:
       button(ng-click="ctrl.previousDay()" ng-disabled="ctrl.oldStop") Previous Day
 
       select(ng-options="date.date for date in ctrl.datesAvailable" ng-change="ctrl.changeDay(ctrl.currentDate)" ng-model="(ctrl.currentDate)")

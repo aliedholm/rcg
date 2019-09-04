@@ -3,7 +3,7 @@ let bodyparser = require('body-parser');
 var jStat = require('jStat').jStat;
 const dbUtilities = require('../db/db.js');
 
-const freq = 50;
+const freq = 10;
 
 //defnining the actual controller and its methods
 let controller = {
@@ -86,11 +86,13 @@ var calcStats = function(dataSet){
   var stats = {};
   var justNumbers = [];
   for(var i = 0; i < dataSet.length - 1; i++){
-    justNumbers.push(dataSet[i].reading);
+    justNumbers.push(parseFloat(dataSet[i].reading));
   }
+  console.log(justNumbers);
   stats.min = jStat.min(justNumbers);
   stats.max = jStat.max(justNumbers);
-  stats.mean = jStat.mean(justNumbers);
+  stats.mean = jStat.mean(justNumbers).toFixed(2);
+  stats.stDev = jStat.stdev(justNumbers, [true]).toFixed(2);
   console.log("From inside calcStats Mean: " + JSON.stringify(stats));
   dataSet.push(stats);
   return dataSet;

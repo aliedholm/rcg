@@ -1,5 +1,5 @@
 var runPort = "8080";
-var apiUrl = "http://132.239.205.188:"
+var apiUrl = "http://132.239.205.188"
 
 
 //set module name
@@ -10,7 +10,7 @@ angular.module('rufAngular')
 
     //variable definitions for init
     var self = this;
-    self.databases = ["sensors", "logs", "digester"]; 
+    self.databases = ["sensors"]; 
     self.currentDatabase = self.databases[0];
     self.datesAvailable = [];
 
@@ -83,6 +83,7 @@ angular.module('rufAngular')
       self.checkStops();
       httpService.getData(url, params)
         .then(function(response){
+          self.stats = response.pop();
           self.dataPoints = response;
         })    
     }
@@ -96,25 +97,25 @@ angular.module('rufAngular')
 
     //function to build database URLs
     var buildDatabaseUrl = function(database){
-      url = apiUrl + runPort + "/api/retrieveTables/" + database;
+      url = apiUrl + ":" + runPort + "/api/retrieveTables/" + database;
       return url;
     }
 
     //function to build sensor URLs
     var buildSensorUrl = function(database, sensor){
-      url = apiUrl + runPort + "/api/retrieveTable/" + database + "-" + sensor;
+      url = apiUrl + ":" + runPort + "/api/retrieveTable/" + database + "-" + sensor;
       return url;
     }
 
     //function to build sensor URLs
     var buildSensorDatesUrl = function(database, sensor){
-      url = apiUrl + runPort + "/api/retrieveTableDates/" + database + "-" + sensor;
+      url = apiUrl + ":" + runPort + "/api/retrieveTableDates/" + database + "-" + sensor;
       return url;
     }
 
     //function to build sensor URLs
     var buildDatesUrl = function(database, sensor){
-      url = apiUrl + runPort + "/api/retrieveDates/" + database + "-" + sensor;
+      url = apiUrl + ":" + runPort + "/api/retrieveDates/" + database + "-" + sensor;
       return url;
     }
     
