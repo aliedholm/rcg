@@ -31,11 +31,8 @@ DallasTemperature sensors(&oneWire);
 // See the tutorial on how to obtain these addresses:
 // http://www.hacktronics.com/Tutorials/arduino-1-wire-address-finder.html
 
-DeviceAddress Probe01 = { 0x28, 0xAA, 0x6F, 0xCC, 0x17, 0x13, 0x02, 0xED }; 
-DeviceAddress Probe02 = { 0x28, 0xAA, 0x06, 0xC3, 0x17, 0x13, 0x02, 0x95 };
-DeviceAddress Probe03 = { 0x28, 0x27, 0x2B, 0xAB, 0x1F, 0x13, 0x01, 0x6A };
-DeviceAddress Probe04 = { 0x28, 0xFF, 0x4F, 0x19, 0xC2, 0x16, 0x04, 0x5E };
-DeviceAddress Probe05 = { 0x28, 0xE1, 0xC7, 0x40, 0x04, 0x00, 0x00, 0x0D };
+    DeviceAddress Probe01 = { 0x28, 0xAA, 0xA4, 0x54, 0x13, 0x13, 0x02, 0xDC };
+    DeviceAddress Probe02 = { 0x28, 0x39, 0x99, 0xAA, 0x1F, 0x13, 0x01, 0x61 };
 
 
 void setup()   /****** SETUP: RUNS ONCE ******/
@@ -51,9 +48,7 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
   sensors.setResolution(Probe01, 10);
   sensors.setResolution(Probe02, 10);
-  sensors.setResolution(Probe03, 10);
-  sensors.setResolution(Probe04, 10);
-  sensors.setResolution(Probe05, 10);
+
 
 }//--(end setup )---
 
@@ -76,20 +71,7 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
   Serial.print("Probe 02 temperature is:   ");
   printTemperature(Probe02);
   Serial.println();
- 
-  Serial.print("Probe 03 temperature is:   ");
-  printTemperature(Probe03);
-  Serial.println();
-   
-  Serial.print("Probe 04 temperature is:   ");
-  printTemperature(Probe04);
-  Serial.println();
-  
-  Serial.print("Probe 05 temperature is:   ");
-  printTemperature(Probe05);
-  Serial.println();
-   
-  
+
 }//--(end main loop )---
 
 /*-----( Declare User-written Functions )-----*/
