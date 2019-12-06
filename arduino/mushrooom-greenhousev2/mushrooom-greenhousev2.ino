@@ -11,7 +11,7 @@
 
 //dht22 code
 #include "DHT.h"
-#define DHTPIN 10
+#define DHTPIN 3
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 //end dht22 code

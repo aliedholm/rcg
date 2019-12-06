@@ -91,8 +91,10 @@ class sensor(object):
 
   #function to send data to an api via requests
   def apiSend(self, datetime, reading):
-    data = {"database": "sensors", "table": self.uniName, "datetime": datetime, "reading": reading}
-    url = "http://132.239.205.188:8080/api/post/reading/sensors-"
+    print (reading + "----------------------------------------")
+    data = {"database": "mushrooms", "table": self.uniName, "datetime": datetime, "reading": reading}
+    url = "http://data.rufucsd.com/api/post/reading/mushrooms-"
+    print(data)
     try:
       response = requests.post(url + self.uniName, params=data)
       print("data successfully sent")
@@ -102,8 +104,10 @@ class sensor(object):
   #function to insert data to local database
   def localDB(self, datetime, reading):
     createTableLocal(self.uniName)
+    print("Table Name: " + self.uniName)
+    print("Reading: " + reading)
     try:
-      connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
+      connection = mysql.connector.connect(host='localhost', database='mushrooms', user='rcg', password='8693ViaMallorca')
       sql_insert_query = "INSERT INTO " + self.uniName + " (datetime, reading) VALUES('" + datetime + "', '" + reading + "');"
       cursor = connection.cursor()
       result = cursor.execute(sql_insert_query)
@@ -125,7 +129,7 @@ def establishSerial(arduinoNum):
 #function to create table if it does not exist
 def createTableLocal(table):
   try:
-    connection = mysql.connector.connect(host='localhost', database='sensors', user='root', password='8693ViaMallorca')
+    connection = mysql.connector.connect(host='localhost', database='mushrooms', user='rcg', password='8693ViaMallorca')
     sql_insert_query = "CREATE TABLE IF NOT EXISTS " + table + " (id INT AUTO_INCREMENT NOT NULL, reading VARCHAR(8) NOT NULL, datetime DATETIME NOT NULL, PRIMARY KEY (id)) ENGINE=INNODB;"
     print sql_insert_query
     cursor = connection.cursor()
@@ -177,7 +181,7 @@ def send(commandCode, arduinoNum):
 
 #return the list of ports occupied by arduinos on the rpi system
 def checkArduinos():
-  data = subprocess.check_output("ls /dev/ttyACM*", shell=True)
+  data = subprocess.check_output("ls /dev/ttyUSB*", shell=True)
   return data
 
 #check the system for arduinos and have them all reports identities  
