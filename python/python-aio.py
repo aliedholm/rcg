@@ -25,7 +25,12 @@ class sensor(object):
     print data
     time.sleep(d1)
     return data
-  
+
+  def sendCommand(self):
+    send(self.command, self.address)
+    print self.uniName
+    time.sleep(d1)
+
   def printObject(self):
     print self.uniName
     print self.command
@@ -181,7 +186,9 @@ def send(commandCode, arduinoNum):
 
 #return the list of ports occupied by arduinos on the rpi system
 def checkArduinos():
-  data = subprocess.check_output("ls /dev/ttyUSB*", shell=True)
+  data1 = subprocess.check_output("ls /dev/ttyUSB*", shell=True)
+  data2 = subprocess.check_output("ls /dev/ttyACM*", shell=True)
+  data = data1 + data2
   return data
 
 #check the system for arduinos and have them all reports identities  
@@ -232,28 +239,40 @@ arduinos = getAddresses()
 sensors = parseSensors(arduinos)
 
 print "main print statement"
-for x in arduinos:
-  print x
+#for x in arduinos:
+#  print x
 
 for y in sensors:
   print (y)
 
+#set all relays low at start
+#  sensors["r1-low"].getData()
+#  time.sleep(.25)
+#  sensors["r2-low"].getData()
+#  time.sleep(.25)
+#  sensors["r3-low"].getData()
+#  time.sleep(.25)
+#  sensors["r4-low"].getData()
+#  time.sleep(.25)
+
 #main loop to monitor conditions and adjust system
 while 1:
-  temp1 = sensors["temp1"].getData()
-  timestamp = getTime()
-  sensors["temp1"].localDB(timestamp, temp1)
-  sensors["temp1"].apiSend(timestamp, temp1)
+#  temp1 = sensors["temp1"].getData()
+#  timestamp = getTime()
+#  sensors["temp1"].localDB(timestamp, temp1)
+#  sensors["temp1"].apiSend(timestamp, temp1)
+  sensors["r2-high"].sendCommand()
   time.sleep(1);
   
-  DHThum = sensors["DHThum"].getData()
-  timestamp = getTime()
-  sensors["DHThum"].localDB(timestamp, DHThum)
-  sensors["DHThum"].apiSend(timestamp, DHThum)
+#  DHThum = sensors["DHThum"].getData()
+#  timestamp = getTime()
+#  sensors["DHThum"].localDB(timestamp, DHThum)
+#  sensors["DHThum"].apiSend(timestamp, DHThum)
+  sensors["r2-low"].sendCommand()
   time.sleep(1);
 
-  DHTtemp = sensors["DHTtemp"].getData()
-  timestamp = getTime()
-  sensors["DHTtemp"].localDB(timestamp, DHTtemp)
-  sensors["DHTtemp"].apiSend(timestamp, DHTtemp)
-  time.sleep(1);
+#  DHTtemp = sensors["DHTtemp"].getData()
+#  timestamp = getTime()
+#  sensors["DHTtemp"].localDB(timestamp, DHTtemp)
+#  sensors["DHTtemp"].apiSend(timestamp, DHTtemp)
+#  time.sleep(1);
