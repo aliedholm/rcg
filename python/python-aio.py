@@ -20,14 +20,14 @@ class sensor(object):
     self.ardName = ardName
 
   def getData(self):
-    data = send(self.command, self.address)
+    data = self.send()
     print self.uniName
     print data
     time.sleep(d1)
     return data
 
   def sendCommand(self):
-    send(self.command, self.address)
+    data = self.sendRelay()
     print self.uniName
     time.sleep(d1)
 
@@ -47,28 +47,68 @@ class sensor(object):
       string += x
     return string
 
-  def send(commandCode, arduinoNum):
+  def sendRelay(self):
     ardDataBuffer = []
     endOfData = 0
     endOfDataChar = '$'
     errorChar = '@'
     dataReturn = ''
 
-    ardSerial = establishSerial(arduinoNum)
+    ardSerial = establishSerial(self.address)
+
+    #write the actual command code the arduino is to execute
+    myData = []
+    while ardSerial.in_waiting == 0:
+      time.sleep(1)
+      ardSerial.write('<' + self.command + '>')
+      print "command code sent"
+      time.sleep(1)
+      return
+    myData = ardSerial.read()
+    ardDataBuffer += myData
+    if endOfDataChar in myData:
+      dataReturn = stringArray(ardDataBuffer)
+#      print "THis is the datareturn from send " + dataReturn
+      endOfData = 1
+
+      if errorChar in myData:
+        dataReturn = 'error: ' + stringArray(ardDataBuffer)
+        endOfData = 1
+
+    #remove the $ character from the results
+    finalData = dataReturn[:-1]
+
+    #close the serial port
+    ardSerial.close()
+    try:
+      sys.stdout.flush()
+    except:
+      pass
+
+    #return the data to the python-master program
+    return finalData
+  def send(self):
+    ardDataBuffer = []
+    endOfData = 0
+    endOfDataChar = '$'
+    errorChar = '@'
+    dataReturn = ''
+
+    ardSerial = establishSerial(self.address)
 
     #write the actual command code the arduino is to execute
     while endOfData == 0:
       myData = []
       while ardSerial.in_waiting == 0:
         time.sleep(1)
-        ardSerial.write('<' + commandCode + '>')
+        ardSerial.write('<' + self.command + '>')
         print "command code sent"
         time.sleep(1)
       myData = ardSerial.read()
       ardDataBuffer += myData
       if endOfDataChar in myData:
         dataReturn = stringArray(ardDataBuffer)
-        print "THis is the datareturn from send " + dataReturn
+  #      print "THis is the datareturn from send " + dataReturn
         endOfData = 1
 
       if errorChar in myData:
@@ -186,8 +226,16 @@ def send(commandCode, arduinoNum):
 
 #return the list of ports occupied by arduinos on the rpi system
 def checkArduinos():
-  data1 = subprocess.check_output("ls /dev/ttyUSB*", shell=True)
-  data2 = subprocess.check_output("ls /dev/ttyACM*", shell=True)
+  data1 = ''
+  data2 = ''
+  try:
+    data1 = subprocess.check_output("ls /dev/ttyUSB*", shell=True)
+  except subprocess.CalledProcessError as e:
+    print(e.output)
+  try:
+    data2 = subprocess.check_output("ls /dev/ttyACM*", shell=True)
+  except subprocess.CalledProcessError as e:
+    print(e.output)
   data = data1 + data2
   return data
 
@@ -257,19 +305,19 @@ for y in sensors:
 
 #main loop to monitor conditions and adjust system
 while 1:
-#  temp1 = sensors["temp1"].getData()
-#  timestamp = getTime()
-#  sensors["temp1"].localDB(timestamp, temp1)
-#  sensors["temp1"].apiSend(timestamp, temp1)
+  temp1 = sensors["temp1"].getData()
+  timestamp = getTime()
+  sensors["temp1"].localDB(timestamp, temp1)
+  sensors["temp1"].apiSend(timestamp, temp1)
   sensors["r2-high"].sendCommand()
-  time.sleep(1);
+  time.sleep(5);
   
-#  DHThum = sensors["DHThum"].getData()
-#  timestamp = getTime()
-#  sensors["DHThum"].localDB(timestamp, DHThum)
-#  sensors["DHThum"].apiSend(timestamp, DHThum)
+  DHThum = sensors["DHThum"].getData()
+  timestamp = getTime()
+  sensors["DHThum"].localDB(timestamp, DHThum)
+  sensors["DHThum"].apiSend(timestamp, DHThum)
   sensors["r2-low"].sendCommand()
-  time.sleep(1);
+  time.sleep(5);
 
 #  DHTtemp = sensors["DHTtemp"].getData()
 #  timestamp = getTime()

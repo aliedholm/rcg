@@ -15,10 +15,11 @@ void setup() {
 
   //blink diagnostic setup
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
   pinMode(11, OUTPUT);
   pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
+  
 
   
 }
@@ -36,56 +37,56 @@ void loop() {
 //relay 1
     if(commandCode == "5510"){
       digitalWrite(10, HIGH);
-      Serial.print("r1-low");
+      Serial.print("10");
       Serial.print("$");
       commandCode = "0";
     }
 
     if(commandCode == "5511"){
       digitalWrite(10, LOW);
-      Serial.print("r1-high");
+      Serial.print("11");
       Serial.print("$");
       commandCode = "0";
     }
 //relay2
     if(commandCode == "5520"){
       digitalWrite(11, HIGH);
-      Serial.print("r2-low");
+      Serial.print("20");
       Serial.print("$");
       commandCode = "0";
     }
 
     if(commandCode == "5521"){
       digitalWrite(11, LOW);
-      Serial.print("r2-high");
+      Serial.print("21");
       Serial.print("$");
       commandCode = "0";
     }
 //relay3
     if(commandCode == "5530"){
       digitalWrite(12, HIGH);
-      Serial.print("r3-low");
+      Serial.print("30");
       Serial.print("$");
       commandCode = "0";
     }
 
     if(commandCode == "5531"){
       digitalWrite(12, LOW);
-      Serial.print("r3-high");
+      Serial.print("31");
       Serial.print("$");
       commandCode = "0";
     }
 //relay4
     if(commandCode == "5540"){
-      digitalWrite(13, HIGH);
-      Serial.print("r4-low");
+      digitalWrite(9, HIGH);
+      Serial.print("40");
       Serial.print("$");
       commandCode = "0";
     }
 
     if(commandCode == "5541"){
-      digitalWrite(13, LOW);
-      Serial.print("r4-high");
+      digitalWrite(9, LOW);
+      Serial.print("41");
       Serial.print("$");
       commandCode = "0";
     }
