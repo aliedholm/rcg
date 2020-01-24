@@ -20,8 +20,16 @@ void setup() {
   pinMode(11, OUTPUT);
   pinMode(12, OUTPUT);
   
+  digitalWrite(9, HIGH);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, HIGH);
+  digitalWrite(12, HIGH);
 
-  
+//  digitalWrite(9, LOW);
+//  digitalWrite(10, LOW);
+//  digitalWrite(11, LOW);
+//  digitalWrite(12, LOW);
+
 }
 //main program loop
 void loop() {
@@ -37,57 +45,57 @@ void loop() {
 //relay 1
     if(commandCode == "5510"){
       digitalWrite(10, HIGH);
-      Serial.print("10");
-      Serial.print("$");
+      Serial.print("10$");
+      delay(250);
       commandCode = "0";
     }
 
     if(commandCode == "5511"){
       digitalWrite(10, LOW);
-      Serial.print("11");
-      Serial.print("$");
+      Serial.print("11$");
+      delay(250);
       commandCode = "0";
     }
 //relay2
     if(commandCode == "5520"){
       digitalWrite(11, HIGH);
-      Serial.print("20");
-      Serial.print("$");
+      Serial.print("20$");
+      delay(250);
       commandCode = "0";
     }
 
     if(commandCode == "5521"){
       digitalWrite(11, LOW);
-      Serial.print("21");
-      Serial.print("$");
+      Serial.print("21$");
+      delay(250);
       commandCode = "0";
     }
 //relay3
     if(commandCode == "5530"){
       digitalWrite(12, HIGH);
-      Serial.print("30");
-      Serial.print("$");
+      Serial.print("30$");
+      delay(250);
       commandCode = "0";
     }
 
     if(commandCode == "5531"){
       digitalWrite(12, LOW);
-      Serial.print("31");
-      Serial.print("$");
+      Serial.print("31$");
+      delay(250);
       commandCode = "0";
     }
 //relay4
     if(commandCode == "5540"){
       digitalWrite(9, HIGH);
-      Serial.print("40");
-      Serial.print("$");
+      Serial.print("40$");
+      delay(250);
       commandCode = "0";
     }
 
     if(commandCode == "5541"){
       digitalWrite(9, LOW);
-      Serial.print("41");
-      Serial.print("$");
+      Serial.print("41$");
+      delay(250);
       commandCode = "0";
     }
 
@@ -104,7 +112,8 @@ void loop() {
       Serial.print("$");
       commandCode = "0";
     }
-    
+
+    delay(25);
 //End of Main set of if statements 
         
 }//end of main loop

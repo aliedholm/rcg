@@ -53,23 +53,24 @@ class sensor(object):
     endOfDataChar = '$'
     errorChar = '@'
     dataReturn = ''
-
     ardSerial = establishSerial(self.address)
 
     #write the actual command code the arduino is to execute
-    myData = []
-    while ardSerial.in_waiting == 0:
-      time.sleep(1)
-      ardSerial.write('<' + self.command + '>')
-      print "command code sent"
-      time.sleep(1)
-      return
-    myData = ardSerial.read()
-    ardDataBuffer += myData
-    if endOfDataChar in myData:
-      dataReturn = stringArray(ardDataBuffer)
-#      print "THis is the datareturn from send " + dataReturn
-      endOfData = 1
+    while endOfData == 0:
+      myData = []
+      while ardSerial.in_waiting == 0:
+        ardSerial.write('<' + self.command + '>')
+        print ("command code sent: " + '<' + self.command + '>')
+        time.sleep(1)
+      
+      myData = ardSerial.read()
+      print "This is the myData Variable" + myData
+      ardDataBuffer += myData
+  
+      if endOfDataChar in myData:
+        dataReturn = stringArray(ardDataBuffer)
+        print "THis is the datareturn from send " + dataReturn
+        endOfData = 1
 
       if errorChar in myData:
         dataReturn = 'error: ' + stringArray(ardDataBuffer)
@@ -87,6 +88,7 @@ class sensor(object):
 
     #return the data to the python-master program
     return finalData
+
   def send(self):
     ardDataBuffer = []
     endOfData = 0
@@ -305,19 +307,40 @@ for y in sensors:
 
 #main loop to monitor conditions and adjust system
 while 1:
-  temp1 = sensors["temp1"].getData()
-  timestamp = getTime()
-  sensors["temp1"].localDB(timestamp, temp1)
-  sensors["temp1"].apiSend(timestamp, temp1)
-  sensors["r2-high"].sendCommand()
-  time.sleep(5);
+
+#  sensors["temp-identity"].getData()
+  sensors["r1-high"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r2-high"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r3-high"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r4-high"].sendCommand()#.getData()
+  time.sleep(.1)
   
-  DHThum = sensors["DHThum"].getData()
-  timestamp = getTime()
-  sensors["DHThum"].localDB(timestamp, DHThum)
-  sensors["DHThum"].apiSend(timestamp, DHThum)
-  sensors["r2-low"].sendCommand()
-  time.sleep(5);
+#  sensors["temp-identity"].getData()
+  sensors["r4-low"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r3-low"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r2-low"].sendCommand()#.getData()
+  time.sleep(.1)
+  sensors["r1-low"].sendCommand()#.getData()
+  time.sleep(.1)
+
+#  temp1 = sensors["temp1"].getData()
+#  timestamp = getTime()
+#  sensors["temp1"].localDB(timestamp, temp1)
+#  sensors["temp1"].apiSend(timestamp, temp1)
+#  sensors["r2-high"].sendCommand()
+#  time.sleep(5);
+  
+#  DHThum = sensors["DHThum"].getData()
+#  timestamp = getTime()
+#  sensors["DHThum"].localDB(timestamp, DHThum)
+#  sensors["DHThum"].apiSend(timestamp, DHThum)
+#  sensors["r2-low"].sendCommand()
+#  time.sleep(5);
 
 #  DHTtemp = sensors["DHTtemp"].getData()
 #  timestamp = getTime()
