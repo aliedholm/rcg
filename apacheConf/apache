@@ -1,0 +1,33 @@
+#/etc/apache2/sites-availavable/rcg.conf
+<VirtualHost *:80>
+ ServerAdmin aliedholm@ucsd.edu
+ Servername RCG
+ ServerAlias data.rufucsd.com
+
+DocumentRoot /var/www/html/rcg
+ <Directory />
+ Options -Indexes +FollowSymLinks
+ AllowOverride None
+ Require all granted
+ </Directory>
+
+ProxyRequests off
+ ProxyPreserveHost On
+ ProxyVia Full
+ <Proxy *>
+ Require all granted
+ </Proxy>
+
+<Location /nodejsApp>
+ ProxyPass http://127.0.0.1:8080
+ ProxyPassReverse http://127.0.0.1:8080
+ </Location>
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+
+# Possible Values include: debug, info, notice, warn, error, crit, alert, emerg.
+ LogLevel warn
+
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
