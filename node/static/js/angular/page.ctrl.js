@@ -10,7 +10,7 @@ angular.module('rufAngular')
 
     //variable definitions for init
     var self = this;
-    self.databases = ["sensors"]; 
+    self.databases = ["sensors", "sensors2", "mushrooms"]; 
     self.currentDatabase = self.databases[0];
     self.datesAvailable = [];
 

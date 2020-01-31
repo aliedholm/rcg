@@ -15,8 +15,9 @@ let controller = {
     const results = await connectDb(query, database);
     const tables = results[0];
     var sensors = [];
+    var tablesIn = "Tables_in_" + database;
     for(var i = 0; i < tables.length; i++){
-      sensors.push(tables[i].Tables_in_sensors);
+      sensors.push(tables[i][tablesIn]);
     } 
     res.send(sensors);
   },
