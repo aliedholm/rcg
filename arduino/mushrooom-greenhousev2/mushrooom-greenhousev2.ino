@@ -11,9 +11,13 @@
 
 //dht22 code
 #include "DHT.h"
-#define DHTPIN 3
 #define DHTTYPE DHT22
-DHT dht(DHTPIN, DHTTYPE);
+
+#define DHT1PIN 2
+DHT dht1(DHT1PIN, DHTTYPE);
+
+#define DHT2PIN 3
+DHT dht2(DHT2PIN, DHTTYPE);
 //end dht22 code
 
 //ds18b20 code
@@ -39,9 +43,10 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   //DHT22 code
-  dht.begin();
-
+  dht1.begin();
+  dht2.begin();
   //ds18b20 code
+  
   sensors.begin();
       
   // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
@@ -63,66 +68,60 @@ void loop() {
     
 //Main set of if statements to trigger conditions from Serial commands
 
-  //check temperatures 
-    if(commandCode == "1111"){
+//grounds
+    if(commandCode == "0010"){
       printTemperature(Probe01);
       Serial.print("$");
       commandCode = "0";
     }
 
-    if(commandCode == "1112"){
+//grounds-control
+    if(commandCode == "0011"){
       printTemperature(Probe02);
       Serial.print("$");
       commandCode = "0";
     }
 
-    if(commandCode == "1121"){
-      float h = dht.readHumidity();
+//ambient-hum-inside
+    if(commandCode == "0020"){
+      float h = dht1.readHumidity();
       Serial.print(h);
       Serial.print("$");
       commandCode = "0";
     }
 
-    if(commandCode == "1122"){
-      float t = dht.readTemperature();
+//ambient-temp-inside
+    if(commandCode == "0021"){
+      float t = dht1.readTemperature();
+      Serial.print(t);
+      Serial.print("$");
+      commandCode = "0";
+    }
+
+//ambient-hum-outside
+    if(commandCode == "0200"){
+      float h = dht2.readHumidity();
+      Serial.print(h);
+      Serial.print("$");
+      commandCode = "0";
+    }
+
+//ambient-temp-outside
+    if(commandCode == "0201"){
+      float t = dht2.readTemperature();
       Serial.print(t);
       Serial.print("$");
       commandCode = "0";
     }
     
-  // blink diagnostic
-    if(commandCode == "9998"){
-      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      delay(1000);                       // wait for a second
-      digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-      delay(1000); 
-      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-      Serial.print("blink happened$");
-      commandCode = "0";
-    }
-    
-  // report an error
-    if(commandCode == "9991"){
-      String error = "error";
-      Serial.print(error);
-      Serial.print("@");
-      commandCode = "0";
-    }
-
   // report identity
     if(commandCode == "9999"){
-      String identity = "tempArd:1111;temp1,1112;temp2,1113;temp3,1121;DHThum,1122;DHTtemp,1122;temp-error,9998;temp-blink,9999;temp-identity";
+      String identity = "sensorArd:0010;Grounds_Temperature,0011;Grounds_Temperature_Control,0020;Ambient_Humidity_Inside,0021;Ambient_Temperature_Inside,0200;Ambient_Humidity_Outside,0201;Ambient_Temperature_Outside,9999;temp-identity";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
     }
 
-      if(commandCode == "6666"){
-      Serial.print("test");
-      Serial.print("$");
-      commandCode = "0";
-    }
-    
 //End of Main set of if statements 
         
 }//end of main loop

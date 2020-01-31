@@ -42,78 +42,46 @@ void loop() {
 //Main set of if statements to trigger conditions from Serial commands
 
   //toggle relays 
-//relay 1
-    if(commandCode == "5510"){
+//Mister Solenoid
+    if(commandCode == "1201"){
       digitalWrite(10, HIGH);
       Serial.print("10$");
       delay(250);
       commandCode = "0";
     }
 
-    if(commandCode == "5511"){
+    if(commandCode == "1200"){
       digitalWrite(10, LOW);
       Serial.print("11$");
       delay(250);
       commandCode = "0";
     }
-//relay2
-    if(commandCode == "5520"){
+    
+//Vent Fan
+    if(commandCode == "1001"){
       digitalWrite(11, HIGH);
       Serial.print("20$");
       delay(250);
       commandCode = "0";
     }
 
-    if(commandCode == "5521"){
+    if(commandCode == "1000"){
       digitalWrite(11, LOW);
       Serial.print("21$");
-      delay(250);
-      commandCode = "0";
-    }
-//relay3
-    if(commandCode == "5530"){
-      digitalWrite(12, HIGH);
-      Serial.print("30$");
-      delay(250);
-      commandCode = "0";
-    }
-
-    if(commandCode == "5531"){
-      digitalWrite(12, LOW);
-      Serial.print("31$");
-      delay(250);
-      commandCode = "0";
-    }
-//relay4
-    if(commandCode == "5540"){
-      digitalWrite(9, HIGH);
-      Serial.print("40$");
-      delay(250);
-      commandCode = "0";
-    }
-
-    if(commandCode == "5541"){
-      digitalWrite(9, LOW);
-      Serial.print("41$");
       delay(250);
       commandCode = "0";
     }
 
   // report identity
     if(commandCode == "9999"){
-      String identity = "relayArd:5510;r1-low,5511;r1-high,5520;r2-low,5521;r2-high,5530;r3-low,5531;r3-high,5540;r4-low,5541;r4-high,6666;test,9999;temp-identity";
+      String identity = "relayArd:1201;Mister_On,1200;Mister_Off,1001;Vent_Fan_On,1000;Vent_Fan_Off,9999;temp-identity";
       Serial.print(identity);
       Serial.print("$");
       commandCode = "0";
     }
 
-      if(commandCode == "6666"){
-      Serial.print("test");
-      Serial.print("$");
-      commandCode = "0";
-    }
-
-    delay(25);
+    delay(15);
+    
 //End of Main set of if statements 
         
 }//end of main loop

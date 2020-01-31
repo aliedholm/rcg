@@ -19,17 +19,19 @@ class sensor(object):
     self.address = address
     self.ardName = ardName
 
+  def fullReading(self):
+    data = sensors[self.uniName].getData()
+    timestamp = getTime()
+    sensors[self.uniName].localDB(timestamp, data)
+    sensors[self.uniName].apiSend(timestamp, data)
+    return data
+
   def getData(self):
     data = self.send()
     print self.uniName
     print data
     time.sleep(d1)
     return data
-
-  def sendCommand(self):
-    data = self.sendRelay()
-    print self.uniName
-    time.sleep(d1)
 
   def printObject(self):
     print self.uniName
@@ -47,55 +49,12 @@ class sensor(object):
       string += x
     return string
 
-  def sendRelay(self):
-    ardDataBuffer = []
-    endOfData = 0
-    endOfDataChar = '$'
-    errorChar = '@'
-    dataReturn = ''
-    ardSerial = establishSerial(self.address)
-
-    #write the actual command code the arduino is to execute
-    while endOfData == 0:
-      myData = []
-      while ardSerial.in_waiting == 0:
-        ardSerial.write('<' + self.command + '>')
-        print ("command code sent: " + '<' + self.command + '>')
-        time.sleep(1)
-      
-      myData = ardSerial.read()
-      print "This is the myData Variable" + myData
-      ardDataBuffer += myData
-  
-      if endOfDataChar in myData:
-        dataReturn = stringArray(ardDataBuffer)
-        print "THis is the datareturn from send " + dataReturn
-        endOfData = 1
-
-      if errorChar in myData:
-        dataReturn = 'error: ' + stringArray(ardDataBuffer)
-        endOfData = 1
-
-    #remove the $ character from the results
-    finalData = dataReturn[:-1]
-
-    #close the serial port
-    ardSerial.close()
-    try:
-      sys.stdout.flush()
-    except:
-      pass
-
-    #return the data to the python-master program
-    return finalData
-
   def send(self):
     ardDataBuffer = []
     endOfData = 0
     endOfDataChar = '$'
     errorChar = '@'
     dataReturn = ''
-
     ardSerial = establishSerial(self.address)
 
     #write the actual command code the arduino is to execute
@@ -140,7 +99,7 @@ class sensor(object):
   def apiSend(self, datetime, reading):
     print (reading + "----------------------------------------")
     data = {"database": "mushrooms", "table": self.uniName, "datetime": datetime, "reading": reading}
-    url = "http://data.rufucsd.com/api/post/reading/mushrooms-"
+    url = "http://132.239.205.188:8080/api/post/reading/mushrooms-"
     print(data)
     try:
       response = requests.post(url + self.uniName, params=data)
@@ -283,67 +242,28 @@ def parseSensors(arduinos):
         engName + chanel
       sensors[engName] = sensorObj
   return sensors
+
 #setup of the program getting ready for main loop
+
 sensors = {}
 arduinos = getAddresses()
 sensors = parseSensors(arduinos)
 
-print "main print statement"
-#for x in arduinos:
-#  print x
-
 for y in sensors:
   print (y)
 
-#set all relays low at start
-#  sensors["r1-low"].getData()
-#  time.sleep(.25)
-#  sensors["r2-low"].getData()
-#  time.sleep(.25)
-#  sensors["r3-low"].getData()
-#  time.sleep(.25)
-#  sensors["r4-low"].getData()
-#  time.sleep(.25)
-
 #main loop to monitor conditions and adjust system
+
 while 1:
 
-#  sensors["temp-identity"].getData()
-  sensors["r1-high"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r2-high"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r3-high"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r4-high"].sendCommand()#.getData()
-  time.sleep(.1)
-  
-#  sensors["temp-identity"].getData()
-  sensors["r4-low"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r3-low"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r2-low"].sendCommand()#.getData()
-  time.sleep(.1)
-  sensors["r1-low"].sendCommand()#.getData()
-  time.sleep(.1)
+  groundsT = sensors["Grounds_Temperature"].fullReading()
 
-#  temp1 = sensors["temp1"].getData()
-#  timestamp = getTime()
-#  sensors["temp1"].localDB(timestamp, temp1)
-#  sensors["temp1"].apiSend(timestamp, temp1)
-#  sensors["r2-high"].sendCommand()
-#  time.sleep(5);
-  
-#  DHThum = sensors["DHThum"].getData()
-#  timestamp = getTime()
-#  sensors["DHThum"].localDB(timestamp, DHThum)
-#  sensors["DHThum"].apiSend(timestamp, DHThum)
-#  sensors["r2-low"].sendCommand()
-#  time.sleep(5);
+  groundsControlT = sensors["Grounds_Temperature_Control"].fullReading()
 
-#  DHTtemp = sensors["DHTtemp"].getData()
-#  timestamp = getTime()
-#  sensors["DHTtemp"].localDB(timestamp, DHTtemp)
-#  sensors["DHTtemp"].apiSend(timestamp, DHTtemp)
-#  time.sleep(1);
+  humInside = sensors["Ambient_Humidity_Inside"].fullReading()
+
+  humOutside = sensors["Ambient_Humidity_Outside"].fullReading()
+
+  tempInside = sensors["Ambient_Temperature_Inside"].fullReading()
+
+  tempOutside = sensors["Ambient_Temperature_Outside"].fullReading()
