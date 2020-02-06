@@ -15,18 +15,13 @@ void setup() {
 
   //blink diagnostic setup
   pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
+
   pinMode(11, OUTPUT);
   pinMode(12, OUTPUT);
   
-  digitalWrite(9, HIGH);
-  digitalWrite(10, HIGH);
   digitalWrite(11, HIGH);
   digitalWrite(12, HIGH);
 
-//  digitalWrite(9, LOW);
-//  digitalWrite(10, LOW);
 //  digitalWrite(11, LOW);
 //  digitalWrite(12, LOW);
 
@@ -44,31 +39,31 @@ void loop() {
   //toggle relays 
 //Mister Solenoid
     if(commandCode == "1201"){
-      digitalWrite(10, HIGH);
+      digitalWrite(11, HIGH);
       Serial.print("10$");
-      delay(250);
+      delay(25);
       commandCode = "0";
     }
 
     if(commandCode == "1200"){
-      digitalWrite(10, LOW);
+      digitalWrite(11, LOW);
       Serial.print("11$");
-      delay(250);
+      delay(25);
       commandCode = "0";
     }
     
 //Vent Fan
     if(commandCode == "1001"){
-      digitalWrite(11, HIGH);
+      digitalWrite(12, HIGH);
       Serial.print("20$");
-      delay(250);
+      delay(25);
       commandCode = "0";
     }
 
     if(commandCode == "1000"){
-      digitalWrite(11, LOW);
+      digitalWrite(12, LOW);
       Serial.print("21$");
-      delay(250);
+      delay(25);
       commandCode = "0";
     }
 

@@ -92,7 +92,7 @@ void loop() {
 
 //ambient-temp-inside
     if(commandCode == "0021"){
-      float t = dht1.readTemperature();
+      float t = dht1.readTemperature(true);
       Serial.print(t);
       Serial.print("$");
       commandCode = "0";
@@ -108,7 +108,7 @@ void loop() {
 
 //ambient-temp-outside
     if(commandCode == "0201"){
-      float t = dht2.readTemperature();
+      float t = dht2.readTemperature(true);
       Serial.print(t);
       Serial.print("$");
       commandCode = "0";

@@ -61,7 +61,6 @@ class sensor(object):
     while endOfData == 0:
       myData = []
       while ardSerial.in_waiting == 0:
-        time.sleep(1)
         ardSerial.write('<' + self.command + '>')
         print "command code sent"
         time.sleep(1)
@@ -256,14 +255,67 @@ for y in sensors:
 
 while 1:
 
-  groundsT = sensors["Grounds_Temperature"].fullReading()
+#incubation phase
 
+#  groundsT = sensors["Grounds_Temperature"].fullReading()
+#  groundsControlT = sensors["Grounds_Temperature_Control"].fullReading()
+#  humOutside = sensors["Ambient_Humidity_Outside"].fullReading()
+#  tempOutside = sensors["Ambient_Temperature_Outside"].fullReading()
+
+#  humInside = sensors["Ambient_Humidity_Inside"].fullReading()
+  
+#  tempInside = sensors["Ambient_Temperature_Inside"].fullReading()
+#  if ((tempInside > 75) & (tempOutside < tempInside)):
+#    sensors["Vent_Fan_On"].fullReading()
+
+#  if (tempInside <= 75):
+#    sensors["Vent_Fan_Off"].fullReading()
+
+#formation phase
+
+  groundsT = sensors["Grounds_Temperature"].fullReading()
   groundsControlT = sensors["Grounds_Temperature_Control"].fullReading()
+  humOutside = sensors["Ambient_Humidity_Outside"].fullReading()
+  tempOutside = sensors["Ambient_Temperature_Outside"].fullReading()
 
   humInside = sensors["Ambient_Humidity_Inside"].fullReading()
-
-  humOutside = sensors["Ambient_Humidity_Outside"].fullReading()
-
+  
+#  if (humInside < 95):
+#    sensors["Vent_Fan_On"].fullReading()
+#    sensors["Mister_On"].fullReading()
+  
+#  if (humInside >= 95):
+#    sensors["Mister_Off"].fullReading()
+  
   tempInside = sensors["Ambient_Temperature_Inside"].fullReading()
+  
+#  if ((tempInside > 75) & (tempOutside < tempInside)):
+#    sensors["Vent_Fan_On"].fullReading()
 
-  tempOutside = sensors["Ambient_Temperature_Outside"].fullReading()
+#  if (tempInside <= 75):
+#    sensors["Vent_Fan_Off"].fullReading()
+
+#fruiting phase
+  
+#  groundsT = sensors["Grounds_Temperature"].fullReading()
+#  groundsControlT = sensors["Grounds_Temperature_Control"].fullReading()
+#  humOutside = sensors["Ambient_Humidity_Outside"].fullReading()
+#  tempOutside = sensors["Ambient_Temperature_Outside"].fullReading()
+
+#  humInside = sensors["Ambient_Humidity_Inside"].fullReading()
+  
+#  if (humInside < 85):
+#    sensors["Vent_Fan_On"].fullReading()
+#    sensors["Mister_On"].fullReading()
+  
+#  if (humInside >= 85):
+#    sensors["Mister_Off"].fullReading()
+  
+#  tempInside = sensors["Ambient_Temperature_Inside"].fullReading()
+  
+#  if ((tempInside > 75) & (tempOutside < tempInside)):
+#    sensors["Vent_Fan_On"].fullReading()
+
+#  if (tempInside <= 75):
+#    sensors["Vent_Fan_Off"].fullReading()
+
