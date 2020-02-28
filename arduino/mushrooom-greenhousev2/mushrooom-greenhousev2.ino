@@ -117,8 +117,8 @@ void loop() {
   // report identity
     if(commandCode == "9999"){
       String identity = "sensorArd:0010;Grounds_Temperature,0011;Grounds_Temperature_Control,0020;Ambient_Humidity_Inside,0021;Ambient_Temperature_Inside,0200;Ambient_Humidity_Outside,0201;Ambient_Temperature_Outside,9999;temp-identity";
-      Serial.print(identity);
-      Serial.print("$");
+      Serial.println(identity);
+      Serial.println("$");
       commandCode = "0";
     }
 

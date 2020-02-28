@@ -21,10 +21,20 @@ class sensor(object):
 
   def fullReading(self):
     data = sensors[self.uniName].getData()
+    if (self.hasLetters(data) == 0):
+      print data
+      return
+    print type(data)
     timestamp = getTime()
     sensors[self.uniName].localDB(timestamp, data)
     sensors[self.uniName].apiSend(timestamp, data)
     return data
+
+  def hasLetters(self, string):
+    letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    for letter in letters:
+      if letter in string:
+        return 0
 
   def getData(self):
     data = self.send()
@@ -61,6 +71,7 @@ class sensor(object):
     while endOfData == 0:
       myData = []
       while ardSerial.in_waiting == 0:
+        time.sleep(.5)
         ardSerial.write('<' + self.command + '>')
         print "command code sent"
         time.sleep(1)
@@ -280,20 +291,20 @@ while 1:
 
   humInside = sensors["Ambient_Humidity_Inside"].fullReading()
   
-#  if (humInside < 95):
-#    sensors["Vent_Fan_On"].fullReading()
-#    sensors["Mister_On"].fullReading()
+  if (humInside < 95):
+    sensors["Vent_Fan_On"].fullReading()
+    sensors["Mister_On"].fullReading()
   
-#  if (humInside >= 95):
-#    sensors["Mister_Off"].fullReading()
+  if (humInside >= 95):
+    sensors["Mister_Off"].fullReading()
   
   tempInside = sensors["Ambient_Temperature_Inside"].fullReading()
   
-#  if ((tempInside > 75) & (tempOutside < tempInside)):
-#    sensors["Vent_Fan_On"].fullReading()
+  if ((tempInside > 75) & (tempOutside < tempInside)):
+    sensors["Vent_Fan_On"].fullReading()
 
-#  if (tempInside <= 75):
-#    sensors["Vent_Fan_Off"].fullReading()
+  if (tempInside <= 75):
+    sensors["Vent_Fan_Off"].fullReading()
 
 #fruiting phase
   
