@@ -12,7 +12,6 @@ router.get('/', function(req, res){
   res.render(view, {
     title: 'rufSensor'
   });
-//  queryCtrl.retrieveTables(req, res);
 });
 
 module.exports = router;
