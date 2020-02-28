@@ -1,5 +1,6 @@
-var runPort = "8080";
-var apiUrl = "http://132.239.205.188"
+var runPort = "80";
+//var apiUrl = "http://132.239.205.188"
+var apiUrl = "http://data.rufucsd.com"
 
 
 //set module name
@@ -11,7 +12,7 @@ angular.module('rufAngular')
     //variable definitions for init
     var self = this;
     self.databases = ["sensors", "sensors2", "mushrooms"]; 
-    self.currentDatabase = self.databases[0];
+    self.currentDatabase = self.databases[2];
     self.datesAvailable = [];
 
 //function to disable navigation buttons for dates that don't exist
