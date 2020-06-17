@@ -1,6 +1,15 @@
 /*
  * Components: 16x2 LCD screen, 3 DS18b20 temp sensors, DHT sensor, 2 soil moisture sensors
  */
+
+// LCD Libraries
+#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <hd44780.h> // include hd44780 library header file
+#include <hd44780ioClass/hd44780_I2Cexp.h> // i/o expander/backpack class
+hd44780_I2Cexp lcd; // auto detect backpack and pin mappings
+
 // DS18b20 Libraries
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -43,7 +52,9 @@ void setup() {
   Serial.begin(9600);
   
   //LCD Code
-  lcd.begin(16, 2);
+  lcd.init();
+  lcd.begin(20, 4);
+  lcd.backlight();0
   
   //for ds18b20 code
   sensors.begin();
@@ -52,6 +63,7 @@ void setup() {
   sensors.setResolution(Probe03, 12);
   //ds18b20 code end
 }
+
 
 void loop() {
   //ds18b20 generic code
@@ -65,24 +77,19 @@ void loop() {
   temp3 = (int)printTemperature(Probe03);
    
   // lcd.setCursor(col, row)
-  lcd.setCursor(1,0);
+  lcd.setCursor(3,0);
   lcd.print("T1:");
-  lcd.setCursor(6,0);
+  lcd.setCursor(9,0);
   lcd.print("T2:");
-  lcd.setCursor(11,0);
+  lcd.setCursor(15,0);
   lcd.print("T3:");
  
- lcd.setCursor(1,1);
-  lcd.print(temp1, 0);
-  lcd.setCursor(6,1);
-  lcd.print(temp2, 0);
-  lcd.setCursor(11,1);
-  lcd.print(temp3, 0);
-
-  delay(3000);
-
-  // Clear
-  lcd.clear();
+  lcd.setCursor(2,1);
+  lcd.print(temp1, 1);
+  lcd.setCursor(8,1);
+  lcd.print(temp2, 1);
+  lcd.setCursor(14,1);
+  lcd.print(temp3, 1);
 
   // Take and print soil moisture and DHT sensor data
   soil_val1 = printMoisture(soil_pin1);
@@ -91,69 +98,56 @@ void loop() {
   hum_val = DHT.humidity;
   
   // lcd.setCursor(col, row)
-  lcd.setCursor(1,0);
-  lcd.print("M1:");
-  lcd.setCursor(6,0);
-  lcd.print("M2:");
-  lcd.setCursor(11,0);
+  lcd.setCursor(2,2);
+  lcd.print("SM1:");
+  lcd.setCursor(8,2);
+  lcd.print("SM2:");
+  lcd.setCursor(14,2);
   lcd.print("HUM:");
 
-  
-  
-  lcd.setCursor(0,1);
+  lcd.setCursor(2,3);
   lcd.print(soil_val1);
-  //lcd.print((analogRead(soil_pin1)*100L)/1024);
   lcd.print("%");
-  lcd.setCursor(6,1);
+  lcd.setCursor(8,3);
   lcd.print(soil_val2);
-  //lcd.print((analogRead(soil_pin2)*100L)/1024);
   lcd.print("%");
-  lcd.setCursor(11,1);
+  lcd.setCursor(14,3);
   lcd.print(hum_val, 1);
   lcd.print("%");
-
-  delay(3000);
-
-  Serial.println("Soil moisture 1: ");
-  Serial.println(soil_val1);
-  Serial.println("Soil moisture 2: ");
-  Serial.println(soil_val2);
   
   // Clear
   lcd.clear();
-
 }
-  // Function to retrieve soil moisture data
-  long printMoisture (int soil_pin) {
-    float data = analogRead(soil_pin);
-      Serial.println("In the function: ");
-      Serial.println(data);
-      if(data > max_val){
-        data = max_val;
-      }
-      if(data < min_val){
-        data = min_val;
-      }
-      long soil_val = map( data, min_val, max_val, 100, 0); 
-      return soil_val;
+
+
+// Function to retrieve soil moisture data
+long printMoisture (int soil_pin) {
+  float data = analogRead(soil_pin);
+  
+  Serial.println("In the function: ");
+  Serial.println(data);
+  
+  if(data > max_val) {
+    data = max_val;
+  }
+  if(data < min_val) {
+    data = min_val;
+  }
+  
+  long soil_val = map( data, min_val, max_val, 100, 0); 
+  return soil_val;
 }
 
 // Function to retrieve DS18B20 temp sensor data
 float printTemperature(DeviceAddress deviceAddress)
 {
-
   float tempC = sensors.getTempC(deviceAddress);
  
-
-   if (tempC == -127.00) 
-   {
-   Serial.print("Error getting temperature  ");
-   } 
-   else
-   {
-   
-   //Serial.println(DallasTemperature::toFahrenheit(tempC));
-   return (DallasTemperature::toFahrenheit(tempC));
-   }
+  if (tempC == -127.00) {
+    Serial.print("Error getting temperature  ");
+  } else {
+    //Serial.println(DallasTemperature::toFahrenheit(tempC));
+    return (DallasTemperature::toFahrenheit(tempC));
+  }
 }
 // ds18b20 end code
