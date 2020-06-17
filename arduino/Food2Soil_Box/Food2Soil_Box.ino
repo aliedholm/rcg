@@ -1,5 +1,5 @@
 /*
- * Components: 16x2 LCD screen, 3 DS18b20 temp sensors, DHT sensor, 2 soil moisture sensors
+ * Components: 20x4 LCD screen, 3 DS18b20 temp sensors, DHT sensor, 2 soil moisture sensors
  */
 
 // LCD Libraries
